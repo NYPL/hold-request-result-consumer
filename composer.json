@@ -1,0 +1,21 @@
+{
+  "name": "nypl-stream-test-service",
+  "description": "NYPL Stream Test Service",
+  "require": {
+    "nypl/microservice-starter": "^1.0.0",
+    "sendgrid/sendgrid": "5.5.0",
+    "twig/twig": "2.3.2"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "NYPL\\Services\\": [ "src/" ]
+    }
+  },
+  "scripts": {
+    "post-update-cmd": [
+      "php -r \"copy('vendor/nypl/microservice-starter/scripts/index.js', 'index.js');\""
+    ]
+  }
+}
