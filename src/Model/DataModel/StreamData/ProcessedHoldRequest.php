@@ -40,9 +40,9 @@ class ProcessedHoldRequest extends StreamData
     public $numberOfCopies = '';
 
     /**
-     * @var DocDeliveryItem
+     * @var DocDeliveryData
      */
-    public $docDeliveryItem;
+    public $docDeliveryData;
 
     /**
      * @return string
@@ -269,19 +269,19 @@ class ProcessedHoldRequest extends StreamData
     }
 
     /**
-     * @return DocDeliveryItem
+     * @return DocDeliveryData
      */
     public function getDocDeliveryItem(): DocDeliveryItem
     {
-        return $this->docDeliveryItem;
+        return $this->docDeliveryData;
     }
 
     /**
-     * @param DocDeliveryItem $docDeliveryItem
+     * @param DocDeliveryData $docDeliveryData
      */
-    public function setDocDeliveryItem(DocDeliveryItem $docDeliveryItem)
+    public function setDocDeliveryItem(DocDeliveryData $docDeliveryData)
     {
-        $this->docDeliveryItem = $docDeliveryItem;
+        $this->docDeliveryData = $docDeliveryData;
     }
 
 }
