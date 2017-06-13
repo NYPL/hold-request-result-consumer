@@ -2,6 +2,7 @@
 namespace NYPL\Services;
 
 use NYPL\Services\Model\DataModel\StreamData\Patron;
+use NYPL\Services\Model\DataModel\StreamData\ProcessedHoldRequest;
 use NYPL\Starter\APILogger;
 
 class Listener
@@ -133,13 +134,18 @@ class Listener
 
                     $schemaName = $this->getSchemaNameFromStreamName($streamName);
 
+
+
                     $data = AvroDeserializer::deserializeWithSchema(
                         SchemaClient::getSchema($schemaName),
                         base64_decode($record['kinesis']['data'])
                     );
 
-//                    $mailClient = new MailClient($streamName, new Patron($data));
-//                    $mailClient->sendEmail();
+                    APILogger::addInfo('data', $data);
+
+                    $processedHoldRequest = new ProcessedHoldRequest($data);
+                    APILogger::addInfo('processedHoldRequest', $processedHoldRequest);
+
 
                     ++$addCount;
                 } catch (\Exception $exception) {
