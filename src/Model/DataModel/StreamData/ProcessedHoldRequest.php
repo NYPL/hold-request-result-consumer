@@ -9,8 +9,18 @@ use NYPL\Services\Model\DataModel\StreamData;
  */
 class ProcessedHoldRequest extends StreamData
 {
+    /**
+     * Id associated with a processed hold request.
+     *
+     * @var string
+     */
     public $requestId = '';
 
+    /**
+     * Tracking Id associated with a processed hold request.
+     *
+     * @var string
+     */
     public $trackingId = '';
 
     public $patronId = '';
@@ -283,9 +293,13 @@ class ProcessedHoldRequest extends StreamData
     /**
      * @param DocDeliveryData $docDeliveryData
      */
-    public function setDocDeliveryItem(DocDeliveryData $docDeliveryData)
+    public function setDocDeliveryData(DocDeliveryData $docDeliveryData)
     {
         $this->docDeliveryData = $docDeliveryData;
+    }
+
+    public function translateDocDeliveryData($data) {
+        return new DocDeliveryData($data, true);
     }
 
 }
