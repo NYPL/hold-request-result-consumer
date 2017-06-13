@@ -3,6 +3,10 @@ namespace NYPL\Services\Model\DataModel\StreamData;
 
 use NYPL\Services\Model\DataModel\StreamData;
 
+/**
+ * Class ProcessedHoldRequest
+ * @package NYPL\Services\Model\DataModel\StreamData
+ */
 class ProcessedHoldRequest extends StreamData
 {
     public $requestId = '';

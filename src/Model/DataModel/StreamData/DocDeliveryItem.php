@@ -3,6 +3,10 @@ namespace NYPL\Services\Model\DataModel\StreamData;
 
 use NYPL\Services\Model\DataModel\StreamData;
 
+/**
+ * Class DocDeliveryData
+ * @package NYPL\Services\Model\DataModel\StreamData
+ */
 class DocDeliveryData extends StreamData
 {
     public $emailAddress = '';
