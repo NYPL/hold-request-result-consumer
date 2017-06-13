@@ -275,7 +275,7 @@ class ProcessedHoldRequest extends StreamData
     /**
      * @return DocDeliveryData
      */
-    public function getDocDeliveryItem(): DocDeliveryItem
+    public function getDocDeliveryData(): DocDeliveryData
     {
         return $this->docDeliveryData;
     }
