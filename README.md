@@ -1,4 +1,4 @@
-# NYPL Mail Listener
+# NYPL Hold Request Result Consumer
 
 This package is intended to be used as a Lambda-based Node.js/PHP Listener to listen to a Kinesis Stream. 
 

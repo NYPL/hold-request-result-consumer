@@ -1,5 +1,5 @@
 {
-  "name": "Hold Request Result",
+  "name": "HoldRequestResultConsumer",
   "version": "0.1.0",
   "description": "Processing Hold Request Results for ReCap",
   "main": "index.js",

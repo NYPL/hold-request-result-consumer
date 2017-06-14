@@ -146,6 +146,10 @@ class Listener
 
                     APILogger::addInfo('HoldRequestResult', $holdRequestResult);
 
+                    if ($holdRequestResult->isSuccess() === false) {
+                        APILogger::addInfo('E-mail time', $holdRequestResult->getHoldRequest()->getDocDeliveryData()->getEmailAddress());
+                    }
+
                     ++$addCount;
                 } catch (\Exception $exception) {
                     APILogger::addError($exception->getMessage(), (array) $exception);
