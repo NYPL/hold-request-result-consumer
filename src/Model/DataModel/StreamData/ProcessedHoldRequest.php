@@ -23,14 +23,39 @@ class ProcessedHoldRequest extends StreamData
      */
     public $trackingId = '';
 
+    /**
+     * Id of patron who put in a hold request.
+     *
+     * @var string
+     */
     public $patronId = '';
 
+    /**
+     * Source according to NYPL.
+     *
+     * @var string
+     */
     public $nyplSource = '';
 
+    /**
+     * Type of request for a processed hold request.
+     *
+     * @var string
+     */
     public $requestType = '';
 
+    /**
+     * Date processed hold request created.
+     *
+     * @var string
+     */
     public $createdDate = '';
 
+    /**
+     * Date processed hold request updated.
+     *
+     * @var string
+     */
     public $updateDate = '';
 
     /**
@@ -43,17 +68,44 @@ class ProcessedHoldRequest extends StreamData
      */
     public $processed = false;
 
+    /**
+     * Type of record requested in a hold request.
+     *
+     * @var string
+     */
     public $recordType = '';
 
+    /**
+     * Record number requested in a hold request.
+     *
+     * @var string
+     */
     public $recordNumber = '';
 
+    /**
+     * Pickup location assigned in a hold request.
+     *
+     * @var string
+     */
     public $pickupLocation = '';
 
+    /**
+     * The Need By date of a hold request.
+     *
+     * @var string
+     */
     public $neededBy = '';
 
+    /**
+     * Number of copies specified for Electronic Document Delivery (EDD).
+     *
+     * @var string
+     */
     public $numberOfCopies = '';
 
     /**
+     * Document delivery data represented in an Electronic Document Delivery (EDD).
+     *
      * @var DocDeliveryData
      */
     public $docDeliveryData;
@@ -298,6 +350,12 @@ class ProcessedHoldRequest extends StreamData
         $this->docDeliveryData = $docDeliveryData;
     }
 
+    /**
+     * Includes DocDeliveryData object in a processed hold request.
+     *
+     * @param $data
+     * @return DocDeliveryData
+     */
     public function translateDocDeliveryData($data) {
         return new DocDeliveryData($data, true);
     }

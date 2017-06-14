@@ -9,16 +9,46 @@ use NYPL\Services\Model\DataModel\StreamData;
  */
 class DocDeliveryData extends StreamData
 {
+    /**
+     * Patron's e-mail address for delivery.
+     *
+     * @var string
+     */
     public $emailAddress = '';
 
+    /**
+     * Title of a chapter in the document delivery
+     *
+     * @var string
+     */
     public $chapterTitle = '';
 
+    /**
+     * Issue number of requested document delivery.
+     *
+     * @var string
+     */
     public $issue = '';
 
+    /**
+     * Volume number of requested document delivery.
+     *
+     * @var string
+     */
     public $volume = '';
 
+    /**
+     * Starting page number of requested document delivery.
+     *
+     * @var string
+     */
     public $startPage = '';
 
+    /**
+     * Ending page number of requested document delivery.
+     *
+     * @var string
+     */
     public $endPage = '';
 
     /**
