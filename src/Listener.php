@@ -143,7 +143,8 @@ class Listener
                     APILogger::addInfo('data', $data);
 
                     $holdRequestResult = new HoldRequestResult($data);
-                    APILogger::addInfo('holdRequestResult', $holdRequestResult);
+
+                    APILogger::addInfo('HoldRequestResult', $holdRequestResult);
 
                     ++$addCount;
                 } catch (\Exception $exception) {
