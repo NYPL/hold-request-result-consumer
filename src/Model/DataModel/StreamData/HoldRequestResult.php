@@ -4,31 +4,31 @@ namespace NYPL\Services\Model\DataModel\StreamData;
 use NYPL\Services\Model\DataModel\StreamData;
 
 /**
- * Class ProcessedHoldRequest
+ * Class HoldRequestResult
  * @package NYPL\Services\Model\DataModel\StreamData
  */
-class ProcessedHoldRequest extends StreamData
+class HoldRequestResult extends StreamData
 {
     /**
      * Id associated with a processed hold request.
      *
-     * @var string
+     * @var int
      */
-    public $requestId = '';
+    public $id;
 
     /**
      * Tracking Id associated with a processed hold request.
      *
      * @var string
      */
-    public $trackingId = '';
+    public $jobId = '';
 
     /**
      * Id of patron who put in a hold request.
      *
      * @var string
      */
-    public $patronId = '';
+    public $patron = '';
 
     /**
      * Source according to NYPL.
@@ -56,7 +56,7 @@ class ProcessedHoldRequest extends StreamData
      *
      * @var string
      */
-    public $updateDate = '';
+    public $updatedDate = '';
 
     /**
      * @var bool
@@ -80,7 +80,7 @@ class ProcessedHoldRequest extends StreamData
      *
      * @var string
      */
-    public $recordNumber = '';
+    public $record = '';
 
     /**
      * Pickup location assigned in a hold request.
@@ -99,9 +99,16 @@ class ProcessedHoldRequest extends StreamData
     /**
      * Number of copies specified for Electronic Document Delivery (EDD).
      *
+     * @var int
+     */
+    public $numberOfCopies;
+
+    /**
+     * Delivery location of hold request.
+     *
      * @var string
      */
-    public $numberOfCopies = '';
+    public $deliveryLocation = '';
 
     /**
      * Document delivery data represented in an Electronic Document Delivery (EDD).
@@ -111,51 +118,51 @@ class ProcessedHoldRequest extends StreamData
     public $docDeliveryData;
 
     /**
-     * @return string
+     * @return int
      */
-    public function getRequestId(): string
+    public function getId(): int
     {
-        return $this->requestId;
+        return $this->id;
     }
 
     /**
-     * @param string $requestId
+     * @param int $id
      */
-    public function setRequestId(string $requestId)
+    public function setId(int $id)
     {
-        $this->requestId = $requestId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTrackingId(): string
-    {
-        return $this->trackingId;
-    }
-
-    /**
-     * @param string $trackingId
-     */
-    public function setTrackingId(string $trackingId)
-    {
-        $this->trackingId = $trackingId;
+        $this->id = $id;
     }
 
     /**
      * @return string
      */
-    public function getPatronId(): string
+    public function getJobId(): string
     {
-        return $this->patronId;
+        return $this->jobId;
     }
 
     /**
-     * @param string $patronId
+     * @param string $jobId
      */
-    public function setPatronId(string $patronId)
+    public function setJobId(string $jobId)
     {
-        $this->patronId = $patronId;
+        $this->jobId = $jobId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPatron(): string
+    {
+        return $this->patron;
+    }
+
+    /**
+     * @param string $patron
+     */
+    public function setPatron(string $patron)
+    {
+        $this->patron = $patron;
     }
 
     /**
@@ -209,17 +216,17 @@ class ProcessedHoldRequest extends StreamData
     /**
      * @return string
      */
-    public function getUpdateDate(): string
+    public function getUpdatedDate(): string
     {
-        return $this->updateDate;
+        return $this->updatedDate;
     }
 
     /**
-     * @param string $updateDate
+     * @param string $updatedDate
      */
-    public function setUpdateDate(string $updateDate)
+    public function setUpdatedDate(string $updatedDate)
     {
-        $this->updateDate = $updateDate;
+        $this->updatedDate = $updatedDate;
     }
 
     /**
@@ -273,17 +280,17 @@ class ProcessedHoldRequest extends StreamData
     /**
      * @return string
      */
-    public function getRecordNumber(): string
+    public function getRecord(): string
     {
-        return $this->recordNumber;
+        return $this->record;
     }
 
     /**
-     * @param string $recordNumber
+     * @param string $record
      */
-    public function setRecordNumber(string $recordNumber)
+    public function setRecord(string $record)
     {
-        $this->recordNumber = $recordNumber;
+        $this->record = $record;
     }
 
     /**
@@ -319,19 +326,35 @@ class ProcessedHoldRequest extends StreamData
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getNumberOfCopies(): string
+    public function getNumberOfCopies(): int
     {
         return $this->numberOfCopies;
     }
 
     /**
-     * @param string $numberOfCopies
+     * @param int $numberOfCopies
      */
-    public function setNumberOfCopies(string $numberOfCopies)
+    public function setNumberOfCopies(int $numberOfCopies)
     {
         $this->numberOfCopies = $numberOfCopies;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeliveryLocation(): string
+    {
+        return $this->deliveryLocation;
+    }
+
+    /**
+     * @param string $deliveryLocation
+     */
+    public function setDeliveryLocation(string $deliveryLocation)
+    {
+        $this->deliveryLocation = $deliveryLocation;
     }
 
     /**
@@ -349,6 +372,8 @@ class ProcessedHoldRequest extends StreamData
     {
         $this->docDeliveryData = $docDeliveryData;
     }
+
+
 
     /**
      * Includes DocDeliveryData object in a processed hold request.

@@ -1,7 +1,7 @@
 <?php
 namespace NYPL\Services;
 
-use NYPL\Services\Model\DataModel\StreamData\ProcessedHoldRequest;
+use NYPL\Services\Model\DataModel\StreamData\HoldRequestResult;
 use NYPL\Starter\APILogger;
 
 class Listener
@@ -142,8 +142,8 @@ class Listener
 
                     APILogger::addInfo('data', $data);
 
-                    $processedHoldRequest = new ProcessedHoldRequest($data);
-                    APILogger::addInfo('processedHoldRequest', $processedHoldRequest);
+                    $holdRequestResult = new HoldRequestResult($data);
+                    APILogger::addInfo('HoldRequestResult', $holdRequestResult);
 
                     ++$addCount;
                 } catch (\Exception $exception) {
