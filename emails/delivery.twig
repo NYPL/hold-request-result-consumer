@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to The New York Public Library!</title>
+</head>
+<style media="screen">
+    html {
+        font-family: sans-serif; /* 1 */
+        line-height: 1.15; /* 2 */
+        -ms-text-size-adjust: 100%; /* 3 */
+        -webkit-text-size-adjust: 100%; /* 3 */
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .welcome {
+        background-color: #BB1D12;
+        color: #FFF;
+        font-family: Georgia, "Hoefler Text", Utopia, "Liberation Serif", "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;
+        padding: 1rem 0;
+    }
+
+    .welcome h1 {
+        color: #FFF;
+        font-weight: 100;
+        margin-left: 7rem;
+    }
+
+    p {
+        margin-left: 7rem;
+        width: 50%;
+    }
+
+    div.footer {
+        background-color: #54514a;
+        color: #ffffff;
+        font-size: .85rem;
+        min-height: 4.5rem;
+        padding: 2rem 0;
+        position: relative;
+    }
+
+</style>
+
+<body>
+{# @var data \NYPL\Services\Model\DataModel\StreamData\HoldRequestResult #}
+<div class="edd">
+    <h1 class="edd">Document Delivery System</h1>
+</div>
+
+<p>{{ data.message }}</p>
+<p>{{ data.holdRequest.docDeliveryData.chapterTitle }}</p>
+</body>
+</html>
