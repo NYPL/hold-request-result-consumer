@@ -1,6 +1,6 @@
 <?php
 
-use use NYPL\Services\Model\DataModel\StreamData\HoldRequestResult;
+use NYPL\Services\Model\DataModel\StreamData\HoldRequestResult;
 use PHPUnit\Framework\TestCase;
 
 class HoldRequestResultTest extends TestCase
@@ -17,6 +17,9 @@ class HoldRequestResultTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     * @covers NYPL\Services\Model\DataModel\StreamData\HoldRequestResult
+     */
     public function testMessage()
     {
         $this->assertEquals('fakeHoldRequestResult', $this->fakeHoldRequestResult->message);
