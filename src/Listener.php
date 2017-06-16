@@ -1,6 +1,8 @@
 <?php
 namespace NYPL\Services;
 
+use NYPL\Services\Model\DataModel\StreamData\DocDeliveryData;
+use NYPL\Services\Model\DataModel\StreamData\HoldRequest;
 use NYPL\Services\Model\DataModel\StreamData\HoldRequestResult;
 use NYPL\Starter\APILogger;
 
@@ -145,6 +147,15 @@ class Listener
                     $holdRequestResult = new HoldRequestResult($data);
 
                     APILogger::addInfo('HoldRequestResult', $holdRequestResult);
+
+                    if ($holdRequestResult->isSuccess() === false) {
+                        // TODO: Fetch e-mail from patron record
+                        APILogger::addInfo('E-mail time', $holdRequestResult->getHoldRequest()->getDocDeliveryData()->getEmailAddress());
+
+                        // TODO: Send e-mail to patron notifying failure
+                        $mailClient = new MailClient($streamName, $holdRequestResult);
+                        $mailClient->sendEmail();
+                    }
 
                     ++$addCount;
                 } catch (\Exception $exception) {

@@ -10,128 +10,24 @@ use NYPL\Services\Model\DataModel\StreamData;
 class HoldRequestResult extends StreamData
 {
     /**
-     * Id associated with a processed hold request.
-     *
-     * @var int
-     */
-    public $id;
-
-    /**
-     * Tracking Id associated with a processed hold request.
-     *
      * @var string
      */
     public $jobId = '';
 
     /**
-     * Id of patron who put in a hold request.
-     *
-     * @var string
-     */
-    public $patron = '';
-
-    /**
-     * Source according to NYPL.
-     *
-     * @var string
-     */
-    public $nyplSource = '';
-
-    /**
-     * Type of request for a processed hold request.
-     *
-     * @var string
-     */
-    public $requestType = '';
-
-    /**
-     * Date processed hold request created.
-     *
-     * @var string
-     */
-    public $createdDate = '';
-
-    /**
-     * Date processed hold request updated.
-     *
-     * @var string
-     */
-    public $updatedDate = '';
-
-    /**
      * @var bool
      */
-    public $success = false;
+    public $success;
 
     /**
-     * @var bool
-     */
-    public $processed = false;
-
-    /**
-     * Type of record requested in a hold request.
-     *
      * @var string
      */
-    public $recordType = '';
+    public $message = '';
 
     /**
-     * Record number requested in a hold request.
-     *
-     * @var string
+     * @var HoldRequest
      */
-    public $record = '';
-
-    /**
-     * Pickup location assigned in a hold request.
-     *
-     * @var string
-     */
-    public $pickupLocation = '';
-
-    /**
-     * The Need By date of a hold request.
-     *
-     * @var string
-     */
-    public $neededBy = '';
-
-    /**
-     * Number of copies specified for Electronic Document Delivery (EDD).
-     *
-     * @var int
-     */
-    public $numberOfCopies;
-
-    /**
-     * Delivery location of hold request.
-     *
-     * @var string
-     */
-    public $deliveryLocation = '';
-
-    /**
-     * Document delivery data represented in an Electronic Document Delivery (EDD).
-     *
-     * @var DocDeliveryData
-     */
-    public $docDeliveryData;
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id)
-    {
-        $this->id = $id;
-    }
+    public $holdRequest;
 
     /**
      * @return string
@@ -147,86 +43,6 @@ class HoldRequestResult extends StreamData
     public function setJobId(string $jobId)
     {
         $this->jobId = $jobId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPatron(): string
-    {
-        return $this->patron;
-    }
-
-    /**
-     * @param string $patron
-     */
-    public function setPatron(string $patron)
-    {
-        $this->patron = $patron;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNyplSource(): string
-    {
-        return $this->nyplSource;
-    }
-
-    /**
-     * @param string $nyplSource
-     */
-    public function setNyplSource(string $nyplSource)
-    {
-        $this->nyplSource = $nyplSource;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRequestType(): string
-    {
-        return $this->requestType;
-    }
-
-    /**
-     * @param string $requestType
-     */
-    public function setRequestType(string $requestType)
-    {
-        $this->requestType = $requestType;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreatedDate(): string
-    {
-        return $this->createdDate;
-    }
-
-    /**
-     * @param string $createdDate
-     */
-    public function setCreatedDate(string $createdDate)
-    {
-        $this->createdDate = $createdDate;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUpdatedDate(): string
-    {
-        return $this->updatedDate;
-    }
-
-    /**
-     * @param string $updatedDate
-     */
-    public function setUpdatedDate(string $updatedDate)
-    {
-        $this->updatedDate = $updatedDate;
     }
 
     /**
@@ -246,143 +62,42 @@ class HoldRequestResult extends StreamData
     }
 
     /**
-     * @return bool
-     */
-    public function isProcessed(): bool
-    {
-        return $this->processed;
-    }
-
-    /**
-     * @param bool $processed
-     */
-    public function setProcessed(bool $processed)
-    {
-        $this->processed = $processed;
-    }
-
-    /**
      * @return string
      */
-    public function getRecordType(): string
+    public function getMessage(): string
     {
-        return $this->recordType;
+        return $this->message;
     }
 
     /**
-     * @param string $recordType
+     * @param string $message
      */
-    public function setRecordType(string $recordType)
+    public function setMessage(string $message)
     {
-        $this->recordType = $recordType;
+        $this->message = $message;
     }
 
     /**
-     * @return string
+     * @return HoldRequest
      */
-    public function getRecord(): string
+    public function getHoldRequest(): HoldRequest
     {
-        return $this->record;
+        return $this->holdRequest;
     }
 
     /**
-     * @param string $record
+     * @param HoldRequest $holdRequest
      */
-    public function setRecord(string $record)
+    public function setHoldRequest(HoldRequest $holdRequest)
     {
-        $this->record = $record;
+        $this->holdRequest = $holdRequest;
     }
 
     /**
-     * @return string
-     */
-    public function getPickupLocation(): string
-    {
-        return $this->pickupLocation;
-    }
-
-    /**
-     * @param string $pickupLocation
-     */
-    public function setPickupLocation(string $pickupLocation)
-    {
-        $this->pickupLocation = $pickupLocation;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNeededBy(): string
-    {
-        return $this->neededBy;
-    }
-
-    /**
-     * @param string $neededBy
-     */
-    public function setNeededBy(string $neededBy)
-    {
-        $this->neededBy = $neededBy;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumberOfCopies(): int
-    {
-        return $this->numberOfCopies;
-    }
-
-    /**
-     * @param int $numberOfCopies
-     */
-    public function setNumberOfCopies(int $numberOfCopies)
-    {
-        $this->numberOfCopies = $numberOfCopies;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDeliveryLocation(): string
-    {
-        return $this->deliveryLocation;
-    }
-
-    /**
-     * @param string $deliveryLocation
-     */
-    public function setDeliveryLocation(string $deliveryLocation)
-    {
-        $this->deliveryLocation = $deliveryLocation;
-    }
-
-    /**
-     * @return DocDeliveryData
-     */
-    public function getDocDeliveryData(): DocDeliveryData
-    {
-        return $this->docDeliveryData;
-    }
-
-    /**
-     * @param DocDeliveryData $docDeliveryData
-     */
-    public function setDocDeliveryData(DocDeliveryData $docDeliveryData)
-    {
-        $this->docDeliveryData = $docDeliveryData;
-    }
-
-
-
-    /**
-     * Includes DocDeliveryData object in a processed hold request.
-     *
      * @param $data
-     * @return DocDeliveryData
+     * @return HoldRequest
      */
-    public function translateDocDeliveryData($data) {
-        return new DocDeliveryData($data, true);
+    public function translateHoldRequest($data) {
+        return new HoldRequest($data, true);
     }
-
 }

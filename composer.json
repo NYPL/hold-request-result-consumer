@@ -1,6 +1,6 @@
 {
-  "name": "nypl-stream-test-service",
-  "description": "NYPL Stream Test Service",
+  "name": "nypl-hold-request-result-consumer",
+  "description": "Hold Request Result Consumer",
   "require": {
     "nypl/microservice-starter": "^1.0.0",
     "sendgrid/sendgrid": "5.5.0",
