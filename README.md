@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/NYPL/hold-request-result-consumer/badge.svg?branch=master)](https://coveralls.io/github/NYPL/hold-request-result-consumer?branch=master)
+
 # NYPL Hold Request Result Consumer
 
 This package is intended to be used as a Lambda-based Node.js/PHP Listener to listen to a Kinesis Stream. 
