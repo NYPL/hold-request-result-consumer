@@ -29,5 +29,4 @@ class PatronClient extends APIClient
 
         return new Patron($response['data']);
     }
-
 }

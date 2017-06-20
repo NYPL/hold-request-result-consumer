@@ -382,7 +382,8 @@ class HoldRequest extends StreamData
      * @param $data
      * @return DocDeliveryData
      */
-    public function translateDocDeliveryData($data) {
+    public function translateDocDeliveryData($data)
+    {
         return new DocDeliveryData($data, true);
     }
 }

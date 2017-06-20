@@ -6,7 +6,6 @@ use League\OAuth2\Client\Token\AccessToken;
 use NYPL\HoldRequestResultConsumer\Config\Config;
 use NYPL\Starter\APILogger;
 
-
 class OAuthClient
 {
     /**
@@ -51,5 +50,4 @@ class OAuthClient
 
         return $provider->getAccessToken('client_credentials');
     }
-
 }

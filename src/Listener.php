@@ -157,7 +157,6 @@ class Listener
                         // TODO: Send e-mail to patron notifying failure
 //                        $mailClient = new MailClient($streamName, $holdRequestResult);
 //                        $mailClient->sendEmail();
-
                     }
 
                     ++$addCount;

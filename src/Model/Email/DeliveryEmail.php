@@ -36,7 +36,5 @@ class DeliveryEmail extends Email
         $holdRequestResult = $this->getStreamData();
 
         return $holdRequestResult->getHoldRequest()->getDocDeliveryData()->getEmailAddress();
-
     }
-
 }
