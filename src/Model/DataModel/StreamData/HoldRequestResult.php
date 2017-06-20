@@ -97,7 +97,8 @@ class HoldRequestResult extends StreamData
      * @param $data
      * @return HoldRequest
      */
-    public function translateHoldRequest($data) {
+    public function translateHoldRequest($data)
+    {
         return new HoldRequest($data, true);
     }
 }
