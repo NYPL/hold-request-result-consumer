@@ -1,9 +1,10 @@
 <?php
-namespace NYPL\OAuthClient;
+namespace NYPL\Services\OAuthClient;
 
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
-use NYPL\HoldRequestResultConsumer\Config;
+use NYPL\Services\Config\Config;
+use NYPL\Starter\APILogger;
 
 
 class OAuthClient
@@ -23,6 +24,9 @@ class OAuthClient
 
             self::setAccessToken($accessToken->getToken());
         }
+
+        APILogger::addInfo('Access Token', array(self::$accessToken));
+
         return self::$accessToken;
     }
 
@@ -40,7 +44,7 @@ class OAuthClient
             'clientId' => Config::OAUTH_CLIENT_ID,
             'clientSecret' => Config::OAUTH_CLIENT_SECRET,
             'redirectUri' => '',
-            'urlAuthorize' => '',
+            'urlAuthorize' => Config::OAUTH_AUTH_URI,
             'urlAccessToken' => Config::OAUTH_TOKEN_URI,
             'urlResourceOwnerDetails' => ''
         ]);
