@@ -1,8 +1,8 @@
 <?php
-namespace NYPL\Services\Model\DataModel;
+namespace NYPL\HoldRequestResultConsumer\Model\DataModel;
 
 
-use NYPL\Services\Model\DataModel;
+use NYPL\HoldRequestResultConsumer\Model\DataModel;
 
 class Patron extends DataModel
 {

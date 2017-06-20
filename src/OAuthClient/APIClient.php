@@ -1,8 +1,8 @@
 <?php
-namespace NYPL\Services\OAuthClient;
+namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use GuzzleHttp\Client;
-use NYPL\Services\Config\Config;
+use NYPL\HoldRequestResultConsumer\Config\Config;
 
 abstract class APIClient
 {

@@ -1,5 +1,5 @@
 <?php
-namespace NYPL\Services;
+namespace NYPL\HoldRequestResultConsumer;
 
 use GuzzleHttp\Client;
 use NYPL\Starter\APILogger;

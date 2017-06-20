@@ -1,9 +1,9 @@
 <?php
 
-namespace NYPL\Services\Model\Email;
+namespace NYPL\HoldRequestResultConsumer\Model\Email;
 
-use NYPL\Services\Model\DataModel\StreamData\HoldRequestResult;
-use NYPL\Services\Model\Email;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
+use NYPL\HoldRequestResultConsumer\Model\Email;
 
 class DeliveryEmail extends Email
 {

@@ -1,5 +1,5 @@
 <?php
-namespace NYPL\Services\Model;
+namespace NYPL\HoldRequestResultConsumer\Model;
 
 use NYPL\Starter\Model;
 use NYPL\Starter\Model\ModelTrait\TranslateTrait;

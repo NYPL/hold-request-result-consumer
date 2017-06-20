@@ -1,9 +1,9 @@
 <?php
-namespace NYPL\Services\OAuthClient;
+namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
-use NYPL\Services\Config\Config;
+use NYPL\HoldRequestResultConsumer\Config\Config;
 use NYPL\Starter\APILogger;
 
 

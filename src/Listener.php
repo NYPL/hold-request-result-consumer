@@ -1,8 +1,8 @@
 <?php
-namespace NYPL\Services;
+namespace NYPL\HoldRequestResultConsumer;
 
-use NYPL\Services\OAuthClient\PatronClient;
-use NYPL\Services\Model\DataModel\StreamData\HoldRequestResult;
+use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
 use NYPL\Starter\APILogger;
 
 class Listener

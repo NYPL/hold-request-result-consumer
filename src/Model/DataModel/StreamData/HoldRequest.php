@@ -1,8 +1,8 @@
 <?php
 
-namespace NYPL\Services\Model\DataModel\StreamData;
+namespace NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 
-use NYPL\Services\Model\DataModel\StreamData;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 
 /**
  * Class HoldRequest

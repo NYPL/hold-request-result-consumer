@@ -3,3 +3,12 @@ dist
 *.swp
 *.env
 vendor
+.idea
+build
+emails/patron.twig
+events
+hold-request-result-schema.json
+index.js
+sample_letter.txt
+src/Config/Config.php
+src/Model/Email/PatronEmail.php

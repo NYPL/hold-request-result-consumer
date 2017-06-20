@@ -1,5 +1,5 @@
 <?php
-namespace NYPL\Services\Config;
+namespace NYPL\HoldRequestResultConsumer\Config;
 
 class Config
 {
