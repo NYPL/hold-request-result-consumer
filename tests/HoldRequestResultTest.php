@@ -9,7 +9,8 @@ class HoldRequestResultTest extends TestCase
 
     public function setUp() {
         $this->fakeHoldRequestResult = new class extends HoldRequestResult {
-            public function __construct($data = ['message' => 'fakeHoldRequestResult'])
+            public function __construct($data = ['jobId' => 'Test jobId',
+                'message' => 'fakeHoldRequestResult'])
             {
                 parent::__construct($data);
             }
@@ -20,8 +21,16 @@ class HoldRequestResultTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult
      */
+    public function testJobId()
+    {
+        $this->assertEquals('Test jobId', $this->fakeHoldRequestResult->getJobId());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult
+     */
     public function testMessage()
     {
-        $this->assertEquals('fakeHoldRequestResult', $this->fakeHoldRequestResult->message);
+        $this->assertEquals('fakeHoldRequestResult', $this->fakeHoldRequestResult->getMessage());
     }
 }
