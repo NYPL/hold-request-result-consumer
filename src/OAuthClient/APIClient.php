@@ -2,7 +2,7 @@
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use GuzzleHttp\Client;
-use NYPL\HoldRequestResultConsumer\Config\Config;
+use NYPL\Starter\Config;
 
 abstract class APIClient
 {
@@ -48,7 +48,7 @@ abstract class APIClient
     protected static function initializeClient()
     {
         self::setClient(new Client([
-            'base_uri' => Config::API_BASE_URL,
+            'base_uri' => Config::get('API_BASE_URL'),
             'timeout'  => self::CLIENT_TIMEOUT,
         ]));
     }

@@ -3,7 +3,7 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use NYPL\Starter\APILogger;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
-use NYPL\HoldRequestResultConsumer\Config\Config;
+use NYPL\Starter\Config;
 
 class PatronClient extends APIClient
 {
@@ -14,7 +14,7 @@ class PatronClient extends APIClient
      */
     public static function getPatronById($patronId = '')
     {
-        $url = Config::API_BASE_URL . '/patrons/' . $patronId;
+        $url = Config::get('API_BASE_URL') . '/patrons/' . $patronId;
 
         APILogger::addInfo('Retrieving patron by id', $url);
 

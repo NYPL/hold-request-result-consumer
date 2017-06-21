@@ -154,6 +154,8 @@ class Listener
                         $patron = PatronClient::getPatronById($holdRequestResult->getHoldRequest()->getPatron());
 
                         APILogger::addInfo('Patron', $patron->getId());
+                        APILogger::addInfo('E-mail', $patron->getEmails());
+                        APILogger::addInfo('BarCodes', $patron->getBarCodes());
                         // TODO: Send e-mail to patron notifying failure
 //                        $mailClient = new MailClient($streamName, $holdRequestResult);
 //                        $mailClient->sendEmail();
