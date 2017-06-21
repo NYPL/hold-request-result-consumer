@@ -2,7 +2,7 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use NYPL\Starter\Config;
-use NYPL\Services\Listener;
+use NYPL\HoldRequestResultConsumer\Listener;
 use NYPL\Starter\APILogger;
 
 Config::initialize(__DIR__);

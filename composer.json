@@ -2,6 +2,8 @@
   "name": "nypl-hold-request-result-consumer",
   "description": "Hold Request Result Consumer",
   "require": {
+    "guzzlehttp/guzzle": "6.2.3",
+    "league/oauth2-client": "1.4.2",
     "nypl/microservice-starter": "^1.0.0",
     "sendgrid/sendgrid": "5.5.0",
     "twig/twig": "2.3.2"
@@ -13,7 +15,7 @@
   },
   "autoload": {
     "psr-4": {
-      "NYPL\\Services\\": [ "src/" ]
+      "NYPL\\HoldRequestResultConsumer\\": [ "src/" ]
     }
   },
   "scripts": {

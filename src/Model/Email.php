@@ -1,7 +1,7 @@
 <?php
-namespace NYPL\Services\Model;
+namespace NYPL\HoldRequestResultConsumer\Model;
 
-use NYPL\Services\Model\DataModel\StreamData;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 
 abstract class Email
 {

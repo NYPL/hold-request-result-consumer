@@ -1,9 +1,8 @@
 <?php
-namespace NYPL\Services;
+namespace NYPL\HoldRequestResultConsumer;
 
-use NYPL\Services\Model\DataModel\StreamData\DocDeliveryData;
-use NYPL\Services\Model\DataModel\StreamData\HoldRequest;
-use NYPL\Services\Model\DataModel\StreamData\HoldRequestResult;
+use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
 use NYPL\Starter\APILogger;
 
 class Listener
@@ -152,9 +151,14 @@ class Listener
                         // TODO: Fetch e-mail from patron record
                         APILogger::addInfo('E-mail time', $holdRequestResult->getHoldRequest()->getDocDeliveryData()->getEmailAddress());
 
+                        $patron = PatronClient::getPatronById($holdRequestResult->getHoldRequest()->getPatron());
+
+                        APILogger::addInfo('Patron', $patron->getId());
+                        APILogger::addInfo('E-mail', $patron->getEmails());
+                        APILogger::addInfo('BarCodes', $patron->getBarCodes());
                         // TODO: Send e-mail to patron notifying failure
-                        $mailClient = new MailClient($streamName, $holdRequestResult);
-                        $mailClient->sendEmail();
+//                        $mailClient = new MailClient($streamName, $holdRequestResult);
+//                        $mailClient->sendEmail();
                     }
 
                     ++$addCount;

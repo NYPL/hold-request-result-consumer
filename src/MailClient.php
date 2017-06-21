@@ -1,11 +1,11 @@
 <?php
-namespace NYPL\Services;
+namespace NYPL\HoldRequestResultConsumer;
 
-use NYPL\Services\Model\DataModel\StreamData;
-use NYPL\Services\Model\DataModel\StreamData\Patron;
-use NYPL\Services\Model\DataModel\StreamData\DocDeliveryData;
-use NYPL\Services\Model\Email\DeliveryEmail;
-use NYPL\Services\Model\Email\PatronEmail;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\Patron;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData;
+use NYPL\HoldRequestResultConsumer\Model\Email\DeliveryEmail;
+use NYPL\HoldRequestResultConsumer\Model\Email\PatronEmail;
 use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;

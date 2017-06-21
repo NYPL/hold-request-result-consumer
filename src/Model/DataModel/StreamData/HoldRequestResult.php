@@ -1,7 +1,7 @@
 <?php
-namespace NYPL\Services\Model\DataModel\StreamData;
+namespace NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 
-use NYPL\Services\Model\DataModel\StreamData;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 
 /**
  * Class HoldRequestResult
@@ -97,7 +97,8 @@ class HoldRequestResult extends StreamData
      * @param $data
      * @return HoldRequest
      */
-    public function translateHoldRequest($data) {
+    public function translateHoldRequest($data)
+    {
         return new HoldRequest($data, true);
     }
 }

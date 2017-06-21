@@ -1,5 +1,5 @@
 <?php
-namespace NYPL\Services;
+namespace NYPL\HoldRequestResultConsumer;
 
 use NYPL\Starter\APILogger;
 use NYPL\Starter\AvroLoader;
