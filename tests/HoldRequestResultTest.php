@@ -1,6 +1,7 @@
 <?php
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequest;
 use PHPUnit\Framework\TestCase;
 
 class HoldRequestResultTest extends TestCase
@@ -10,7 +11,9 @@ class HoldRequestResultTest extends TestCase
     public function setUp()
     {
         $this->fakeHoldRequestResult = new class extends HoldRequestResult {
-            public function __construct($data = ['jobId' => 'Test jobId',
+            public function __construct($data = [
+                'jobId' => 'Test jobId',
+                'success' => false,
                 'message' => 'fakeHoldRequestResult'])
             {
                 parent::__construct($data);
@@ -25,5 +28,13 @@ class HoldRequestResultTest extends TestCase
     public function testJobId()
     {
         $this->assertEquals('Test jobId', $this->fakeHoldRequestResult->getJobId());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult
+     */
+    public function testSuccess()
+    {
+        $this->assertFalse($this->fakeHoldRequestResult->isSuccess());
     }
 }
