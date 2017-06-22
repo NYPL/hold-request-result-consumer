@@ -1,8 +1,8 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
-use NYPL\Starter\APILogger;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
+use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 
 class PatronClient extends APIClient

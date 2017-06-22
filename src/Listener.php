@@ -2,7 +2,9 @@
 namespace NYPL\HoldRequestResultConsumer;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
+use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
+use NYPL\HoldRequestResultConsumer\OAuthClient\ItemClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
 use NYPL\Starter\APILogger;
@@ -158,6 +160,18 @@ class Listener
                         APILogger::addInfo('Patron', $patron);
                         APILogger::addInfo('E-mail', $patron->getEmails());
                         APILogger::addInfo('BarCodes', $patron->getBarCodes());
+
+                        if($holdRequest->getRecordType() === 'i')
+                        {
+                            $item = ItemClient::getItemByIdAndSource($holdRequest->getRecord(), $holdRequest->getNyplSource());
+
+                            APILogger::addInfo('Item', $item);
+                            APILogger::addInfo('BibIds', $item->getBibIds());
+                            
+                            $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
+                            
+                            APILogger::addInfo('Bib', $bib);
+                        }
 
                     }
 

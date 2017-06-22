@@ -1,10 +1,9 @@
 <?php
-
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
-use NYPL\Starter\Config;
 use NYPL\Starter\APILogger;
+use NYPL\Starter\Config;
 
 class HoldRequestClient extends APIClient
 {
