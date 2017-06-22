@@ -5,10 +5,19 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel;
 
 class Patron extends DataModel
 {
+    /**
+     * @var string
+     */
     protected $id = '';
 
+    /**
+     * @var array
+     */
     protected $barCodes = [];
 
+    /**
+     * @var array
+     */
     protected $emails = [];
 
     /**

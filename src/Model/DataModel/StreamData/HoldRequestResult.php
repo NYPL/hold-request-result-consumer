@@ -20,14 +20,14 @@ class HoldRequestResult extends StreamData
     public $success;
 
     /**
-     * @var string
+     * @var int
      */
-    public $message = '';
+    public $holdRequestId;
 
     /**
-     * @var HoldRequest
+     * @var Error
      */
-    public $holdRequest;
+    public $error;
 
     /**
      * @return string
@@ -62,43 +62,44 @@ class HoldRequestResult extends StreamData
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getMessage(): string
+    public function getHoldRequestId(): int
     {
-        return $this->message;
+        return $this->holdRequestId;
     }
 
     /**
-     * @param string $message
+     * @param int $holdRequestId
      */
-    public function setMessage(string $message)
+    public function setHoldRequestId(int $holdRequestId)
     {
-        $this->message = $message;
+        $this->holdRequestId = $holdRequestId;
+    }
+
+
+    /**
+     * @return Error
+     */
+    public function getError(): Error
+    {
+        return $this->error;
     }
 
     /**
-     * @return HoldRequest
+     * @param Error $error
      */
-    public function getHoldRequest(): HoldRequest
+    public function setError(Error $error)
     {
-        return $this->holdRequest;
-    }
-
-    /**
-     * @param HoldRequest $holdRequest
-     */
-    public function setHoldRequest(HoldRequest $holdRequest)
-    {
-        $this->holdRequest = $holdRequest;
+        $this->error = $error;
     }
 
     /**
      * @param $data
-     * @return HoldRequest
+     * @return Error
      */
-    public function translateHoldRequest($data)
+    public function translateError($data)
     {
-        return new HoldRequest($data, true);
+        return new Error($data, true);
     }
 }
