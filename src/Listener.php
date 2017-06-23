@@ -1,12 +1,16 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer;
 
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
 use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\ItemClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
-use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
 use NYPL\Starter\APILogger;
 
 class Listener
@@ -123,6 +127,26 @@ class Listener
         return $schemaName;
     }
 
+    /**
+     * @param   Patron $patron
+     * @param   Bib $bib
+     * @param   Item $item
+     * @param   HoldRequest $holdRequest
+     * @return  HoldEmailData
+     */
+    protected function createHoldEmailData($patron, $bib, $item, $holdRequest)
+    {
+        $holdEmailData = new HoldEmailData();
+        $holdEmailData->setAuthor($bib->getAuthor());
+        $holdEmailData->setBarcode($item->getBarcode());
+        $holdEmailData->setPatronName($patron->getNames()[0]);
+        $holdEmailData->setTitle($bib->getTitle());
+        $holdEmailData->setDeliveryLocation($holdRequest->getDeliveryLocation());
+        $holdEmailData->setPickupLocation($holdRequest->getPickupLocation());
+
+        return $holdEmailData;
+    }
+
     public function process()
     {
         $this->initializeRecords();
@@ -171,8 +195,12 @@ class Listener
                             $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
                             
                             APILogger::addInfo('Bib', $bib);
-                        }
 
+                            $holdEmailData = $this->createHoldEmailData($patron, $bib, $item, $holdRequest);
+
+                            $mailClient = new MailClient($streamName, $holdEmailData);
+                            $mailClient->sendEmail();
+                        }
                     }
 
                     ++$addCount;

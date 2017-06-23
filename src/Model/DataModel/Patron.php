@@ -18,6 +18,11 @@ class Patron extends DataModel
     /**
      * @var array
      */
+    protected $names = [];
+
+    /**
+     * @var array
+     */
     protected $emails = [];
 
     /**
@@ -50,6 +55,22 @@ class Patron extends DataModel
     public function setBarCodes($barCodes)
     {
         $this->barCodes = $barCodes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNames(): array
+    {
+        return $this->names;
+    }
+
+    /**
+     * @param array $names
+     */
+    public function setNames(array $names)
+    {
+        $this->names = $names;
     }
 
     /**

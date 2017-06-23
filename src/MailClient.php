@@ -2,9 +2,8 @@
 namespace NYPL\HoldRequestResultConsumer;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
-use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\Patron;
-use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData;
-use NYPL\HoldRequestResultConsumer\Model\Email\DeliveryEmail;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
+use NYPL\HoldRequestResultConsumer\Model\Email\HoldEmail;
 use NYPL\HoldRequestResultConsumer\Model\Email\PatronEmail;
 use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
@@ -52,8 +51,8 @@ class MailClient
             $email = new PatronEmail($streamData);
         }
 
-        if ($streamData instanceof StreamData\HoldRequestResult) {
-            $email = new DeliveryEmail($streamData);
+        if ($streamData instanceof StreamData\HoldEmailData) {
+            $email = new HoldEmail($streamData);
         }
 
         if (!isset($email)) {

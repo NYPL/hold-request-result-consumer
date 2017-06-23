@@ -1,7 +1,6 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
-
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
