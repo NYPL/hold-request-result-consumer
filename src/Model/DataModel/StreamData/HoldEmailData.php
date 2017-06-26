@@ -5,16 +5,34 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 
 class HoldEmailData extends StreamData
 {
+    /**
+     * @var string
+     */
     public $patronName = '';
 
+    /**
+     * @var string
+     */
     public $title = '';
 
+    /**
+     * @var string
+     */
     public $author = '';
 
+    /**
+     * @var string
+     */
     public $barcode = '';
 
+    /**
+     * @var string
+     */
     public $pickupLocation = '';
 
+    /**
+     * @var string
+     */
     public $deliveryLocation = '';
 
     /**

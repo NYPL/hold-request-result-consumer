@@ -5,18 +5,39 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel;
 
 class Item extends DataModel
 {
+    /**
+     * @var string
+     */
     public $id = '';
 
+    /**
+     * @var string
+     */
     public $nyplSource = '';
 
+    /**
+     * @var array
+     */
     public $bibIds = [];
 
+    /**
+     * @var string
+     */
     public $nyplType = '';
 
+    /**
+     * @var string
+     */
     public $barcode = '';
 
+    /**
+     * @var string
+     */
     public $callNumber = '';
 
+    /**
+     * @var string
+     */
     public $itemType = '';
 
     /**

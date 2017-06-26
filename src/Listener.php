@@ -162,8 +162,6 @@ class Listener
 
                     $schemaName = $this->getSchemaNameFromStreamName($streamName);
 
-
-
                     $data = AvroDeserializer::deserializeWithSchema(
                         SchemaClient::getSchema($schemaName),
                         base64_decode($record['kinesis']['data'])
@@ -180,10 +178,6 @@ class Listener
                         APILogger::addInfo('HoldRequest', $holdRequest);
 
                         $patron = PatronClient::getPatronById($holdRequest->getPatron());
-
-                        APILogger::addInfo('Patron', $patron);
-                        APILogger::addInfo('E-mail', $patron->getEmails());
-                        APILogger::addInfo('BarCodes', $patron->getBarCodes());
 
                         if($holdRequest->getRecordType() === 'i')
                         {

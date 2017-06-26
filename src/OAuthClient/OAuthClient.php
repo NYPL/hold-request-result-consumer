@@ -4,7 +4,6 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
 use NYPL\Starter\Config;
-use NYPL\Starter\APILogger;
 
 class OAuthClient
 {
