@@ -7,6 +7,11 @@ use NYPL\Starter\Config;
 
 class BibClient extends APIClient
 {
+    /**
+     * @param string $bibId
+     * @param $nyplSource
+     * @return Bib
+     */
     public static function getBibByIdAndSource($bibId = '', $nyplSource)
     {
         $url = Config::get('API_BASE_URL') . '/bibs/'. $nyplSource . '/' . $bibId;

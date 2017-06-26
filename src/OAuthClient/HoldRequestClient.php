@@ -7,6 +7,10 @@ use NYPL\Starter\Config;
 
 class HoldRequestClient extends APIClient
 {
+    /**
+     * @param string $holdRequestId
+     * @return HoldRequest
+     */
     public static function getHoldRequestById($holdRequestId = '')
     {
         $url = Config::get('API_BASE_URL') . '/hold-requests/' . $holdRequestId;

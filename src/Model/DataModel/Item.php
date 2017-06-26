@@ -6,21 +6,29 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel;
 class Item extends DataModel
 {
     /**
+     * Id of item
+     *
      * @var string
      */
     public $id = '';
 
     /**
+     * NYPL Source of item
+     *
      * @var string
      */
     public $nyplSource = '';
 
     /**
+     * Bib ids associated with item
+     *
      * @var array
      */
     public $bibIds = [];
 
     /**
+     * NYPL Type of item
+     *
      * @var string
      */
     public $nyplType = '';

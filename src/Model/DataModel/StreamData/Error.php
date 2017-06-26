@@ -17,11 +17,15 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 class Error extends StreamData
 {
     /**
+     * Type of Error
+     *
      * @var string
      */
     public $type = '';
 
     /**
+     * Message in Error
+     *
      * @var string
      */
     public $message = '';

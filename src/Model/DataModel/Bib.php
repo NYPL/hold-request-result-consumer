@@ -3,16 +3,43 @@ namespace NYPL\HoldRequestResultConsumer\Model\DataModel;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel;
 
+/**
+ * Data representation for a bibliographic reference on catalog.
+ *
+ * Class Bib
+ * @package NYPL\HoldRequestResultConsumer\Model\DataModel
+ */
 class Bib extends DataModel
 {
+    /**
+     * Id of bib
+     *
+     * @var string
+     */
     public $id = '';
 
+    /**
+     * NYPL Source of bib
+     *
+     * @var string
+     */
     public $nyplSource = '';
 
+    /**
+     * NYPL Type of bib
+     *
+     * @var string
+     */
     public $nyplType = '';
 
+    /**
+     * @var string
+     */
     public $title = '';
 
+    /**
+     * @var string
+     */
     public $author = '';
 
     /**

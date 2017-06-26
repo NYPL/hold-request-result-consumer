@@ -8,6 +8,11 @@ use NYPL\Starter\Config;
 
 class ItemClient extends APIClient
 {
+    /**
+     * @param string $itemId
+     * @param $nyplSource
+     * @return Item
+     */
     public static function getItemByIdAndSource($itemId = '', $nyplSource)
     {
         $url = Config::get('API_BASE_URL') . '/items/' . $nyplSource . '/' . $itemId;
