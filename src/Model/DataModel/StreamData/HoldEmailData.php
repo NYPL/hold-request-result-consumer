@@ -36,6 +36,23 @@ class HoldEmailData extends StreamData
     public $deliveryLocation = '';
 
     /**
+     * HoldEmailData constructor.
+     * @param Patron $patron
+     * @param Bib $bib
+     * @param Item $item
+     * @param HoldRequest $holdRequest
+     */
+    public function __construct(Patron $patron, Bib $bib, Item $item, HoldRequest $holdRequest)
+    {
+        $this->setAuthor($bib->getAuthor());
+        $this->setBarcode($item->getBarcode());
+        $this->setPatronName($patron->getNames()[0]);
+        $this->setTitle($bib->getTitle());
+        $this->setDeliveryLocation($holdRequest->getDeliveryLocation());
+        $this->setPickupLocation($holdRequest->getPickupLocation());
+    }
+
+    /**
      * @return string
      */
     public function getPatronName(): string

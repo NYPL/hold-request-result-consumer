@@ -1,6 +1,7 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer;
 
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\Email\HoldEmail;
@@ -51,7 +52,7 @@ class MailClient
             $email = new PatronEmail($streamData);
         }
 
-        if ($streamData instanceof StreamData\HoldEmailData) {
+        if ($streamData instanceof HoldEmailData) {
             $email = new HoldEmail($streamData);
         }
 
