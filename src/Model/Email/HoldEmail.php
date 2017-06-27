@@ -1,6 +1,7 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\Model\Email;
 
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\Email;
 
 class HoldEmail extends Email
@@ -26,9 +27,12 @@ class HoldEmail extends Email
      */
     public function getToAddress()
     {
-        // TODO: Return correct e-mail from Patron Info.
+        /**
+         * @var HoldEmailData $holdEmailData
+         */
+        $holdEmailData = $this->getStreamData();
 
-        return 'holingpoon@nypl.org';
+        return $holdEmailData->getPatronEmail();
     }
 
     /**

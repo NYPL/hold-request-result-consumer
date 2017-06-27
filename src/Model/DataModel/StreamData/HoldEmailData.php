@@ -17,6 +17,11 @@ class HoldEmailData extends StreamData
     /**
      * @var string
      */
+    public $patronEmail = '';
+
+    /**
+     * @var string
+     */
     public $title = '';
 
     /**
@@ -53,6 +58,13 @@ class HoldEmailData extends StreamData
         $this->setTitle($bib->getTitle());
         $this->setDeliveryLocation($holdRequest->getDeliveryLocation());
         $this->setPickupLocation($holdRequest->getPickupLocation());
+
+        // If request is not an EDD, use e-mail from patron's info.
+        if ($holdRequest->getDocDeliveryData()->getEmailAddress() !== '') {
+            $this->setPatronEmail($holdRequest->getDocDeliveryData()->getEmailAddress());
+        } else {
+            $this->setPatronEmail($patron->getEmails()[0]);
+        }
     }
 
     /**
@@ -69,6 +81,22 @@ class HoldEmailData extends StreamData
     public function setPatronName(string $patronName)
     {
         $this->patronName = $patronName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPatronEmail(): string
+    {
+        return $this->patronEmail;
+    }
+
+    /**
+     * @param string $patronEmail
+     */
+    public function setPatronEmail(string $patronEmail)
+    {
+        $this->patronEmail = $patronEmail;
     }
 
     /**
@@ -150,6 +178,4 @@ class HoldEmailData extends StreamData
     {
         $this->deliveryLocation = $deliveryLocation;
     }
-
-
 }
