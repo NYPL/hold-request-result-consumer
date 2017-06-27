@@ -1,6 +1,10 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 
 class HoldEmailData extends StreamData

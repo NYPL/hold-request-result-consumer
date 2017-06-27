@@ -14,7 +14,7 @@ class BibClient extends APIClient
      */
     public static function getBibByIdAndSource($bibId = '', $nyplSource)
     {
-        $url = Config::get('API_BASE_URL') . '/bibs/'. $nyplSource . '/' . $bibId;
+        $url = Config::get('API_BIB_URL') . '/'. $nyplSource . '/' . $bibId;
 
         APILogger::addInfo('Retrieving bib by Id and Source', $url);
 

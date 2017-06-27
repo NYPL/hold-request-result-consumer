@@ -13,7 +13,7 @@ class HoldRequestClient extends APIClient
      */
     public static function getHoldRequestById($holdRequestId = '')
     {
-        $url = Config::get('API_BASE_URL') . '/hold-requests/' . $holdRequestId;
+        $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
         APILogger::addInfo('Retrieving hold request by id', $url);
 

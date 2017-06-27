@@ -15,7 +15,7 @@ class ItemClient extends APIClient
      */
     public static function getItemByIdAndSource($itemId = '', $nyplSource)
     {
-        $url = Config::get('API_BASE_URL') . '/items/' . $nyplSource . '/' . $itemId;
+        $url = Config::get('API_ITEM_URL') . '/' . $nyplSource . '/' . $itemId;
 
         APILogger::addInfo('Retrieving item by Id and Source', $url);
 

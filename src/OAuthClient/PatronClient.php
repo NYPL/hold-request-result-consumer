@@ -14,7 +14,7 @@ class PatronClient extends APIClient
      */
     public static function getPatronById($patronId = '')
     {
-        $url = Config::get('API_BASE_URL') . '/patrons/' . $patronId;
+        $url = Config::get('API_PATRON_URL') . '/' . $patronId;
 
         APILogger::addInfo('Retrieving patron by id', $url);
 
