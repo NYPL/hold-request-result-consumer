@@ -362,7 +362,7 @@ class HoldRequest extends DataModel
     /**
      * @return DocDeliveryData
      */
-    public function getDocDeliveryData(): DocDeliveryData
+    public function getDocDeliveryData()
     {
         return $this->docDeliveryData;
     }

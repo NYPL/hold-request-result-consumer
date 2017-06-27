@@ -59,9 +59,19 @@ class HoldEmailData extends StreamData
         $this->setDeliveryLocation($holdRequest->getDeliveryLocation());
         $this->setPickupLocation($holdRequest->getPickupLocation());
 
+        /**
+         * @var DocDeliveryData
+         */
+        $docDeliveryData = $holdRequest->getDocDeliveryData();
+        $email = '';
+
+        if ($docDeliveryData !== null) {
+            $email = $docDeliveryData->getEmailAddress();
+        }
+
         // If request is not an EDD, use e-mail from patron's info.
-        if ($holdRequest->getDocDeliveryData()->getEmailAddress() !== '') {
-            $this->setPatronEmail($holdRequest->getDocDeliveryData()->getEmailAddress());
+        if ($email !== '') {
+            $this->setPatronEmail($email);
         } else {
             $this->setPatronEmail($patron->getEmails()[0]);
         }
