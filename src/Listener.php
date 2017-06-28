@@ -147,7 +147,7 @@ class Listener
 
                     $holdRequestResult = new HoldRequestResult($data);
 
-                    APILogger::addDebug('HoldRequestResult', (array)$holdRequestResult);
+                    APILogger::addDebug('HoldRequestResult', (array) $holdRequestResult);
 
                     if ($holdRequestResult->isSuccess() === false) {
                         $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
@@ -158,12 +158,12 @@ class Listener
                         if($holdRequest->getRecordType() === 'i') {
                             $item = ItemClient::getItemByIdAndSource($holdRequest->getRecord(), $holdRequest->getNyplSource());
 
-                            APILogger::addDebug('Item', (array)$item );
+                            APILogger::addDebug('Item', (array) $item );
                             APILogger::addDebug('BibIds', $item->getBibIds());
                             
                             $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
                             
-                            APILogger::addDebug('Bib', (array)$bib );
+                            APILogger::addDebug('Bib', (array) $bib);
 
                             $holdEmailData = new HoldEmailData();
                             $holdEmailData->assembleData($patron, $bib, $item, $holdRequest);
