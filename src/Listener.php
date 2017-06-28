@@ -1,8 +1,12 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer;
 
-use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
+use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
+use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
+use NYPL\HoldRequestResultConsumer\OAuthClient\ItemClient;
+use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
 use NYPL\Starter\APILogger;
 
 class Listener
@@ -134,31 +138,39 @@ class Listener
 
                     $schemaName = $this->getSchemaNameFromStreamName($streamName);
 
-
-
                     $data = AvroDeserializer::deserializeWithSchema(
                         SchemaClient::getSchema($schemaName),
                         base64_decode($record['kinesis']['data'])
                     );
 
-                    APILogger::addInfo('data', $data);
+                    APILogger::addDebug('data', $data);
 
                     $holdRequestResult = new HoldRequestResult($data);
 
-                    APILogger::addInfo('HoldRequestResult', $holdRequestResult);
+                    APILogger::addDebug('HoldRequestResult', (array)$holdRequestResult);
 
                     if ($holdRequestResult->isSuccess() === false) {
-                        // TODO: Fetch e-mail from patron record
-                        APILogger::addInfo('E-mail time', $holdRequestResult->getHoldRequest()->getDocDeliveryData()->getEmailAddress());
+                        $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
+                        APILogger::addDebug('HoldRequest', (array)$holdRequest);
 
-                        $patron = PatronClient::getPatronById($holdRequestResult->getHoldRequest()->getPatron());
+                        $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
-                        APILogger::addInfo('Patron', $patron->getId());
-                        APILogger::addInfo('E-mail', $patron->getEmails());
-                        APILogger::addInfo('BarCodes', $patron->getBarCodes());
-                        // TODO: Send e-mail to patron notifying failure
-//                        $mailClient = new MailClient($streamName, $holdRequestResult);
-//                        $mailClient->sendEmail();
+                        if($holdRequest->getRecordType() === 'i') {
+                            $item = ItemClient::getItemByIdAndSource($holdRequest->getRecord(), $holdRequest->getNyplSource());
+
+                            APILogger::addDebug('Item', (array)$item );
+                            APILogger::addDebug('BibIds', $item->getBibIds());
+                            
+                            $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
+                            
+                            APILogger::addDebug('Bib', (array)$bib );
+
+                            $holdEmailData = new HoldEmailData();
+                            $holdEmailData->assembleData($patron, $bib, $item, $holdRequest);
+
+                            $mailClient = new MailClient($streamName, $holdEmailData);
+                            $mailClient->sendEmail();
+                        }
                     }
 
                     ++$addCount;

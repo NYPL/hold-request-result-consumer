@@ -5,10 +5,32 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel;
 
 class Patron extends DataModel
 {
+    /**
+     * Patron Id
+     *
+     * @var string
+     */
     protected $id = '';
 
+    /**
+     * Patron's barcodes
+     *
+     * @var array
+     */
     protected $barCodes = [];
 
+    /**
+     * Patron's names
+     *
+     * @var array
+     */
+    protected $names = [];
+
+    /**
+     * Patron's e-mails
+     *
+     * @var array
+     */
     protected $emails = [];
 
     /**
@@ -41,6 +63,22 @@ class Patron extends DataModel
     public function setBarCodes($barCodes)
     {
         $this->barCodes = $barCodes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNames(): array
+    {
+        return $this->names;
+    }
+
+    /**
+     * @param array $names
+     */
+    public function setNames(array $names)
+    {
+        $this->names = $names;
     }
 
     /**

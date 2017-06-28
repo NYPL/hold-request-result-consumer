@@ -25,12 +25,4 @@ class HoldRequestResultTest extends TestCase
     {
         $this->assertEquals('Test jobId', $this->fakeHoldRequestResult->getJobId());
     }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult
-     */
-    public function testMessage()
-    {
-        $this->assertEquals('fakeHoldRequestResult', $this->fakeHoldRequestResult->getMessage());
-    }
 }

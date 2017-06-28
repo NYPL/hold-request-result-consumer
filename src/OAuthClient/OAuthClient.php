@@ -4,7 +4,6 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
 use NYPL\Starter\Config;
-use NYPL\Starter\APILogger;
 
 class OAuthClient
 {
@@ -40,11 +39,12 @@ class OAuthClient
 
         $provider = new GenericProvider([
             'clientId' => Config::get('OAUTH_CLIENT_ID'),
-            'clientSecret' => Config::get('OAUTH_CLIENT_SECRET'),
+            'clientSecret' => Config::get('OAUTH_CLIENT_SECRET', null, true),
             'redirectUri' => '',
             'urlAuthorize' => Config::get('OAUTH_AUTH_URI'),
             'urlAccessToken' => Config::get('OAUTH_TOKEN_URI'),
-            'urlResourceOwnerDetails' => ''
+            'urlResourceOwnerDetails' => '',
+            'scopes' => 'read:patron read:item read:bib readwrite:holdrequest'
         ]);
 
         return $provider->getAccessToken('client_credentials');

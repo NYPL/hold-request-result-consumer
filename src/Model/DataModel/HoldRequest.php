@@ -1,14 +1,15 @@
 <?php
 
-namespace NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
+namespace NYPL\HoldRequestResultConsumer\Model\DataModel;
 
-use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
+use NYPL\HoldRequestResultConsumer\Model\DataModel;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData;
 
 /**
  * Class HoldRequest
- * @package NYPL\Services\Model\DataModel\StreamData
+ * @package NYPL\Services\Model\DataModel
  */
-class HoldRequest extends StreamData
+class HoldRequest extends DataModel
 {
     /**
      * Id associated with a processed hold request.
