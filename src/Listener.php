@@ -143,28 +143,27 @@ class Listener
                         base64_decode($record['kinesis']['data'])
                     );
 
-                    APILogger::addInfo('data', $data);
+                    APILogger::addDebug('data', $data);
 
                     $holdRequestResult = new HoldRequestResult($data);
 
-                    APILogger::addInfo('HoldRequestResult', $holdRequestResult);
+                    APILogger::addDebug('HoldRequestResult', (array)$holdRequestResult);
 
                     if ($holdRequestResult->isSuccess() === false) {
                         $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
-                        APILogger::addInfo('HoldRequest', $holdRequest);
+                        APILogger::addDebug('HoldRequest', (array)$holdRequest);
 
                         $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
-                        if($holdRequest->getRecordType() === 'i')
-                        {
+                        if($holdRequest->getRecordType() === 'i') {
                             $item = ItemClient::getItemByIdAndSource($holdRequest->getRecord(), $holdRequest->getNyplSource());
 
-                            APILogger::addInfo('Item', $item);
-                            APILogger::addInfo('BibIds', $item->getBibIds());
+                            APILogger::addDebug('Item', (array)$item );
+                            APILogger::addDebug('BibIds', $item->getBibIds());
                             
                             $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
                             
-                            APILogger::addInfo('Bib', $bib);
+                            APILogger::addDebug('Bib', (array)$bib );
 
                             $holdEmailData = new HoldEmailData($patron, $bib, $item, $holdRequest);
 
