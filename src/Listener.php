@@ -165,7 +165,8 @@ class Listener
                             
                             APILogger::addDebug('Bib', (array)$bib );
 
-                            $holdEmailData = new HoldEmailData($patron, $bib, $item, $holdRequest);
+                            $holdEmailData = new HoldEmailData();
+                            $holdEmailData->assembleData($patron, $bib, $item, $holdRequest);
 
                             $mailClient = new MailClient($streamName, $holdEmailData);
                             $mailClient->sendEmail();
