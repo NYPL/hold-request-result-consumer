@@ -13,8 +13,8 @@ class HoldRequestResultTest extends TestCase
         $this->fakeHoldRequestResult = new class extends HoldRequestResult {
             public function __construct($data = [
                 'jobId' => 'Test jobId',
-                'success' => false,
-                'message' => 'fakeHoldRequestResult'])
+                'success' => false
+            ])
             {
                 parent::__construct($data);
             }
