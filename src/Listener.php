@@ -7,6 +7,7 @@ use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\ItemClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
+use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 
 class Listener
@@ -168,11 +169,11 @@ class Listener
                         $holdEmailData = new HoldEmailData();
                         $holdEmailData->assembleData($patron, $bib, $item, $holdRequest, $holdRequestResult);
 
-                        if ($holdEmailData->setPatronEmail() !== '') {
+                        if ($holdEmailData->getPatronEmail() !== '') {
                             $mailClient = new MailClient($streamName, $holdEmailData);
                             $mailClient->sendEmail();
                         } else {
-                            APILogger::addError('No Email', array('Patron did not provide an e-mail address. No notification sent.'));
+                            throw new APIException('No e-mail', array('Patron did not provide an e-mail address.'));
                         }
                     }
 
