@@ -173,7 +173,7 @@ class Listener
                             $mailClient = new MailClient($streamName, $holdEmailData);
                             $mailClient->sendEmail();
                         } else {
-                            throw new APIException('No e-mail', array('Patron did not provide an e-mail address.'));
+                            throw new APIException('No-email',  'Patron did not provide an e-mail address.', 0, null, 500, null);
                         }
                     }
 
