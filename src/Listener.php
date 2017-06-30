@@ -168,8 +168,10 @@ class Listener
                         $holdEmailData = new HoldEmailData();
                         $holdEmailData->assembleData($patron, $bib, $item, $holdRequest, $holdRequestResult);
 
-                        $mailClient = new MailClient($streamName, $holdEmailData);
-                        $mailClient->sendEmail();
+                        if ($holdEmailData->setPatronEmail() !== '') {
+                            $mailClient = new MailClient($streamName, $holdEmailData);
+                            $mailClient->sendEmail();
+                        }
                     }
 
                     ++$addCount;

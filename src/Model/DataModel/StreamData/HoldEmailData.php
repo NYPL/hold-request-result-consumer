@@ -84,7 +84,7 @@ class HoldEmailData extends StreamData
         // If request is not an EDD, use e-mail from patron's info.
         if ($email !== '') {
             $this->setPatronEmail($email);
-        } else {
+        } else if (count($patron->getEmails()) > 0){
             $this->setPatronEmail($patron->getEmails()[0]);
         }
     }
