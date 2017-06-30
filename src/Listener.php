@@ -171,6 +171,8 @@ class Listener
                         if ($holdEmailData->setPatronEmail() !== '') {
                             $mailClient = new MailClient($streamName, $holdEmailData);
                             $mailClient->sendEmail();
+                        } else {
+                            APILogger::addError('No Email', array('Patron did not provide an e-mail address. No notification sent.'));
                         }
                     }
 
