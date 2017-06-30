@@ -149,28 +149,27 @@ class Listener
 
                     APILogger::addDebug('HoldRequestResult', (array) $holdRequestResult);
 
-                    if ($holdRequestResult->isSuccess() === false) {
-                        $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
-                        APILogger::addDebug('HoldRequest', (array)$holdRequest);
 
-                        $patron = PatronClient::getPatronById($holdRequest->getPatron());
+                    $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
+                    APILogger::addDebug('HoldRequest', (array)$holdRequest);
 
-                        if($holdRequest->getRecordType() === 'i') {
-                            $item = ItemClient::getItemByIdAndSource($holdRequest->getRecord(), $holdRequest->getNyplSource());
+                    $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
-                            APILogger::addDebug('Item', (array) $item );
-                            APILogger::addDebug('BibIds', $item->getBibIds());
-                            
-                            $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
-                            
-                            APILogger::addDebug('Bib', (array) $bib);
+                    if($holdRequest->getRecordType() === 'i') {
+                        $item = ItemClient::getItemByIdAndSource($holdRequest->getRecord(), $holdRequest->getNyplSource());
 
-                            $holdEmailData = new HoldEmailData();
-                            $holdEmailData->assembleData($patron, $bib, $item, $holdRequest);
+                        APILogger::addDebug('Item', (array) $item );
+                        APILogger::addDebug('BibIds', $item->getBibIds());
 
-                            $mailClient = new MailClient($streamName, $holdEmailData);
-                            $mailClient->sendEmail();
-                        }
+                        $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
+
+                        APILogger::addDebug('Bib', (array) $bib);
+
+                        $holdEmailData = new HoldEmailData();
+                        $holdEmailData->assembleData($patron, $bib, $item, $holdRequest, $holdRequestResult);
+
+                        $mailClient = new MailClient($streamName, $holdEmailData);
+                        $mailClient->sendEmail();
                     }
 
                     ++$addCount;

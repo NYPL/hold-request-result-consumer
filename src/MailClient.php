@@ -4,7 +4,8 @@ namespace NYPL\HoldRequestResultConsumer;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
-use NYPL\HoldRequestResultConsumer\Model\Email\HoldEmail;
+use NYPL\HoldRequestResultConsumer\Model\Email\HoldFailureEmail;
+use NYPL\HoldRequestResultConsumer\Model\Email\HoldSuccessEmail;
 use NYPL\HoldRequestResultConsumer\Model\Email\PatronEmail;
 use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
@@ -53,7 +54,11 @@ class MailClient
         }
 
         if ($streamData instanceof HoldEmailData) {
-            $email = new HoldEmail($streamData);
+            if ($streamData->isSuccess() === true) {
+                $email = new HoldSuccessEmail($streamData);
+            } else {
+                $email = new HoldFailureEmail($streamData);
+            }
         }
 
         if (!isset($email)) {
