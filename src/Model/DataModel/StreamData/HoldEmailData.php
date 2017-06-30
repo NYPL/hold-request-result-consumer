@@ -7,6 +7,8 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Location;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
+use NYPL\Starter\APIException;
+use NYPL\Starter\Model\Response\ErrorResponse;
 
 class HoldEmailData extends StreamData
 {
@@ -71,6 +73,7 @@ class HoldEmailData extends StreamData
         $this->setPickupLocation($this->fixPickupLocation($holdRequest->getPickupLocation()));
         $this->setSuccess($holdRequestResult->isSuccess());
 
+
         $this->setPatronName($this->fixPatronName($patron));
 
         $this->setPatronEmail($this->fixPatronEmail($holdRequest, $patron));
@@ -79,20 +82,34 @@ class HoldEmailData extends StreamData
     /**
      * @param Patron $patron
      * @return string
+     * @throws APIException
      */
     public function fixPatronName(Patron $patron): string
     {
-        $name = $patron->getNames()[0];
-        $fullName = explode(",", $name);
-        $fullName[1] = trim($fullName[1]);
-        $name = ucfirst(strtolower($fullName[1])) . " " . ucfirst(strtolower($fullName[0]));
-        return $name;
+
+        if (count($patron->getNames()) > 0) {
+            $name = $patron->getNames()[0];
+            $fullName = explode(",", $name);
+            $fullName[1] = trim($fullName[1]);
+            $name = ucfirst(strtolower($fullName[1])) . " " . ucfirst(strtolower($fullName[0]));
+            return $name;
+        } else {
+            throw new APIException(
+                'No names',
+                'Patron did not provide any names',
+                0,
+                null,
+                500,
+                new ErrorResponse(500, 'no-name', 'Patron did not provide any names')
+            );
+        }
     }
 
     /**
      * @param HoldRequest $holdRequest
      * @param Patron $patron
      * @return string
+     * @throws APIException
      */
     public function fixPatronEmail(HoldRequest $holdRequest, Patron $patron): string
     {
@@ -111,8 +128,16 @@ class HoldEmailData extends StreamData
             return $email;
         } elseif (count($patron->getEmails()) > 0) {
             return $patron->getEmails()[0];
+        } else {
+            throw new APIException(
+                'No-email',
+                'Patron did not provide an e-mail address.',
+                0,
+                null,
+                500,
+                new ErrorResponse(500, 'no-email', 'Patron did not provide an e-mail address')
+            );
         }
-        return '';
     }
 
     /**
