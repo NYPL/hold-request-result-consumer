@@ -65,12 +65,31 @@ class HoldEmailData extends StreamData
         $this->setPickupLocation($holdRequest->getPickupLocation());
         $this->setSuccess($holdRequestResult->isSuccess());
 
+        $this->setPatronName($this->fixPatronName($patron));
+
+        $this->setPatronEmail($this->fixPatronEmail($holdRequest, $patron));
+    }
+
+    /**
+     * @param Patron $patron
+     * @return string
+     */
+    public function fixPatronName(Patron $patron): string
+    {
         $name = $patron->getNames()[0];
         $fullName = explode(",", $name);
         $fullName[1] = trim($fullName[1]);
         $name = ucfirst(strtolower($fullName[1])) . " " . ucfirst(strtolower($fullName[0]));
-        $this->setPatronName($name);
+        return $name;
+    }
 
+    /**
+     * @param HoldRequest $holdRequest
+     * @param Patron $patron
+     * @return string
+     */
+    public function fixPatronEmail(HoldRequest $holdRequest, Patron $patron): string
+    {
         /**
          * @var DocDeliveryData
          */
@@ -83,9 +102,9 @@ class HoldEmailData extends StreamData
 
         // If request is not an EDD, use e-mail from patron's info.
         if ($email !== '') {
-            $this->setPatronEmail($email);
+            return $email;
         } else if (count($patron->getEmails()) > 0){
-            $this->setPatronEmail($patron->getEmails()[0]);
+            return $patron->getEmails()[0];
         }
     }
 
