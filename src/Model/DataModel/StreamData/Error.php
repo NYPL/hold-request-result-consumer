@@ -61,4 +61,4 @@ class Error extends StreamData
     {
         $this->message = $message;
     }
- }
+}

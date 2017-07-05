@@ -1,7 +1,6 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer;
 
-use NYPL\Starter\APILogger;
 use NYPL\Starter\AvroLoader;
 
 class AvroDeserializer

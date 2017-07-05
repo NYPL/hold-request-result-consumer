@@ -2,7 +2,7 @@
 
 namespace NYPL\HoldRequestResultConsumer\Model\Email;
 
-use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\Email;
 
 class DeliveryEmail extends Email
@@ -31,10 +31,10 @@ class DeliveryEmail extends Email
     public function getToAddress()
     {
         /**
-         * @var HoldRequestResult $holdRequestResult
+         * @var HoldEmailData $holdEmailData
          */
-        $holdRequestResult = $this->getStreamData();
+        $holdEmailData = $this->getStreamData();
 
-        return $holdRequestResult->getHoldRequest()->getDocDeliveryData()->getEmailAddress();
+        return $holdEmailData->getPatronEmail();
     }
 }

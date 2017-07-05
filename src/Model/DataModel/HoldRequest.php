@@ -375,8 +375,6 @@ class HoldRequest extends DataModel
         $this->docDeliveryData = $docDeliveryData;
     }
 
-
-
     /**
      * Includes DocDeliveryData object in a processed hold request.
      *

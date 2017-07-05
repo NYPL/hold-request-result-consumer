@@ -119,5 +119,4 @@ class MailClient
     {
         $this->streamData = $streamData;
     }
-
 }

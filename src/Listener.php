@@ -49,8 +49,13 @@ class Listener
      * @param string $errorLine
      * @param array $errorContext
      */
-    public static function errorHandler($errorNumber = 0, $errorString = '', $errorFile = '', $errorLine = '', array $errorContext)
-    {
+    public static function errorHandler(
+        $errorNumber = 0,
+        $errorString = '',
+        $errorFile = '',
+        $errorLine = '',
+        array $errorContext
+    ) {
         APILogger::addError(
             'Error ' . $errorNumber . ': ' . $errorString . ' in ' . $errorFile . ' on line ' . $errorLine,
             $errorContext
@@ -156,10 +161,13 @@ class Listener
 
                     $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
-                    if($holdRequest->getRecordType() === 'i') {
-                        $item = ItemClient::getItemByIdAndSource($holdRequest->getRecord(), $holdRequest->getNyplSource());
+                    if ($holdRequest->getRecordType() === 'i') {
+                        $item = ItemClient::getItemByIdAndSource(
+                            $holdRequest->getRecord(),
+                            $holdRequest->getNyplSource()
+                        );
 
-                        APILogger::addDebug('Item', (array) $item );
+                        APILogger::addDebug('Item', (array) $item);
                         APILogger::addDebug('BibIds', $item->getBibIds());
 
                         $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
@@ -173,7 +181,14 @@ class Listener
                             $mailClient = new MailClient($streamName, $holdEmailData);
                             $mailClient->sendEmail();
                         } else {
-                            throw new APIException('No-email',  'Patron did not provide an e-mail address.', 0, null, 500, null);
+                            throw new APIException(
+                                'No-email',
+                                'Patron did not provide an e-mail address.',
+                                0,
+                                null,
+                                500,
+                                null
+                            );
                         }
                     }
 

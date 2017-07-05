@@ -56,8 +56,13 @@ class HoldEmailData extends StreamData
      * @param HoldRequest $holdRequest
      * @param HoldRequestResult $holdRequestResult
      */
-    public function assembleData(Patron $patron, Bib $bib, Item $item, HoldRequest $holdRequest, HoldRequestResult $holdRequestResult)
-    {
+    public function assembleData(
+        Patron $patron,
+        Bib $bib,
+        Item $item,
+        HoldRequest $holdRequest,
+        HoldRequestResult $holdRequestResult
+    ) {
         $this->setAuthor($bib->getAuthor());
         $this->setBarcode($item->getBarcode());
         $this->setTitle($bib->getTitle());
@@ -103,9 +108,10 @@ class HoldEmailData extends StreamData
         // If request is not an EDD, use e-mail from patron's info.
         if ($email !== '') {
             return $email;
-        } else if (count($patron->getEmails()) > 0){
+        } elseif (count($patron->getEmails()) > 0) {
             return $patron->getEmails()[0];
         }
+        return '';
     }
 
     /**
