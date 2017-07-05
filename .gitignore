@@ -3,3 +3,6 @@ dist
 *.swp
 *.env
 vendor
+.idea/
+build/
+.lambda

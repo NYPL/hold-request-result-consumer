@@ -17,6 +17,11 @@ class HoldEmailData extends StreamData
     /**
      * @var string
      */
+    public $patronEmail = '';
+
+    /**
+     * @var string
+     */
     public $title = '';
 
     /**
@@ -40,19 +45,73 @@ class HoldEmailData extends StreamData
     public $deliveryLocation = '';
 
     /**
+     * @var bool
+     */
+    public $success;
+
+    /**
      * @param Patron $patron
      * @param Bib $bib
      * @param Item $item
      * @param HoldRequest $holdRequest
+     * @param HoldRequestResult $holdRequestResult
      */
-    public function assembleData(Patron $patron, Bib $bib, Item $item, HoldRequest $holdRequest)
-    {
+    public function assembleData(
+        Patron $patron,
+        Bib $bib,
+        Item $item,
+        HoldRequest $holdRequest,
+        HoldRequestResult $holdRequestResult
+    ) {
         $this->setAuthor($bib->getAuthor());
         $this->setBarcode($item->getBarcode());
-        $this->setPatronName($patron->getNames()[0]);
         $this->setTitle($bib->getTitle());
         $this->setDeliveryLocation($holdRequest->getDeliveryLocation());
         $this->setPickupLocation($holdRequest->getPickupLocation());
+        $this->setSuccess($holdRequestResult->isSuccess());
+
+        $this->setPatronName($this->fixPatronName($patron));
+
+        $this->setPatronEmail($this->fixPatronEmail($holdRequest, $patron));
+    }
+
+    /**
+     * @param Patron $patron
+     * @return string
+     */
+    public function fixPatronName(Patron $patron): string
+    {
+        $name = $patron->getNames()[0];
+        $fullName = explode(",", $name);
+        $fullName[1] = trim($fullName[1]);
+        $name = ucfirst(strtolower($fullName[1])) . " " . ucfirst(strtolower($fullName[0]));
+        return $name;
+    }
+
+    /**
+     * @param HoldRequest $holdRequest
+     * @param Patron $patron
+     * @return string
+     */
+    public function fixPatronEmail(HoldRequest $holdRequest, Patron $patron): string
+    {
+        /**
+         * @var DocDeliveryData
+         */
+        $docDeliveryData = $holdRequest->getDocDeliveryData();
+        $email = '';
+
+        if ($docDeliveryData !== null) {
+            $email = $docDeliveryData->getEmailAddress();
+        }
+
+        // If request is not an EDD, use e-mail from patron's info.
+        if ($email !== '') {
+            return $email;
+        } elseif (count($patron->getEmails()) > 0) {
+            return $patron->getEmails()[0];
+        }
+        return '';
     }
 
     /**
@@ -69,6 +128,22 @@ class HoldEmailData extends StreamData
     public function setPatronName(string $patronName)
     {
         $this->patronName = $patronName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPatronEmail(): string
+    {
+        return $this->patronEmail;
+    }
+
+    /**
+     * @param string $patronEmail
+     */
+    public function setPatronEmail(string $patronEmail)
+    {
+        $this->patronEmail = $patronEmail;
     }
 
     /**
@@ -151,5 +226,19 @@ class HoldEmailData extends StreamData
         $this->deliveryLocation = $deliveryLocation;
     }
 
+    /**
+     * @return bool
+     */
+    public function isSuccess(): bool
+    {
+        return $this->success;
+    }
 
+    /**
+     * @param bool $success
+     */
+    public function setSuccess(bool $success)
+    {
+        $this->success = $success;
+    }
 }

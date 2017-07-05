@@ -24,8 +24,8 @@ class ItemClient extends APIClient
         $response = json_decode((string) $response->getBody(), true);
 
         APILogger::addInfo(
-          'Retrieve item by id and source',
-          $response['data']
+            'Retrieve item by id and source',
+            $response['data']
         );
 
         if ($response['statusCode'] !== 200) {

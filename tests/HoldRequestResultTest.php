@@ -7,7 +7,8 @@ class HoldRequestResultTest extends TestCase
 {
     public $fakeHoldRequestResult;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->fakeHoldRequestResult = new class extends HoldRequestResult {
             public function __construct($data = ['jobId' => 'Test jobId',
                 'message' => 'fakeHoldRequestResult'])

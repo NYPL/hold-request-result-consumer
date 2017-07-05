@@ -53,12 +53,12 @@
     <h1 class="hold">Item Reserved</h1>
 </div>
 
-<p>Dear {{ data.patronName }}</p>
+<p>Dear {{ data.patronName }},</p>
 <p>Your item has successfully been reserved. Please allow up to 1 week for the item to arrive.</p>
-<p>Title: {{ data.title }}<br/>
-    Author: {{ data.author }}<br/>
-    Barcode: {{ data.barcode }}<br/>
-    Pickup at: {{ data.pickupLocation }} or {{ data.deliveryLocation }}
+<p><strong>Title</strong>: {{ data.title }}<br/>
+    <strong>Author</strong>: {{ data.author }}<br/>
+    <strong>Barcode</strong>: {{ data.barcode }}<br/>
+    <strong>Pickup at</strong>: {{ data.pickupLocation }} or {{ data.deliveryLocation }}
 </p>
 <p>The New York Public Library</p>
 </body>

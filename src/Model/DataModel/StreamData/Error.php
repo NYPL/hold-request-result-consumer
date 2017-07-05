@@ -11,7 +11,7 @@ namespace NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 
 /**
- * Class Error
+ * Error message object found in Hold Request Result
  * @package NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData
  */
 class Error extends StreamData
@@ -61,4 +61,4 @@ class Error extends StreamData
     {
         $this->message = $message;
     }
- }
+}

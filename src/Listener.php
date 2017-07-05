@@ -7,6 +7,7 @@ use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\ItemClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
+use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 
 class Listener
@@ -48,8 +49,13 @@ class Listener
      * @param string $errorLine
      * @param array $errorContext
      */
-    public static function errorHandler($errorNumber = 0, $errorString = '', $errorFile = '', $errorLine = '', array $errorContext)
-    {
+    public static function errorHandler(
+        $errorNumber = 0,
+        $errorString = '',
+        $errorFile = '',
+        $errorLine = '',
+        array $errorContext
+    ) {
         APILogger::addError(
             'Error ' . $errorNumber . ': ' . $errorString . ' in ' . $errorFile . ' on line ' . $errorLine,
             $errorContext
@@ -147,29 +153,42 @@ class Listener
 
                     $holdRequestResult = new HoldRequestResult($data);
 
-                    APILogger::addDebug('HoldRequestResult', (array)$holdRequestResult);
+                    APILogger::addDebug('HoldRequestResult', (array) $holdRequestResult);
 
-                    if ($holdRequestResult->isSuccess() === false) {
-                        $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
-                        APILogger::addDebug('HoldRequest', (array)$holdRequest);
 
-                        $patron = PatronClient::getPatronById($holdRequest->getPatron());
+                    $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
+                    APILogger::addDebug('HoldRequest', (array)$holdRequest);
 
-                        if($holdRequest->getRecordType() === 'i') {
-                            $item = ItemClient::getItemByIdAndSource($holdRequest->getRecord(), $holdRequest->getNyplSource());
+                    $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
-                            APILogger::addDebug('Item', (array)$item );
-                            APILogger::addDebug('BibIds', $item->getBibIds());
-                            
-                            $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
-                            
-                            APILogger::addDebug('Bib', (array)$bib );
+                    if ($holdRequest->getRecordType() === 'i') {
+                        $item = ItemClient::getItemByIdAndSource(
+                            $holdRequest->getRecord(),
+                            $holdRequest->getNyplSource()
+                        );
 
-                            $holdEmailData = new HoldEmailData();
-                            $holdEmailData->assembleData($patron, $bib, $item, $holdRequest);
+                        APILogger::addDebug('Item', (array) $item);
+                        APILogger::addDebug('BibIds', $item->getBibIds());
 
+                        $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
+
+                        APILogger::addDebug('Bib', (array) $bib);
+
+                        $holdEmailData = new HoldEmailData();
+                        $holdEmailData->assembleData($patron, $bib, $item, $holdRequest, $holdRequestResult);
+
+                        if ($holdEmailData->getPatronEmail() !== '') {
                             $mailClient = new MailClient($streamName, $holdEmailData);
                             $mailClient->sendEmail();
+                        } else {
+                            throw new APIException(
+                                'No-email',
+                                'Patron did not provide an e-mail address.',
+                                0,
+                                null,
+                                500,
+                                null
+                            );
                         }
                     }
 

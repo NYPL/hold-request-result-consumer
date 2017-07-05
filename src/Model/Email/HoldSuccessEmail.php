@@ -1,18 +1,17 @@
 <?php
-
 namespace NYPL\HoldRequestResultConsumer\Model\Email;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\Email;
 
-class DeliveryEmail extends Email
+class HoldSuccessEmail extends Email
 {
     /**
      * @return string
      */
     public function getSubject()
     {
-        return 'Electronic Document Delivery';
+        return 'Your Hold Request is Successful';
     }
 
     /**
@@ -20,14 +19,12 @@ class DeliveryEmail extends Email
      */
     public function getFromAddress()
     {
-        return 'documentdelivery@nypl.org';
+        return 'holdrequests@nypl.org';
     }
 
-    public function getTemplate()
-    {
-        return 'delivery.twig';
-    }
-
+    /**
+     * @return string
+     */
     public function getToAddress()
     {
         /**
@@ -37,4 +34,13 @@ class DeliveryEmail extends Email
 
         return $holdEmailData->getPatronEmail();
     }
+
+    /**
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return 'holdsuccess.twig';
+    }
+
 }

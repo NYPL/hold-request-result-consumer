@@ -1,16 +1,24 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: holingpoon
+ * Date: 6/30/17
+ * Time: 1:17 PM
+ */
+
 namespace NYPL\HoldRequestResultConsumer\Model\Email;
 
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\Email;
 
-class HoldEmail extends Email
+class HoldFailureEmail extends Email
 {
     /**
      * @return string
      */
     public function getSubject()
     {
-        return 'Your Hold Request';
+        return 'Your Hold Request Failed';
     }
 
     /**
@@ -26,9 +34,12 @@ class HoldEmail extends Email
      */
     public function getToAddress()
     {
-        // TODO: Return correct e-mail from Patron Info.
+        /**
+         * @var HoldEmailData $holdEmailData
+         */
+        $holdEmailData = $this->getStreamData();
 
-        return 'holingpoon@nypl.org';
+        return $holdEmailData->getPatronEmail();
     }
 
     /**
@@ -36,7 +47,6 @@ class HoldEmail extends Email
      */
     public function getTemplate()
     {
-        return 'hold.twig';
+        return 'holdfail.twig';
     }
-
 }
