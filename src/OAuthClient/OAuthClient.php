@@ -44,7 +44,7 @@ class OAuthClient
             'urlAuthorize' => Config::get('OAUTH_AUTH_URI'),
             'urlAccessToken' => Config::get('OAUTH_TOKEN_URI'),
             'urlResourceOwnerDetails' => '',
-            'scopes' => 'read:patron read:item read:bib readwrite:holdrequest'
+            'scopes' => 'read:patron read:item read:bib readwrite:hold_request'
         ]);
 
         return $provider->getAccessToken('client_credentials');

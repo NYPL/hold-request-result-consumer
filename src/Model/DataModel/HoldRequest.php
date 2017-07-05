@@ -21,9 +21,9 @@ class HoldRequest extends DataModel
     /**
      * Tracking Id associated with a processed hold request.
      *
-     * @var string
+     * @var string | null
      */
-    public $jobId = '';
+    public $jobId;
 
     /**
      * Id of patron who put in a hold request.
@@ -136,7 +136,7 @@ class HoldRequest extends DataModel
     }
 
     /**
-     * @return string
+     * @return string | null
      */
     public function getJobId(): string
     {
