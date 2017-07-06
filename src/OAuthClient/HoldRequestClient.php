@@ -16,7 +16,7 @@ class HoldRequestClient extends APIClient
     public static function getHoldRequestById($holdRequestId = '')
     {
 
-        if ($holdRequestId === '') {
+        if (!isset($holdRequestId) || $holdRequestId === '') {
             throw new APIException(
                 'No Hold Request Id.',
                 'No Hold Request Id provided.',
@@ -49,7 +49,7 @@ class HoldRequestClient extends APIClient
      */
     public static function patchHoldRequestById($holdRequestId = '', bool $processed, bool $success)
     {
-        if ($holdRequestId === '') {
+        if (!isset($holdRequestId) || $holdRequestId === '') {
             throw new APIException(
                 'No Hold Request Id.',
                 'No Hold Request Id provided.',
