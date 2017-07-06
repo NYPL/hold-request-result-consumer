@@ -46,9 +46,7 @@ class HoldRequestClient extends APIClient
                 500,
                 new ErrorResponse(500, 'no-hold-request-id', 'No Hold Request Id provided.')
             );
-        }
-
-        if (!isset($processed)) {
+        } elseif (!isset($processed)) {
             throw new APIException(
                 'Processed flag not set',
                 'Processed flag is not set.',
@@ -57,9 +55,7 @@ class HoldRequestClient extends APIClient
                 500,
                 new ErrorResponse(500, 'processed-flag-not-set', 'Processed flag is not set.')
             );
-        }
-
-        if (!isset($success)) {
+        } elseif (!isset($success)) {
             throw new APIException(
                 'Success flag not set',
                 'Success flag is not set.',
@@ -68,20 +64,20 @@ class HoldRequestClient extends APIClient
                 500,
                 new ErrorResponse(500, 'success-flag-not-set', 'Success flag is not set.')
             );
+        } else {
+            $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
+
+            APILogger::addInfo('Patching hold request by id', $url);
+
+            $body = ["processed" => $processed, "success" => $success];
+
+            $response = self::patch($url, ["body" => json_encode($body)]);
+
+            $response = json_decode((string)$response->getBody(), true);
+
+            APILogger::addInfo('Patched hold request by id', $response['data']);
+
+            return new HoldRequest($response['data']);
         }
-
-        $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
-
-        APILogger::addInfo('Patching hold request by id', $url);
-
-        $body = ["processed" => $processed, "success" => $success];
-
-        $response = self::patch($url, [ "body" => json_encode($body)]);
-
-        $response = json_decode((string) $response->getBody(), true);
-        
-        APILogger::addInfo('Patched hold request by id', $response['data']);
-        
-        return new HoldRequest($response['data']);
     }
 }
