@@ -15,17 +15,29 @@ class HoldRequestClient extends APIClient
      */
     public static function getHoldRequestById($holdRequestId = '')
     {
-        $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
-        APILogger::addInfo('Retrieving hold request by id', $url);
+        if ($holdRequestId === '') {
+            throw new APIException(
+                'No Hold Request Id.',
+                'No Hold Request Id provided.',
+                0,
+                null,
+                500,
+                new ErrorResponse(500, 'no-hold-request-id', 'No Hold Request Id provided.')
+            );
+        } else {
+            $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
-        $response = self::get($url);
+            APILogger::addInfo('Retrieving hold request by id', $url);
 
-        $response = json_decode((string) $response->getBody(), true);
+            $response = self::get($url);
 
-        APILogger::addInfo('Retrieved hold request by id', $response['data']);
+            $response = json_decode((string)$response->getBody(), true);
 
-        return new HoldRequest($response['data']);
+            APILogger::addInfo('Retrieved hold request by id', $response['data']);
+
+            return new HoldRequest($response['data']);
+        }
     }
 
     /**
