@@ -155,6 +155,14 @@ class Listener
 
                     APILogger::addDebug('HoldRequestResult', (array) $holdRequestResult);
 
+                    // Updating Hold Request Service
+                    $holdRequestService = HoldRequestClient::patchHoldRequestById(
+                        $holdRequestResult->getHoldRequestId(),
+                        true,
+                        $holdRequestResult->isSuccess()
+                    );
+
+                    APILogger::addDebug('Hold Request Service Patched', (array) $holdRequestService);
 
                     $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
                     APILogger::addDebug('HoldRequest', (array)$holdRequest);

@@ -25,4 +25,21 @@ class HoldRequestClient extends APIClient
 
         return new HoldRequest($response['data']);
     }
+
+    public static function patchHoldRequestById($holdRequestId = '', bool $processed = false, bool $success = false)
+    {
+        $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
+
+        APILogger::addInfo('Patching hold request by id', $url);
+
+        $body = ["processed" => $processed, "success" => $success];
+
+        $response = self::patch($url, [ "body" => json_encode($body)]);
+
+        $response = json_decode((string) $response->getBody(), true);
+        
+        APILogger::addInfo('Patched hold request by id', $response['data']);
+        
+        return new HoldRequest($response['data']);
+    }
 }
