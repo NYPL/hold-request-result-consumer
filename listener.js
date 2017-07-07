@@ -1,45 +1,92 @@
-const spawn = require('child_process').spawnSync;
+const spawn = require('child_process').spawn;
 
-const libraryPath = process.env['LD_LIBRARY_PATH'];
+var listenerResult = {
+    processed : false,
+    success: null,
+    message: ''
+};
 
-exports.handler = function(event, context, callback) {
-    // console.log('CONTEXT');
-    // console.log(context);
-    // console.log('EVENT');
-    // console.log(event);
-    // console.log('RECORDS');
-    // console.log(JSON.stringify(event.Records));
-
-    if (event.Records) {
-        var headers = {
-            LD_LIBRARY_PATH: libraryPath
-        };
-
-        var log = {
-            message: 'Starting processing',
-            numberRecords: event.Records.length,
-            streamArn: event.Records[0].eventSourceARN
-        };
-
-        console.log(JSON.stringify(log));
-
-        var options = {
-            input: JSON.stringify(event),
-            env: Object.assign(process.env)
-        };
-
-        if (process.env.LAMBDA_TASK_ROOT) {
-            var php = spawn('./php-cgi', ['-n', '-d expose_php=Off', 'listener.php'], options);
-        } else {
-            var php = spawn('php-cgi', ['-d expose_php=Off', 'listener.php'], options);
-        }
-
-        if (php.stderr.length) {
-            php.stderr.toString().split("\n").map(function (message) {
-                if (message.trim().length) console.log(message);
-            });
-        }
-
-        callback(null, {body: php.stdout.toString()});
+function setListenerResult(processed, success, message)
+{
+    listenerResult = {
+        processed : processed,
+        success: success,
+        message: message
     }
+}
+
+function logMessage(level, message) {
+    console.log({
+        level: level,
+        message: message
+    })
+}
+
+function initializeResult(result) {
+    if (listenerResult.processed) {
+        logMessage('NOTICE', 'Listener result was already set.');
+        return false;
+    }
+
+    try {
+        result = JSON.parse(result);
+    } catch (e) {
+        setListenerResult(true, false, result);
+    }
+
+    if (!result.processed) {
+        logMessage('NOTICE', 'Processed key was not found in Listener result.');
+    }
+
+    listenerResult = result;
+}
+
+function getPhp(options) {
+    if (process.env.LAMBDA_TASK_ROOT) {
+        return spawn('./php', ['-n', '-d expose_php=Off', 'listener.php'], options);
+    }
+
+    return spawn('php', ['-d expose_php=Off', 'listener.php'], options);
+}
+
+exports.handler = function (event, context, callback) {
+    var headers = {
+        LD_LIBRARY_PATH: process.env['LD_LIBRARY_PATH']
+    };
+
+    var options = {
+        env: Object.assign(process.env, headers)
+    };
+
+    var php = getPhp(options);
+
+    php.stdin.setEncoding = 'utf-8';
+    php.stdin.write(JSON.stringify(event));
+    php.stdin.end();
+
+    php.on('error', function (code) {
+        const message = 'Lambda was unable to execute PHP (' + code + ')';
+        logMessage('CRITICAL', message);
+        callback(message);
+        return false;
+    });
+
+    php.stdout.on('data', function (data) {
+        initializeResult(data.toString());
+    });
+
+    php.stderr.on('data', function (data) {
+        console.log(data.toString());
+    });
+
+    php.on('exit', function (code) {
+        if (listenerResult.success) {
+            callback(null, listenerResult.message);
+            return true;
+        }
+
+        logMessage('CRITICAL', listenerResult.message);
+        callback(listenerResult.message);
+        return false;
+    });
 };

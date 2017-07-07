@@ -40,6 +40,22 @@ class HoldRequestClient extends APIClient
         }
     }
 
+    public static function validateRequestId($holdRequestId)
+    {
+        if (!isset($holdRequestId) || $holdRequestId === '') {
+            throw new APIException(
+                'No Hold Request Id.',
+                'No Hold Request Id provided.',
+                0,
+                null,
+                500,
+                new ErrorResponse(500, 'no-hold-request-id', 'No Hold Request Id provided.')
+            );
+        }
+
+        return true;
+    }
+
     /**
      * @param string $holdRequestId
      * @param bool $processed
