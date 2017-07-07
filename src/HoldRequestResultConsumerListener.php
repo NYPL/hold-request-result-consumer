@@ -79,7 +79,10 @@ class HoldRequestResultConsumerListener extends Listener
                     }
                 }
             } catch (\Exception $exception) {
-                APILogger::addError($exception->getMessage(), (array) $exception);
+                APILogger::addError([
+                    'HoldRequestId' => $holdRequestResult->getHoldRequestId(),
+                    'message' => $exception->getMessage()
+                ]);
             }
         }
 
