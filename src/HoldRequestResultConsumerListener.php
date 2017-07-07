@@ -52,6 +52,18 @@ class HoldRequestResultConsumerListener extends Listener
     }
 
     /**
+     * @param HoldRequestResult $holdRequestResult
+     * @return HoldRequest
+     */
+    protected function processHoldRequest($holdRequestResult)
+    {
+        $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
+        APILogger::addDebug('HoldRequest', (array) $holdRequest);
+
+        return $holdRequest;
+    }
+
+    /**
      * @param HoldRequest $holdRequest
      * @return Item
      */
@@ -66,6 +78,18 @@ class HoldRequestResultConsumerListener extends Listener
         APILogger::addDebug('BibIds', $item->getBibIds());
 
         return $item;
+    }
+
+    /**
+     * @param Item $item
+     * @return Bib
+     */
+    protected function processBib($item)
+    {
+        $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
+        APILogger::addDebug('Bib', (array) $bib);
+
+        return $bib;
     }
 
     /**
@@ -106,16 +130,14 @@ class HoldRequestResultConsumerListener extends Listener
 
                 $this->processHoldRequestService($holdRequestResult);
 
-                $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
-                APILogger::addDebug('HoldRequest', (array) $holdRequest);
+                $holdRequest = $this->processHoldRequest($holdRequestResult);
 
                 $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
                 if ($holdRequest->getRecordType() === 'i') {
                     $item = $this->processItem($holdRequest);
 
-                    $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
-                    APILogger::addDebug('Bib', (array) $bib);
+                    $bib = $this->processBib($item);
 
                     $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
                 }
