@@ -4,6 +4,7 @@ namespace NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Location;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 
@@ -67,7 +68,7 @@ class HoldEmailData extends StreamData
         $this->setBarcode($item->getBarcode());
         $this->setTitle($bib->getTitle());
         $this->setDeliveryLocation($holdRequest->getDeliveryLocation());
-        $this->setPickupLocation($holdRequest->getPickupLocation());
+        $this->setPickupLocation($this->fixPickupLocation($holdRequest->getPickupLocation()));
         $this->setSuccess($holdRequestResult->isSuccess());
 
         $this->setPatronName($this->fixPatronName($patron));
@@ -112,6 +113,15 @@ class HoldEmailData extends StreamData
             return $patron->getEmails()[0];
         }
         return '';
+    }
+
+    /**
+     * @param $pickupLocation
+     * @return string
+     */
+    public function fixPickupLocation($pickupLocation)
+    {
+        return (Location::getLocationName($pickupLocation));
     }
 
     /**
