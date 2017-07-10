@@ -16,16 +16,11 @@ class PatronClient extends APIClient
     {
         $url = Config::get('API_PATRON_URL') . '/' . $patronId;
 
-        APILogger::addInfo('Retrieving patron by id', $url);
+        APILogger::addDebug('Retrieving patron by id', $url);
 
         $response = self::get($url);
 
         $response = json_decode((string) $response->getBody(), true);
-
-        APILogger::addInfo(
-            'Retrieved patron by id',
-            $response['data']
-        );
 
         return new Patron($response['data']);
     }
