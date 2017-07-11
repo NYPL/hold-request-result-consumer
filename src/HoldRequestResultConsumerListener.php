@@ -4,6 +4,7 @@ namespace NYPL\HoldRequestResultConsumer;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Location;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
@@ -133,6 +134,8 @@ class HoldRequestResultConsumerListener extends Listener
                 $holdRequest = $this->processHoldRequest($holdRequestResult);
 
                 $patron = PatronClient::getPatronById($holdRequest->getPatron());
+
+
 
                 if ($holdRequest->getRecordType() === 'i') {
                     $item = $this->processItem($holdRequest);

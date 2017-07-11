@@ -83,13 +83,13 @@ class HoldRequestClient extends APIClient
 
         $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
-        APILogger::addInfo('Retrieving hold request by id', $url);
+        APILogger::addDebug('Retrieving hold request by id', $url);
 
         $response = self::get($url);
 
         $response = json_decode((string)$response->getBody(), true);
 
-        APILogger::addInfo('Retrieved hold request by id', $response['data']);
+        APILogger::addDebug('Retrieved hold request by id', $response['data']);
 
         return new HoldRequest($response['data']);
     }

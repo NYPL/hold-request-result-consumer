@@ -17,13 +17,13 @@ class ItemClient extends APIClient
     {
         $url = Config::get('API_ITEM_URL') . '/' . $nyplSource . '/' . $itemId;
 
-        APILogger::addInfo('Retrieving item by Id and Source', $url);
+        APILogger::addDebug('Retrieving item by Id and Source', $url);
 
         $response = self::get($url);
 
         $response = json_decode((string) $response->getBody(), true);
 
-        APILogger::addInfo(
+        APILogger::addDebug(
             'Retrieve item by id and source',
             $response['data']
         );
