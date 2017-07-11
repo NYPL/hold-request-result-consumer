@@ -4,6 +4,7 @@ namespace NYPL\HoldRequestResultConsumer;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
+use NYPL\HoldRequestResultConsumer\Model\Email\DeliveryEmail;
 use NYPL\HoldRequestResultConsumer\Model\Email\HoldFailureEmail;
 use NYPL\HoldRequestResultConsumer\Model\Email\HoldSuccessEmail;
 use NYPL\HoldRequestResultConsumer\Model\Email\PatronEmail;
@@ -48,14 +49,18 @@ class MailClient
     public function sendEmail()
     {
         $streamData = $this->getStreamData();
-
+        
         if ($streamData instanceof Patron) {
             $email = new PatronEmail($streamData);
         }
 
         if ($streamData instanceof HoldEmailData) {
             if ($streamData->isSuccess() === true) {
-                $email = new HoldSuccessEmail($streamData);
+                if ($streamData->getDocDeliveryData()->getEmailAddress() !== null) {
+                    $email = new DeliveryEmail($streamData);
+                } else {
+                    $email = new HoldSuccessEmail($streamData);
+                }
             } else {
                 $email = new HoldFailureEmail($streamData);
             }
@@ -65,7 +70,7 @@ class MailClient
             throw new \Exception('Email was not specified');
         }
 
-        APILogger::addInfo('Sending email to: ' . $email->getToAddress());
+        APILogger::addDebug('Sending email to: ' . $email->getToAddress());
 
         $mail = new Mail(
             new Email(null, $email->getFromAddress()),
