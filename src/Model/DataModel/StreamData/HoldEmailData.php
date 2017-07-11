@@ -47,7 +47,7 @@ class HoldEmailData extends StreamData
 
 
     /**
-     * @var DocDeliveryData
+     * @var DocDeliveryData | null
      */
     public $docDeliveryData;
 
@@ -245,9 +245,9 @@ class HoldEmailData extends StreamData
     }
 
     /**
-     * @return DocDeliveryData
+     * @return DocDeliveryData | null
      */
-    public function getDocDeliveryData(): DocDeliveryData
+    public function getDocDeliveryData()
     {
         return $this->docDeliveryData;
     }
