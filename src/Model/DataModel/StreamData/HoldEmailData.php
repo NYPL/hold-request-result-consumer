@@ -105,7 +105,7 @@ class HoldEmailData extends StreamData
     public function fixPatronEmail(HoldRequest $holdRequest, Patron $patron): string
     {
         /**
-         * @var DocDeliveryData
+         * @var DocDeliveryData | null
          */
         $docDeliveryData = $holdRequest->getDocDeliveryData();
         $email = '';
@@ -253,9 +253,9 @@ class HoldEmailData extends StreamData
     }
 
     /**
-     * @param DocDeliveryData $docDeliveryData
+     * @param DocDeliveryData | null $docDeliveryData
      */
-    public function setDocDeliveryData(DocDeliveryData $docDeliveryData)
+    public function setDocDeliveryData($docDeliveryData)
     {
         $this->docDeliveryData = $docDeliveryData;
     }
