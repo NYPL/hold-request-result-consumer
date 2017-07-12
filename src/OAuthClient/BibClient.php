@@ -16,7 +16,7 @@ class BibClient extends APIClient
     {
         $url = Config::get('API_BIB_URL') . '/'. $nyplSource . '/' . $bibId;
 
-        APILogger::addDebug('Retrieving bib by Id and Source', $url);
+        APILogger::addDebug('Retrieving bib by Id and Source', (array) $url);
 
         $response = self::get($url);
 

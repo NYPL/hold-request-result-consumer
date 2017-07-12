@@ -4,7 +4,6 @@ namespace NYPL\HoldRequestResultConsumer;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
-use NYPL\HoldRequestResultConsumer\Model\DataModel\Location;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
@@ -21,10 +20,10 @@ use NYPL\Starter\Listener\ListenerResult;
 class HoldRequestResultConsumerListener extends Listener
 {
     /**
-     * @param $listenerEvent
+     * @param ListenerEvent $listenerEvent
      * @return HoldRequestResult
      */
-    protected function processHoldRequestResult($listenerEvent)
+    protected function processHoldRequestResult(ListenerEvent $listenerEvent)
     {
         $data = $listenerEvent->getListenerData()->getData();
 
@@ -76,7 +75,7 @@ class HoldRequestResultConsumerListener extends Listener
         );
 
         APILogger::addDebug('Item', (array) $item);
-        APILogger::addDebug('BibIds', $item->getBibIds());
+        APILogger::addDebug('BibIds', (array) $item->getBibIds());
 
         return $item;
     }
@@ -145,10 +144,17 @@ class HoldRequestResultConsumerListener extends Listener
                     $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
                 }
             } catch (\Exception $exception) {
-                APILogger::addError([
-                    'HoldRequestId' => $holdRequestResult->getHoldRequestId(),
-                    'message' => $exception->getMessage()
-                ]);
+                APILogger::addError(
+                    'HoldRequestId ' . $holdRequestResult->getHoldRequestId(),
+                    ['HoldRequestId' => $holdRequestResult->getHoldRequestId(),
+                    'message' => $exception->getMessage()]
+                );
+            } catch (\Throwable $exception) {
+                APILogger::addError(
+                    'HoldRequestId ' . $holdRequestResult->getHoldRequestId(),
+                    ['HoldRequestId' => $holdRequestResult->getHoldRequestId(),
+                    'message' => $exception->getMessage()]
+                );
             }
         }
 

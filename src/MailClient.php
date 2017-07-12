@@ -70,8 +70,6 @@ class MailClient
             throw new \Exception('Email was not specified');
         }
 
-        APILogger::addDebug('Sending email to: ' . $email->getToAddress());
-
         $mail = new Mail(
             new Email(null, $email->getFromAddress()),
             $email->getSubject(),
