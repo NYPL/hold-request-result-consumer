@@ -1,5 +1,7 @@
 <?php
 
+namespace NYPL\HoldRequestResultConsumer\Test;
+
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequest;
 use PHPUnit\Framework\TestCase;
