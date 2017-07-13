@@ -56,7 +56,8 @@ class MailClient
 
         if ($streamData instanceof HoldEmailData) {
             if ($streamData->isSuccess() === true) {
-                if ($streamData->getDocDeliveryData()->getEmailAddress() !== null) {
+                if ($streamData->getDocDeliveryData() !== null &&
+                    $streamData->getDocDeliveryData()->getEmailAddress() !== null) {
                     $email = new DeliveryEmail($streamData);
                 } else {
                     $email = new HoldSuccessEmail($streamData);
