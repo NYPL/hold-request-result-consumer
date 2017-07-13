@@ -3,6 +3,7 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
+use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 
@@ -30,6 +31,7 @@ class ItemClient extends APIClient
 
         if ($response['statusCode'] !== 200) {
             APILogger::addError('Failed', array('Failed to retrieve item ', $itemId));
+            return null;
         }
 
         return new Item($response['data']);

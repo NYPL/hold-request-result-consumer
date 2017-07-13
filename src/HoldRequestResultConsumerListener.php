@@ -65,7 +65,7 @@ class HoldRequestResultConsumerListener extends Listener
     }
 
     /**
-     * @param HoldRequest $holdRequest
+     * @param $holdRequest
      * @return Item
      */
     protected function processItem($holdRequest)
@@ -129,6 +129,13 @@ class HoldRequestResultConsumerListener extends Listener
             try {
                 $holdRequestResult = $this->processHoldRequestResult($listenerEvent);
 
+                if ($holdRequestResult->getError()->getType() == 'hold-request-record-missing-item-data') {
+                    throw new APIException(
+                        'Hold request record missing item data for Request Id ' .
+                        $holdRequestResult->getHoldRequestId()
+                    );
+                }
+
                 $this->processHoldRequestService($holdRequestResult);
 
                 $holdRequest = $this->processHoldRequest($holdRequestResult);
@@ -145,10 +152,13 @@ class HoldRequestResultConsumerListener extends Listener
                     $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
                 }
             } catch (\Exception $exception) {
-                APILogger::addError([
-                    'HoldRequestId' => $holdRequestResult->getHoldRequestId(),
-                    'message' => $exception->getMessage()
-                ]);
+                APILogger::addError(
+                    'Exception throw: ' . $exception->getMessage()
+                );
+            } catch (\Throwable $exception) {
+                APILogger::addError(
+                    'Exception throw: ' . $exception->getMessage()
+                );
             }
         }
 
