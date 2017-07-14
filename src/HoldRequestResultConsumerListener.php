@@ -46,7 +46,7 @@ class HoldRequestResultConsumerListener extends Listener
     /**
      * @param HoldRequestResult $holdRequestResult
      */
-    protected function processHoldRequestService($holdRequestResult)
+    protected function patchHoldRequestService($holdRequestResult)
     {
         // Updating Hold Request Service
         $holdRequestService = HoldRequestClient::patchHoldRequestById(
@@ -100,6 +100,38 @@ class HoldRequestResultConsumerListener extends Listener
     }
 
     /**
+     * @param HoldRequestResult $holdRequestResult
+     * @throws APIException
+     */
+    protected function handleMissingItem(HoldRequestResult $holdRequestResult)
+    {
+        if ($holdRequestResult->getError() !== null &&
+            $holdRequestResult->getError()->getType() == 'hold-request-record-missing-item-data'
+        ) {
+            throw new APIException(
+                'Hold request record missing item data for Request Id ' .
+                $holdRequestResult->getHoldRequestId()
+            );
+        }
+    }
+
+    /**
+     * @param HoldRequestResult $holdRequestResult
+     * @throws APIException
+     */
+    protected function handleMissingPatron(HoldRequestResult $holdRequestResult)
+    {
+        if ($holdRequestResult->getError() !== null &&
+            $holdRequestResult->getError()->getType() == 'hold-request-record-missing-patron-data'
+        ) {
+            throw new APIException(
+                'Hold request record missing patron data for Request Id ' .
+                $holdRequestResult->getHoldRequestId()
+            );
+        }
+    }
+
+    /**
      * @param Patron $patron
      * @param Bib $bib
      * @param Item $item
@@ -135,27 +167,30 @@ class HoldRequestResultConsumerListener extends Listener
             try {
                 $holdRequestResult = $this->processHoldRequestResult($listenerEvent);
 
-                if ($holdRequestResult->getError()->getType() == 'hold-request-record-missing-item-data') {
-                    throw new APIException(
-                        'Hold request record missing item data for Request Id ' .
-                        $holdRequestResult->getHoldRequestId()
-                    );
-                }
 
-                $this->processHoldRequestService($holdRequestResult);
+                if ($holdRequestResult->isSuccess() === true) {
+                    // Assumes error === null
 
-                $holdRequest = $this->processHoldRequest($holdRequestResult);
+                    $this->patchHoldRequestService($holdRequestResult);
 
-                $patron = PatronClient::getPatronById($holdRequest->getPatron());
+                    $holdRequest = $this->processHoldRequest($holdRequestResult);
+
+                    $patron = PatronClient::getPatronById($holdRequest->getPatron());
+
+                    if ($holdRequest->getRecordType() === 'i') {
+                        $item = $this->processItem($holdRequest);
+
+                        $bib = $this->processBib($item);
+
+                        $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
+                    }
+                } else { // $holdRequestResult->isSuccess() === false, error !== null
+                    $this->patchHoldRequestService($holdRequestResult);
+
+                    $this->handleMissingItem($holdRequestResult);
+                    $this->handleMissingPatron($holdRequestResult);
 
 
-
-                if ($holdRequest->getRecordType() === 'i') {
-                    $item = $this->processItem($holdRequest);
-
-                    $bib = $this->processBib($item);
-
-                    $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
                 }
             } catch (\Exception $exception) {
                 APILogger::addError(
@@ -163,7 +198,7 @@ class HoldRequestResultConsumerListener extends Listener
                 );
             } catch (\Throwable $exception) {
                 APILogger::addError(
-                    'Exception thrown: ' . $exception->getMessage()
+                    'Throwable thrown: ' . $exception->getMessage()
                 );
             }
         }
