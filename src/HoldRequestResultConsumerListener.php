@@ -22,10 +22,17 @@ class HoldRequestResultConsumerListener extends Listener
     /**
      * @param ListenerEvent $listenerEvent
      * @return HoldRequestResult
+     * @throws APIException
      */
     protected function processHoldRequestResult(ListenerEvent $listenerEvent)
     {
-        $data = $listenerEvent->getListenerData()->getData();
+        $listenerData = $listenerEvent->getListenerData();
+
+        if ($listenerData === null) {
+            throw new APIException('No listener data');
+        }
+
+        $data = $listenerData->getData();
 
         APILogger::addDebug('data', $data);
 

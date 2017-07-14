@@ -12,7 +12,7 @@ class ItemClient extends APIClient
     /**
      * @param string $itemId
      * @param $nyplSource
-     * @return Item
+     * @return Item | null
      */
     public static function getItemByIdAndSource($itemId = '', $nyplSource)
     {
@@ -30,7 +30,10 @@ class ItemClient extends APIClient
         );
 
         if ($response['statusCode'] !== 200) {
-            APILogger::addError('Failed', array('Failed to retrieve item ', $itemId));
+            APILogger::addError(
+                'Failed',
+                array('Failed to retrieve item ', $itemId, $response['type'], $response['message'])
+            );
             return null;
         }
 

@@ -91,6 +91,14 @@ class HoldRequestClient extends APIClient
 
         APILogger::addDebug('Retrieved hold request by id', $response['data']);
 
+        if ($response['statusCode'] !== 200) {
+            APILogger::addError(
+                'Failed',
+                array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
+            );
+            return null;
+        }
+
         return new HoldRequest($response['data']);
     }
 
@@ -119,6 +127,15 @@ class HoldRequestClient extends APIClient
         $response = json_decode((string)$response->getBody(), true);
 
         APILogger::addDebug('Patched hold request by id', $response['data']);
+
+        if ($response['statusCode'] !== 200) {
+            APILogger::addError(
+                'Failed',
+                array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
+            );
+            return null;
+        }
+
 
         return new HoldRequest($response['data']);
     }
