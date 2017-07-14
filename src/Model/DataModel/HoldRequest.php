@@ -115,7 +115,7 @@ class HoldRequest extends DataModel
     /**
      * Document delivery data represented in an Electronic Document Delivery (EDD).
      *
-     * @var DocDeliveryData
+     * @var DocDeliveryData | null
      */
     public $docDeliveryData;
 
@@ -360,7 +360,7 @@ class HoldRequest extends DataModel
     }
 
     /**
-     * @return DocDeliveryData
+     * @return DocDeliveryData | null
      */
     public function getDocDeliveryData()
     {
@@ -368,7 +368,7 @@ class HoldRequest extends DataModel
     }
 
     /**
-     * @param DocDeliveryData $docDeliveryData
+     * @param DocDeliveryData | null $docDeliveryData
      */
     public function setDocDeliveryData(DocDeliveryData $docDeliveryData)
     {

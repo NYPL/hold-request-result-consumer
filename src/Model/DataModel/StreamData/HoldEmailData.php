@@ -47,6 +47,12 @@ class HoldEmailData extends StreamData
      */
     public $deliveryLocation = '';
 
+
+    /**
+     * @var DocDeliveryData | null
+     */
+    public $docDeliveryData;
+
     /**
      * @var bool
      */
@@ -77,6 +83,8 @@ class HoldEmailData extends StreamData
         $this->setPatronName($this->fixPatronName($patron));
 
         $this->setPatronEmail($this->fixPatronEmail($holdRequest, $patron));
+
+        $this->setDocDeliveryData($holdRequest->getDocDeliveryData());
     }
 
     /**
@@ -114,7 +122,7 @@ class HoldEmailData extends StreamData
     public function fixPatronEmail(HoldRequest $holdRequest, Patron $patron): string
     {
         /**
-         * @var DocDeliveryData
+         * @var DocDeliveryData | null
          */
         $docDeliveryData = $holdRequest->getDocDeliveryData();
         $email = '';
@@ -259,6 +267,22 @@ class HoldEmailData extends StreamData
     public function setDeliveryLocation(string $deliveryLocation)
     {
         $this->deliveryLocation = $deliveryLocation;
+    }
+
+    /**
+     * @return DocDeliveryData | null
+     */
+    public function getDocDeliveryData()
+    {
+        return $this->docDeliveryData;
+    }
+
+    /**
+     * @param DocDeliveryData | null $docDeliveryData
+     */
+    public function setDocDeliveryData($docDeliveryData)
+    {
+        $this->docDeliveryData = $docDeliveryData;
     }
 
     /**
