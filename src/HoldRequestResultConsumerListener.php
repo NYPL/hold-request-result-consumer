@@ -210,10 +210,15 @@ class HoldRequestResultConsumerListener extends Listener
                         $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
                     }
                 } else { // $holdRequestResult->isSuccess() === false, error !== null
-                    $this->patchHoldRequestService($holdRequestResult);
+                    $holdRequest = $this->getHoldRequest($holdRequestResult);
 
-                    $this->handleMissingItem($holdRequestResult);
-                    $this->handleMissingPatron($holdRequestResult);
+                    // TODO: Remove this logic when this loop is fixed
+                    if (!$holdRequest->isProcessed()) {
+                        $this->patchHoldRequestService($holdRequestResult);
+
+                        $this->handleMissingItem($holdRequestResult);
+                        $this->handleMissingPatron($holdRequestResult);
+                    }
                 }
             } catch (\Exception $exception) {
                 APILogger::addError(
