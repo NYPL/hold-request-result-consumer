@@ -24,7 +24,7 @@ class HoldRequestResultConsumerListener extends Listener
      * @return HoldRequestResult
      * @throws APIException
      */
-    protected function processHoldRequestResult(ListenerEvent $listenerEvent)
+    protected function getHoldRequestResult(ListenerEvent $listenerEvent)
     {
         $listenerData = $listenerEvent->getListenerData();
 
@@ -62,7 +62,7 @@ class HoldRequestResultConsumerListener extends Listener
      * @param HoldRequestResult $holdRequestResult
      * @return HoldRequest
      */
-    protected function processHoldRequest($holdRequestResult)
+    protected function getHoldRequest($holdRequestResult)
     {
         $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
         APILogger::addDebug('HoldRequest', (array) $holdRequest);
@@ -74,7 +74,7 @@ class HoldRequestResultConsumerListener extends Listener
      * @param $holdRequest
      * @return Item
      */
-    protected function processItem($holdRequest)
+    protected function getItem($holdRequest)
     {
         $item = ItemClient::getItemByIdAndSource(
             $holdRequest->getRecord(),
@@ -91,7 +91,7 @@ class HoldRequestResultConsumerListener extends Listener
      * @param Item $item
      * @return Bib
      */
-    protected function processBib($item)
+    protected function getBib($item)
     {
         $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
         APILogger::addDebug('Bib', (array) $bib);
@@ -165,14 +165,14 @@ class HoldRequestResultConsumerListener extends Listener
          */
         foreach ($this->getListenerEvents()->getEvents() as $listenerEvent) {
             try {
-                $holdRequestResult = $this->processHoldRequestResult($listenerEvent);
+                $holdRequestResult = $this->getHoldRequestResult($listenerEvent);
 
                 if ($holdRequestResult->isSuccess() === true) {
                     // Assumes error === null
 
                     $this->patchHoldRequestService($holdRequestResult);
 
-                    $holdRequest = $this->processHoldRequest($holdRequestResult);
+                    $holdRequest = $this->getHoldRequest($holdRequestResult);
 
                     if ($holdRequest === null) {
                         throw new APIException('Cannot get Hold Request for Request Id ' .
@@ -189,7 +189,7 @@ class HoldRequestResultConsumerListener extends Listener
                     }
 
                     if ($holdRequest->getRecordType() === 'i') {
-                        $item = $this->processItem($holdRequest);
+                        $item = $this->getItem($holdRequest);
 
                         if ($item === null) {
                             throw new APIException(
@@ -198,7 +198,7 @@ class HoldRequestResultConsumerListener extends Listener
                             );
                         }
 
-                        $bib = $this->processBib($item);
+                        $bib = $this->getBib($item);
 
                         if ($bib === null) {
                             throw new APIException(
