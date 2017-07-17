@@ -10,17 +10,25 @@ class PatronClient extends APIClient
     /**
      * @param string $patronId
      *
-     * @return Patron
+     * @return Patron | null
      */
     public static function getPatronById($patronId = '')
     {
         $url = Config::get('API_PATRON_URL') . '/' . $patronId;
 
-        APILogger::addDebug('Retrieving patron by id', $url);
+        APILogger::addDebug('Retrieving patron by id', (array) $url);
 
         $response = self::get($url);
 
         $response = json_decode((string) $response->getBody(), true);
+
+        if ($response['statusCode'] !== 200) {
+            APILogger::addError(
+                'Failed',
+                array('Failed to retrieve patron ', $patronId, $response['type'], $response['message'])
+            );
+            return null;
+        }
 
         return new Patron($response['data']);
     }

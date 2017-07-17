@@ -83,13 +83,21 @@ class HoldRequestClient extends APIClient
 
         $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
-        APILogger::addDebug('Retrieving hold request by id', $url);
+        APILogger::addDebug('Retrieving hold request by id',  (array) $url);
 
         $response = self::get($url);
 
         $response = json_decode((string)$response->getBody(), true);
 
         APILogger::addDebug('Retrieved hold request by id', $response['data']);
+
+        if ($response['statusCode'] !== 200) {
+            APILogger::addError(
+                'Failed',
+                array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
+            );
+            return null;
+        }
 
         return new HoldRequest($response['data']);
     }
@@ -110,7 +118,7 @@ class HoldRequestClient extends APIClient
 
         $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
-        APILogger::addDebug('Patching hold request by id', $url);
+        APILogger::addDebug('Patching hold request by id', (array) $url);
 
         $body = ["processed" => $processed, "success" => $success];
 
@@ -119,6 +127,15 @@ class HoldRequestClient extends APIClient
         $response = json_decode((string)$response->getBody(), true);
 
         APILogger::addDebug('Patched hold request by id', $response['data']);
+
+        if ($response['statusCode'] !== 200) {
+            APILogger::addError(
+                'Failed',
+                array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
+            );
+            return null;
+        }
+
 
         return new HoldRequest($response['data']);
     }

@@ -4,7 +4,6 @@ namespace NYPL\HoldRequestResultConsumer;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
-use NYPL\HoldRequestResultConsumer\Model\DataModel\Location;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
@@ -21,12 +20,19 @@ use NYPL\Starter\Listener\ListenerResult;
 class HoldRequestResultConsumerListener extends Listener
 {
     /**
-     * @param $listenerEvent
+     * @param ListenerEvent $listenerEvent
      * @return HoldRequestResult
+     * @throws APIException
      */
-    protected function processHoldRequestResult($listenerEvent)
+    protected function getHoldRequestResult(ListenerEvent $listenerEvent)
     {
-        $data = $listenerEvent->getListenerData()->getData();
+        $listenerData = $listenerEvent->getListenerData();
+
+        if ($listenerData === null) {
+            throw new APIException('No listener data');
+        }
+
+        $data = $listenerData->getData();
 
         APILogger::addDebug('data', $data);
 
@@ -40,7 +46,7 @@ class HoldRequestResultConsumerListener extends Listener
     /**
      * @param HoldRequestResult $holdRequestResult
      */
-    protected function processHoldRequestService($holdRequestResult)
+    protected function patchHoldRequestService($holdRequestResult)
     {
         // Updating Hold Request Service
         $holdRequestService = HoldRequestClient::patchHoldRequestById(
@@ -56,7 +62,7 @@ class HoldRequestResultConsumerListener extends Listener
      * @param HoldRequestResult $holdRequestResult
      * @return HoldRequest
      */
-    protected function processHoldRequest($holdRequestResult)
+    protected function getHoldRequest($holdRequestResult)
     {
         $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
         APILogger::addDebug('HoldRequest', (array) $holdRequest);
@@ -65,10 +71,10 @@ class HoldRequestResultConsumerListener extends Listener
     }
 
     /**
-     * @param HoldRequest $holdRequest
+     * @param $holdRequest
      * @return Item
      */
-    protected function processItem($holdRequest)
+    protected function getItem($holdRequest)
     {
         $item = ItemClient::getItemByIdAndSource(
             $holdRequest->getRecord(),
@@ -76,7 +82,7 @@ class HoldRequestResultConsumerListener extends Listener
         );
 
         APILogger::addDebug('Item', (array) $item);
-        APILogger::addDebug('BibIds', $item->getBibIds());
+        APILogger::addDebug('BibIds', (array) $item->getBibIds());
 
         return $item;
     }
@@ -85,12 +91,44 @@ class HoldRequestResultConsumerListener extends Listener
      * @param Item $item
      * @return Bib
      */
-    protected function processBib($item)
+    protected function getBib($item)
     {
         $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
         APILogger::addDebug('Bib', (array) $bib);
 
         return $bib;
+    }
+
+    /**
+     * @param HoldRequestResult $holdRequestResult
+     * @throws APIException
+     */
+    protected function handleMissingItem(HoldRequestResult $holdRequestResult)
+    {
+        if ($holdRequestResult->getError() !== null &&
+            $holdRequestResult->getError()->getType() == 'hold-request-record-missing-item-data'
+        ) {
+            throw new APIException(
+                'Hold request record missing Item data for Request Id ' .
+                $holdRequestResult->getHoldRequestId()
+            );
+        }
+    }
+
+    /**
+     * @param HoldRequestResult $holdRequestResult
+     * @throws APIException
+     */
+    protected function handleMissingPatron(HoldRequestResult $holdRequestResult)
+    {
+        if ($holdRequestResult->getError() !== null &&
+            $holdRequestResult->getError()->getType() == 'hold-request-record-missing-patron-data'
+        ) {
+            throw new APIException(
+                'Hold request record missing Patron data for Request Id ' .
+                $holdRequestResult->getHoldRequestId()
+            );
+        }
     }
 
     /**
@@ -127,28 +165,69 @@ class HoldRequestResultConsumerListener extends Listener
          */
         foreach ($this->getListenerEvents()->getEvents() as $listenerEvent) {
             try {
-                $holdRequestResult = $this->processHoldRequestResult($listenerEvent);
+                $holdRequestResult = $this->getHoldRequestResult($listenerEvent);
 
-                $this->processHoldRequestService($holdRequestResult);
+                if ($holdRequestResult->isSuccess() === true) {
+                    // Assumes error === null
 
-                $holdRequest = $this->processHoldRequest($holdRequestResult);
+                    $this->patchHoldRequestService($holdRequestResult);
 
-                $patron = PatronClient::getPatronById($holdRequest->getPatron());
+                    $holdRequest = $this->getHoldRequest($holdRequestResult);
 
+                    if ($holdRequest === null) {
+                        throw new APIException('Cannot get Hold Request for Request Id ' .
+                            $holdRequestResult->getHoldRequestId());
+                    }
 
+                    $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
-                if ($holdRequest->getRecordType() === 'i') {
-                    $item = $this->processItem($holdRequest);
+                    if ($patron === null) {
+                        throw new APIException(
+                            'Hold request record missing Patron data for Request Id ' .
+                            $holdRequestResult->getHoldRequestId()
+                        );
+                    }
 
-                    $bib = $this->processBib($item);
+                    if ($holdRequest->getRecordType() === 'i') {
+                        $item = $this->getItem($holdRequest);
 
-                    $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
+                        if ($item === null) {
+                            throw new APIException(
+                                'Hold request record missing Item data for Request Id ' .
+                                $holdRequestResult->getHoldRequestId()
+                            );
+                        }
+
+                        $bib = $this->getBib($item);
+
+                        if ($bib === null) {
+                            throw new APIException(
+                                'Hold request record missing Bib data for Request Id ' .
+                                $holdRequestResult->getHoldRequestId()
+                            );
+                        }
+
+                        $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
+                    }
+                } else { // $holdRequestResult->isSuccess() === false, error !== null
+                    $holdRequest = $this->getHoldRequest($holdRequestResult);
+
+                    // TODO: Remove this logic when this loop is fixed
+                    if (!$holdRequest->isProcessed()) {
+                        $this->patchHoldRequestService($holdRequestResult);
+
+                        $this->handleMissingItem($holdRequestResult);
+                        $this->handleMissingPatron($holdRequestResult);
+                    }
                 }
             } catch (\Exception $exception) {
-                APILogger::addError([
-                    'HoldRequestId' => $holdRequestResult->getHoldRequestId(),
-                    'message' => $exception->getMessage()
-                ]);
+                APILogger::addError(
+                    'Exception thrown: ' . $exception->getMessage()
+                );
+            } catch (\Throwable $exception) {
+                APILogger::addError(
+                    'Throwable thrown: ' . $exception->getMessage()
+                );
             }
         }
 

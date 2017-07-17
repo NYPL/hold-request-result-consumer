@@ -25,7 +25,7 @@ class HoldRequestResult extends StreamData
     public $holdRequestId;
 
     /**
-     * @var Error
+     * @var Error | null
      */
     public $error;
 
@@ -79,7 +79,7 @@ class HoldRequestResult extends StreamData
 
 
     /**
-     * @return Error
+     * @return Error | null
      */
     public function getError(): Error
     {
@@ -87,7 +87,7 @@ class HoldRequestResult extends StreamData
     }
 
     /**
-     * @param Error $error
+     * @param Error | null $error
      */
     public function setError(Error $error)
     {
@@ -96,7 +96,7 @@ class HoldRequestResult extends StreamData
 
     /**
      * @param $data
-     * @return Error
+     * @return Error | null
      */
     public function translateError($data)
     {
