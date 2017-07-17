@@ -218,6 +218,44 @@ class HoldRequestResultConsumerListener extends Listener
 
                         $this->handleMissingItem($holdRequestResult);
                         $this->handleMissingPatron($holdRequestResult);
+
+                        $holdRequest = $this->getHoldRequest($holdRequestResult);
+
+                        if ($holdRequest === null) {
+                            throw new APIException('Cannot get Hold Request for Request Id ' .
+                                $holdRequestResult->getHoldRequestId());
+                        }
+
+                        $patron = PatronClient::getPatronById($holdRequest->getPatron());
+
+                        if ($patron === null) {
+                            throw new APIException(
+                                'Hold request record missing Patron data for Request Id ' .
+                                $holdRequestResult->getHoldRequestId()
+                            );
+                        }
+
+                        if ($holdRequest->getRecordType() === 'i') {
+                            $item = $this->getItem($holdRequest);
+
+                            if ($item === null) {
+                                throw new APIException(
+                                    'Hold request record missing Item data for Request Id ' .
+                                    $holdRequestResult->getHoldRequestId()
+                                );
+                            }
+
+                            $bib = $this->getBib($item);
+
+                            if ($bib === null) {
+                                throw new APIException(
+                                    'Hold request record missing Bib data for Request Id ' .
+                                    $holdRequestResult->getHoldRequestId()
+                                );
+                            }
+
+                            $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
+                        }
                     }
                 }
             } catch (\Exception $exception) {
