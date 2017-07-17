@@ -60,19 +60,27 @@ class HoldRequestResultConsumerListener extends Listener
 
     /**
      * @param HoldRequestResult $holdRequestResult
-     * @return HoldRequest
+     * @return HoldRequest|null
+     * @throws APIException
      */
     protected function getHoldRequest($holdRequestResult)
     {
         $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
+
         APILogger::addDebug('HoldRequest', (array) $holdRequest);
+
+        if ($holdRequest === null) {
+            throw new APIException('Cannot get Hold Request for Request Id ' .
+                $holdRequestResult->getHoldRequestId());
+        }
 
         return $holdRequest;
     }
 
     /**
-     * @param $holdRequest
-     * @return Item
+     * @param HoldRequest $holdRequest
+     * @return null|Item
+     * @throws APIException
      */
     protected function getItem($holdRequest)
     {
@@ -84,17 +92,33 @@ class HoldRequestResultConsumerListener extends Listener
         APILogger::addDebug('Item', (array) $item);
         APILogger::addDebug('BibIds', (array) $item->getBibIds());
 
+        if ($item === null) {
+            throw new APIException(
+                'Hold request record missing Item data for Request Id ' .
+                $holdRequestResult->getHoldRequestId()
+            );
+        }
+
         return $item;
     }
 
     /**
      * @param Item $item
-     * @return Bib
+     * @param HoldRequestResult $holdRequestResult
+     * @return null|Bib
+     * @throws APIException
      */
-    protected function getBib($item)
+    protected function getBib($item, $holdRequestResult)
     {
         $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
         APILogger::addDebug('Bib', (array) $bib);
+
+        if ($bib === null) {
+            throw new APIException(
+                'Hold request record missing Bib data for Request Id ' .
+                $holdRequestResult->getHoldRequestId()
+            );
+        }
 
         return $bib;
     }
@@ -174,11 +198,6 @@ class HoldRequestResultConsumerListener extends Listener
 
                     $holdRequest = $this->getHoldRequest($holdRequestResult);
 
-                    if ($holdRequest === null) {
-                        throw new APIException('Cannot get Hold Request for Request Id ' .
-                            $holdRequestResult->getHoldRequestId());
-                    }
-
                     $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
                     if ($patron === null) {
@@ -191,21 +210,7 @@ class HoldRequestResultConsumerListener extends Listener
                     if ($holdRequest->getRecordType() === 'i') {
                         $item = $this->getItem($holdRequest);
 
-                        if ($item === null) {
-                            throw new APIException(
-                                'Hold request record missing Item data for Request Id ' .
-                                $holdRequestResult->getHoldRequestId()
-                            );
-                        }
-
-                        $bib = $this->getBib($item);
-
-                        if ($bib === null) {
-                            throw new APIException(
-                                'Hold request record missing Bib data for Request Id ' .
-                                $holdRequestResult->getHoldRequestId()
-                            );
-                        }
+                        $bib = $this->getBib($item, $holdRequestResult);
 
                         $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
                     }
@@ -221,11 +226,6 @@ class HoldRequestResultConsumerListener extends Listener
 
                         $holdRequest = $this->getHoldRequest($holdRequestResult);
 
-                        if ($holdRequest === null) {
-                            throw new APIException('Cannot get Hold Request for Request Id ' .
-                                $holdRequestResult->getHoldRequestId());
-                        }
-
                         $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
                         if ($patron === null) {
@@ -238,21 +238,7 @@ class HoldRequestResultConsumerListener extends Listener
                         if ($holdRequest->getRecordType() === 'i') {
                             $item = $this->getItem($holdRequest);
 
-                            if ($item === null) {
-                                throw new APIException(
-                                    'Hold request record missing Item data for Request Id ' .
-                                    $holdRequestResult->getHoldRequestId()
-                                );
-                            }
-
-                            $bib = $this->getBib($item);
-
-                            if ($bib === null) {
-                                throw new APIException(
-                                    'Hold request record missing Bib data for Request Id ' .
-                                    $holdRequestResult->getHoldRequestId()
-                                );
-                            }
+                            $bib = $this->getBib($item, $holdRequestResult);
 
                             $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
                         }
