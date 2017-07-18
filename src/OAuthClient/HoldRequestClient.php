@@ -14,16 +14,16 @@ class HoldRequestClient extends APIClient
      * @return bool
      * @throws APIException
      */
-    public static function validateRequestId($holdRequestId)
+    public static function validateRequestId(int $holdRequestId)
     {
-        if (!isset($holdRequestId) || $holdRequestId === '') {
+        if (!isset($holdRequestId) || $holdRequestId < 1) {
             throw new APIException(
-                'No Hold Request Id.',
-                'No Hold Request Id provided.',
-                0,
+                'Not Acceptable: Invalid hold request id.',
+                'Not Acceptable: Invalid hold request id.',
+                406,
                 null,
-                500,
-                new ErrorResponse(500, 'no-hold-request-id', 'No Hold Request Id provided.')
+                406,
+                new ErrorResponse(406, 'invalid-hold-request-id', 'No Hold Request Id provided.')
             );
         }
 
@@ -39,12 +39,12 @@ class HoldRequestClient extends APIClient
     {
         if (!isset($processed)) {
             throw new APIException(
-                'Processed flag not set',
-                'Processed flag is not set.',
-                0,
+                'Not Acceptable: Processed flag not set',
+                'Not Acceptable: Processed flag is not set.',
+                406,
                 null,
-                500,
-                new ErrorResponse(500, 'processed-flag-not-set', 'Processed flag is not set.')
+                406,
+                new ErrorResponse(406, 'processed-flag-not-set', '406 Not Acceptable: Processed flag is not set.')
             );
         }
 
@@ -60,12 +60,12 @@ class HoldRequestClient extends APIClient
     {
         if (!isset($success)) {
             throw new APIException(
-                'Success flag not set',
-                'Success flag is not set.',
-                0,
+                'Not Acceptable: Success flag not set',
+                'Not Acceptable: Success flag is not set.',
+                406,
                 null,
-                500,
-                new ErrorResponse(500, 'success-flag-not-set', 'Success flag is not set.')
+                406,
+                new ErrorResponse(406, 'success-flag-not-set', '406 Not Acceptable: Success flag is not set.')
             );
         }
 
@@ -73,17 +73,17 @@ class HoldRequestClient extends APIClient
     }
 
     /**
-     * @param string $holdRequestId
+     * @param  $holdRequestId
      * @return HoldRequest
      * @throws APIException
      */
-    public static function getHoldRequestById($holdRequestId = '')
+    public static function getHoldRequestById($holdRequestId)
     {
         self::validateRequestId($holdRequestId);
 
         $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
-        APILogger::addDebug('Retrieving hold request by id',  (array) $url);
+        APILogger::addDebug('Retrieving hold request by id', (array) $url);
 
         $response = self::get($url);
 

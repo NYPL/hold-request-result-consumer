@@ -195,6 +195,7 @@ class HoldRequestResultConsumerListener extends Listener
                     // Assumes error === null
 
                     $this->patchHoldRequestService($holdRequestResult);
+                    $holdRequestResult->setHoldRequestId(-1);
 
                     $holdRequest = $this->getHoldRequest($holdRequestResult);
 
@@ -244,9 +245,11 @@ class HoldRequestResultConsumerListener extends Listener
                         }
                     }
                 }
+
             } catch (\Exception $exception) {
                 APILogger::addError(
-                    'Exception thrown: ' . $exception->getMessage()
+                    'Exception thrown: ' . $exception->getMessage() .
+                    ', Error code: ' . $exception->getCode()
                 );
             } catch (\Throwable $exception) {
                 APILogger::addError(
