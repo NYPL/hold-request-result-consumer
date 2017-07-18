@@ -16,14 +16,14 @@ class HoldRequestClient extends APIClient
      */
     public static function validateRequestId(int $holdRequestId)
     {
-        if (!isset($holdRequestId) || !is_numeric($holdRequestId) || $holdRequestId < 1) {
+        if (!isset($holdRequestId) || $holdRequestId < 1) {
             throw new APIException(
-                'Not Acceptable: Invalid hold request id: ' . $holdRequestId,
-                'Not Acceptable: Invalid hold request id: ' . $holdRequestId,
+                'Not Acceptable: Invalid hold request id.',
+                'Not Acceptable: Invalid hold request id.',
                 406,
                 null,
                 406,
-                new ErrorResponse(406, 'invalid-hold-request-id', 'Invalid hold request id: ' . $holdRequestId)
+                new ErrorResponse(406, 'invalid-hold-request-id', 'No Hold Request Id provided.')
             );
         }
 
