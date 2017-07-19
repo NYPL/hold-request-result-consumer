@@ -127,7 +127,7 @@ class HoldRequestResultConsumerListener extends Listener
      * @param HoldRequestResult $holdRequestResult
      * @throws APIException
      */
-    protected function handleMissingItem(HoldRequestResult $holdRequestResult)
+    protected function skipMissingItem(HoldRequestResult $holdRequestResult)
     {
         if ($holdRequestResult->getError() !== null &&
             $holdRequestResult->getError()->getType() == 'hold-request-record-missing-item-data'
@@ -143,7 +143,7 @@ class HoldRequestResultConsumerListener extends Listener
      * @param HoldRequestResult $holdRequestResult
      * @throws APIException
      */
-    protected function handleMissingPatron(HoldRequestResult $holdRequestResult)
+    protected function skipMissingPatron(HoldRequestResult $holdRequestResult)
     {
         if ($holdRequestResult->getError() !== null &&
             $holdRequestResult->getError()->getType() == 'hold-request-record-missing-patron-data'
@@ -221,8 +221,8 @@ class HoldRequestResultConsumerListener extends Listener
                     if (!$holdRequest->isProcessed()) {
                         $this->patchHoldRequestService($holdRequestResult);
 
-                        $this->handleMissingItem($holdRequestResult);
-                        $this->handleMissingPatron($holdRequestResult);
+                        $this->skipMissingItem($holdRequestResult);
+                        $this->skipMissingPatron($holdRequestResult);
 
                         $holdRequest = $this->getHoldRequest($holdRequestResult);
 
