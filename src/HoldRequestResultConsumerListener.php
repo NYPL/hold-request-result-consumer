@@ -195,7 +195,6 @@ class HoldRequestResultConsumerListener extends Listener
                     // Assumes error === null
 
                     $this->patchHoldRequestService($holdRequestResult);
-                    $holdRequestResult->setHoldRequestId(-1);
 
                     $holdRequest = $this->getHoldRequest($holdRequestResult);
 
