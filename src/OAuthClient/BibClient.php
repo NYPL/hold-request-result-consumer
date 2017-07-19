@@ -2,15 +2,18 @@
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
+use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
+use NYPL\Starter\Model\Response\ErrorResponse;
 
 class BibClient extends APIClient
 {
     /**
      * @param string $bibId
      * @param $nyplSource
-     * @return Bib | null
+     * @return null|Bib
+     * @throws APIException
      */
     public static function getBibByIdAndSource($bibId = '', $nyplSource)
     {
@@ -27,14 +30,28 @@ class BibClient extends APIClient
             $response['data']
         );
 
-        if ($response['statusCode'] !== 200) {
+        // Check statusCode range
+        if ($response['statusCode'] === 200) {
+            return new Bib($response['data']);
+        } elseif ($response['statusCode'] >= 500 && $response['statusCode'] <= 599) {
+            throw new APIException(
+                'Server Error',
+                'getBibByIdAndSource met a server error',
+                $response['statusCode'],
+                null,
+                $response['statusCode'],
+                new ErrorResponse(
+                    $response['statusCode'],
+                    'internal-server-error',
+                    'getBibByIdAndSource met a server error'
+                )
+            );
+        } else {
             APILogger::addError(
                 'Failed',
                 array('Failed to retrieve bib ', $bibId, $response['type'], $response['message'])
             );
             return null;
         }
-
-        return new Bib($response['data']);
     }
 }

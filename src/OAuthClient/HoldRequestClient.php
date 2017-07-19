@@ -142,15 +142,28 @@ class HoldRequestClient extends APIClient
 
         APILogger::addDebug('Patched hold request by id', $response['data']);
 
-        if ($response['statusCode'] !== 200) {
+        // Check statusCode range
+        if ($response['statusCode'] === 200) {
+            return new HoldRequest($response['data']);
+        } elseif ($response['statusCode'] >= 500 && $response['statusCode'] <= 599) {
+            throw new APIException(
+                'Server Error',
+                'patchHoldRequestById met a server error',
+                $response['statusCode'],
+                null,
+                $response['statusCode'],
+                new ErrorResponse(
+                    $response['statusCode'],
+                    'internal-server-error',
+                    'patchHoldRequestById met a server error'
+                )
+            );
+        } else {
             APILogger::addError(
                 'Failed',
                 array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
             );
             return null;
         }
-
-
-        return new HoldRequest($response['data']);
     }
 }
