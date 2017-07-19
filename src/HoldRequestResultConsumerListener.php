@@ -195,7 +195,6 @@ class HoldRequestResultConsumerListener extends Listener
                     // Assumes error === null
 
                     $this->patchHoldRequestService($holdRequestResult);
-                    $holdRequestResult->setHoldRequestId(-1);
 
                     $holdRequest = $this->getHoldRequest($holdRequestResult);
 
@@ -251,6 +250,9 @@ class HoldRequestResultConsumerListener extends Listener
                     'Exception thrown: ' . $exception->getMessage() .
                     ', Error code: ' . $exception->getCode()
                 );
+                if ($exception->getCode() >= 500 && $exception->getCode() <= 599) {
+                    return new ListenerResult(false, 'Retrying process');
+                }
             } catch (\Throwable $exception) {
                 APILogger::addError(
                     'Throwable thrown: ' . $exception->getMessage()
