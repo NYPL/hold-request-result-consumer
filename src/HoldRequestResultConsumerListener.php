@@ -31,7 +31,7 @@ class HoldRequestResultConsumerListener extends Listener
         $listenerData = $listenerEvent->getListenerData();
 
         if ($listenerData === null) {
-            throw new APIException('No listener data');
+            throw new NotRetryableException('No listener data');
         }
 
         $data = $listenerData->getData();
@@ -72,7 +72,7 @@ class HoldRequestResultConsumerListener extends Listener
         APILogger::addDebug('HoldRequest', (array) $holdRequest);
 
         if ($holdRequest === null) {
-            throw new APIException('Cannot get Hold Request for Request Id ' .
+            throw new NotRetryableException('Cannot get Hold Request for Request Id ' .
                 $holdRequestResult->getHoldRequestId());
         }
 
@@ -95,7 +95,7 @@ class HoldRequestResultConsumerListener extends Listener
         APILogger::addDebug('BibIds', (array) $item->getBibIds());
 
         if ($item === null) {
-            throw new APIException(
+            throw new NotRetryableException(
                 'Hold request record missing Item data for Request Id ' .
                 $holdRequestResult->getHoldRequestId()
             );
@@ -116,7 +116,7 @@ class HoldRequestResultConsumerListener extends Listener
         APILogger::addDebug('Bib', (array) $bib);
 
         if ($bib === null) {
-            throw new APIException(
+            throw new NotRetryableException(
                 'Hold request record missing Bib data for Request Id ' .
                 $holdRequestResult->getHoldRequestId()
             );
@@ -134,7 +134,7 @@ class HoldRequestResultConsumerListener extends Listener
         if ($holdRequestResult->getError() !== null &&
             $holdRequestResult->getError()->getType() == 'hold-request-record-missing-item-data'
         ) {
-            throw new APIException(
+            throw new NotRetryableException(
                 'Hold request record missing Item data for Request Id ' .
                 $holdRequestResult->getHoldRequestId()
             );
@@ -150,7 +150,7 @@ class HoldRequestResultConsumerListener extends Listener
         if ($holdRequestResult->getError() !== null &&
             $holdRequestResult->getError()->getType() == 'hold-request-record-missing-patron-data'
         ) {
-            throw new APIException(
+            throw new NotRetryableException(
                 'Hold request record missing Patron data for Request Id ' .
                 $holdRequestResult->getHoldRequestId()
             );
