@@ -104,12 +104,12 @@ class HoldEmailData extends StreamData
             return $name;
         } else {
             throw new NotRetryableException(
-                'No names',
-                'Patron did not provide any names',
-                0,
+                'Not Acceptable: No names for patron',
+                'Not Acceptable: No names for patron',
+                406,
                 null,
-                500,
-                new ErrorResponse(500, 'no-name', 'Patron did not provide any names')
+                406,
+                new ErrorResponse(500, 'no-name', 'Not Acceptable: No names for patron')
             );
         }
     }
