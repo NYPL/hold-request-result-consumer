@@ -1,10 +1,7 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
-use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
@@ -16,7 +13,6 @@ class BibClient extends APIClient
      * @param string $bibId
      * @param $nyplSource
      * @return null|Bib
-     * @throws NonRetryableException
      * @throws RetryableException
      */
     public static function getBibByIdAndSource($bibId = '', $nyplSource)
@@ -39,6 +35,19 @@ class BibClient extends APIClient
         // Check statusCode range
         if ($statusCode === 200) {
             return new Bib($response['data']);
+        } elseif ($statusCode >= 500 && $statusCode <= 599) {
+            throw new RetryableException(
+                'Server Error',
+                'getBibByIdAndSource met a server error',
+                $statusCode,
+                null,
+                $statusCode,
+                new ErrorResponse(
+                    $statusCode,
+                    'internal-server-error',
+                    'getBibByIdAndSource met a server error'
+                )
+            );
         } else {
             APILogger::addError(
                 'Failed',

@@ -100,6 +100,19 @@ class HoldRequestClient extends APIClient
         // Check statusCode range
         if ($statusCode === 200) {
             return new HoldRequest($response['data']);
+        } elseif ($statusCode >= 500 && $statusCode <= 599) {
+            throw new RetryableException(
+                'Server Error',
+                'getHoldRequestById met a server error',
+                $statusCode,
+                null,
+                $statusCode,
+                new ErrorResponse(
+                    $statusCode,
+                    'internal-server-error',
+                    'getHoldRequestById met a server error'
+                )
+            );
         } else {
             APILogger::addError(
                 'Failed',
@@ -114,7 +127,6 @@ class HoldRequestClient extends APIClient
      * @param bool $processed
      * @param bool $success
      * @return null|HoldRequest
-     * @throws NonRetryableException
      * @throws RetryableException
      */
     public static function patchHoldRequestById($holdRequestId = '', bool $processed, bool $success)
@@ -140,6 +152,19 @@ class HoldRequestClient extends APIClient
         // Check statusCode range
         if ($statusCode === 200) {
             return new HoldRequest($response['data']);
+        } elseif ($statusCode >= 500 && $statusCode <= 599) {
+            throw new RetryableException(
+                'Server Error',
+                'patchHoldRequestById met a server error',
+                $statusCode,
+                null,
+                $statusCode,
+                new ErrorResponse(
+                    $statusCode,
+                    'internal-server-error',
+                    'patchHoldRequestById met a server error'
+                )
+            );
         } else {
             APILogger::addError(
                 'Failed',

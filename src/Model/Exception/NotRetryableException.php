@@ -1,11 +1,12 @@
 <?php
+
 namespace NYPL\HoldRequestResultConsumer\Model\Exception;
 
 use Exception;
 use NYPL\Starter\APIException;
 use NYPL\Starter\Model\Response\ErrorResponse;
 
-class RetryableException extends APIException
+class NotRetryableException extends APIException
 {
     public function __construct(
         $message = '',

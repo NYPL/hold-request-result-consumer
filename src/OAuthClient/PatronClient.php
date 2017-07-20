@@ -1,10 +1,7 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
-use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
@@ -15,7 +12,6 @@ class PatronClient extends APIClient
     /**
      * @param string $patronId
      * @return null|Patron
-     * @throws NonRetryableException
      * @throws RetryableException
      */
     public static function getPatronById($patronId = '')
@@ -38,6 +34,19 @@ class PatronClient extends APIClient
         // Check statusCode range
         if ($statusCode === 200) {
             return new Patron($response['data']);
+        } elseif ($statusCode >= 500 && $statusCode <= 599) {
+            throw new RetryableException(
+                'Server Error',
+                'getPatronById met a server error',
+                $statusCode,
+                null,
+                $statusCode,
+                new ErrorResponse(
+                    $statusCode,
+                    'internal-server-error',
+                    'getPatronById met a server error'
+                )
+            );
         } else {
             APILogger::addError(
                 'Failed',

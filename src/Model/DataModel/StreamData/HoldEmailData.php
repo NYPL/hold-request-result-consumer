@@ -88,6 +88,7 @@ class HoldEmailData extends StreamData
         $this->setDocDeliveryData($holdRequest->getDocDeliveryData());
     }
 
+
     /**
      * @param Patron $patron
      * @return string
@@ -105,11 +106,11 @@ class HoldEmailData extends StreamData
         } else {
             throw new NonRetryableException(
                 'Not Acceptable: No names for patron',
-                'Not Acceptable: No names for patron',
+                [],
                 406,
                 null,
                 406,
-                new ErrorResponse(500, 'no-name', 'Not Acceptable: No names for patron')
+                new ErrorResponse(406, 'no-patron-name', 'Not Acceptable: No names for patron')
             );
         }
     }
@@ -143,8 +144,8 @@ class HoldEmailData extends StreamData
                 'Patron did not provide an e-mail address.',
                 0,
                 null,
-                500,
-                new ErrorResponse(500, 'no-email', 'Patron did not provide an e-mail address')
+                406,
+                new ErrorResponse(406, 'no-email', 'Patron did not provide an e-mail address')
             );
         }
     }
