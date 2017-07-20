@@ -87,22 +87,24 @@ class HoldRequestClient extends APIClient
 
         $response = self::get($url);
 
+        $statusCode = $response->getStatusCode();
+
         $response = json_decode((string)$response->getBody(), true);
 
         APILogger::addDebug('Retrieved hold request by id', $response['data']);
 
         // Check statusCode range
-        if ($response['statusCode'] === 200) {
+        if ($statusCode === 200) {
             return new HoldRequest($response['data']);
-        } elseif ($response['statusCode'] >= 500 && $response['statusCode'] <= 599) {
+        } elseif ($statusCode >= 500 && $statusCode <= 599) {
             throw new APIException(
                 'Server Error',
                 'getHoldRequestById met a server error',
-                $response['statusCode'],
+                $statusCode,
                 null,
-                $response['statusCode'],
+                $statusCode,
                 new ErrorResponse(
-                    $response['statusCode'],
+                    $statusCode,
                     'internal-server-error',
                     'getHoldRequestById met a server error'
                 )

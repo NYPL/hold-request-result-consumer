@@ -23,6 +23,8 @@ class BibClient extends APIClient
 
         $response = self::get($url);
 
+        $statusCode = $response->getStatusCode();
+
         $response = json_decode((string) $response->getBody(), true);
 
         APILogger::addDebug(
@@ -31,17 +33,17 @@ class BibClient extends APIClient
         );
 
         // Check statusCode range
-        if ($response['statusCode'] === 200) {
+        if ($statusCode === 200) {
             return new Bib($response['data']);
-        } elseif ($response['statusCode'] >= 500 && $response['statusCode'] <= 599) {
+        } elseif ($statusCode >= 500 && $statusCode <= 599) {
             throw new APIException(
                 'Server Error',
                 'getBibByIdAndSource met a server error',
-                $response['statusCode'],
+                $statusCode,
                 null,
-                $response['statusCode'],
+                $statusCode,
                 new ErrorResponse(
-                    $response['statusCode'],
+                    $statusCode,
                     'internal-server-error',
                     'getBibByIdAndSource met a server error'
                 )

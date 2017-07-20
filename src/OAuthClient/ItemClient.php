@@ -24,6 +24,8 @@ class ItemClient extends APIClient
 
         $response = self::get($url);
 
+        $statusCode = $response->getStatusCode();
+
         $response = json_decode((string) $response->getBody(), true);
 
         APILogger::addDebug(
@@ -32,17 +34,17 @@ class ItemClient extends APIClient
         );
 
         // Check statusCode range
-        if ($response['statusCode'] === 200) {
+        if ($statusCode === 200) {
             return new Item($response['data']);
-        } elseif ($response['statusCode'] >= 500 && $response['statusCode'] <= 599) {
+        } elseif ($statusCode >= 500 && $statusCode <= 599) {
             throw new APIException(
                 'Server Error',
                 'getItemByIdAndSource met a server error',
-                $response['statusCode'],
+                $statusCode,
                 null,
-                $response['statusCode'],
+                $statusCode,
                 new ErrorResponse(
-                    $response['statusCode'],
+                    $statusCode,
                     'internal-server-error',
                     'getItemByIdAndSource met a server error'
                 )
