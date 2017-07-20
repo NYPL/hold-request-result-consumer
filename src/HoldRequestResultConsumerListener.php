@@ -7,6 +7,8 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
+use NYPL\HoldRequestResultConsumer\Model\Exception\NotRetryableException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\ItemClient;
@@ -244,15 +246,22 @@ class HoldRequestResultConsumerListener extends Listener
                         }
                     }
                 }
-
+            } catch (RetryableException $exception) {
+                APILogger::addError(
+                    'RetryableException thrown: ' . $exception->getMessage() .
+                    ', Error code: ' . $exception->getCode()
+                );
+                return new ListenerResult(false, 'Retrying process');
+            } catch (NotRetryableException $exception) {
+                APILogger::addError(
+                    'NotRetryableException thrown: ' . $exception->getMessage() .
+                    ', Error code: ' . $exception->getCode()
+                );
             } catch (\Exception $exception) {
                 APILogger::addError(
                     'Exception thrown: ' . $exception->getMessage() .
                     ', Error code: ' . $exception->getCode()
                 );
-                if ($exception->getCode() >= 500 && $exception->getCode() <= 599) {
-                    return new ListenerResult(false, 'Retrying process');
-                }
             } catch (\Throwable $exception) {
                 APILogger::addError(
                     'Throwable thrown: ' . $exception->getMessage()

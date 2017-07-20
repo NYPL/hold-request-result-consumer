@@ -2,7 +2,7 @@
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
-use NYPL\Starter\APIException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 use NYPL\Starter\Model\Response\ErrorResponse;
@@ -13,7 +13,7 @@ class BibClient extends APIClient
      * @param string $bibId
      * @param $nyplSource
      * @return null|Bib
-     * @throws APIException
+     * @throws RetryableException
      */
     public static function getBibByIdAndSource($bibId = '', $nyplSource)
     {
@@ -36,7 +36,7 @@ class BibClient extends APIClient
         if ($statusCode === 200) {
             return new Bib($response['data']);
         } elseif ($statusCode >= 500 && $statusCode <= 599) {
-            throw new APIException(
+            throw new RetryableException(
                 'Server Error',
                 'getBibByIdAndSource met a server error',
                 $statusCode,

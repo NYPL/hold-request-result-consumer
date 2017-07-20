@@ -3,7 +3,7 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
-use NYPL\Starter\APIException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 use NYPL\Starter\Model\Response\ErrorResponse;
@@ -14,7 +14,7 @@ class ItemClient extends APIClient
      * @param string $itemId
      * @param $nyplSource
      * @return null|Item
-     * @throws APIException
+     * @throws RetryableException
      */
     public static function getItemByIdAndSource($itemId = '', $nyplSource)
     {
@@ -37,7 +37,7 @@ class ItemClient extends APIClient
         if ($statusCode === 200) {
             return new Item($response['data']);
         } elseif ($statusCode >= 500 && $statusCode <= 599) {
-            throw new APIException(
+            throw new RetryableException(
                 'Server Error',
                 'getItemByIdAndSource met a server error',
                 $statusCode,

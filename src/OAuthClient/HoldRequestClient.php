@@ -2,6 +2,8 @@
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
+use NYPL\HoldRequestResultConsumer\Model\Exception\NotRetryableException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
@@ -17,7 +19,7 @@ class HoldRequestClient extends APIClient
     public static function validateRequestId(int $holdRequestId)
     {
         if (!isset($holdRequestId) || !is_numeric($holdRequestId) || $holdRequestId < 1) {
-            throw new APIException(
+            throw new NotRetryableException(
                 'Not Acceptable: Invalid hold request id: ' . $holdRequestId,
                 'Not Acceptable: Invalid hold request id: ' . $holdRequestId,
                 406,
@@ -38,7 +40,7 @@ class HoldRequestClient extends APIClient
     public static function validateProcessed($processed)
     {
         if (!isset($processed)) {
-            throw new APIException(
+            throw new NotRetryableException(
                 'Not Acceptable: Processed flag not set',
                 'Not Acceptable: Processed flag is not set.',
                 406,
@@ -59,7 +61,7 @@ class HoldRequestClient extends APIClient
     public static function validateSuccess($success)
     {
         if (!isset($success)) {
-            throw new APIException(
+            throw new NotRetryableException(
                 'Not Acceptable: Success flag not set',
                 'Not Acceptable: Success flag is not set.',
                 406,
@@ -97,7 +99,7 @@ class HoldRequestClient extends APIClient
         if ($statusCode === 200) {
             return new HoldRequest($response['data']);
         } elseif ($statusCode >= 500 && $statusCode <= 599) {
-            throw new APIException(
+            throw new RetryableException(
                 'Server Error',
                 'getHoldRequestById met a server error',
                 $statusCode,
@@ -118,13 +120,12 @@ class HoldRequestClient extends APIClient
         }
     }
 
-
     /**
      * @param string $holdRequestId
      * @param bool $processed
      * @param bool $success
-     * @return HoldRequest
-     * @throws APIException
+     * @return null|HoldRequest
+     * @throws RetryableException
      */
     public static function patchHoldRequestById($holdRequestId = '', bool $processed, bool $success)
     {
@@ -140,6 +141,8 @@ class HoldRequestClient extends APIClient
 
         $response = self::patch($url, ["body" => json_encode($body)]);
 
+        $statusCode = $response['statusCode'];
+
         $response = json_decode((string)$response->getBody(), true);
 
         APILogger::addDebug('Patched hold request by id', $response['data']);
@@ -147,8 +150,8 @@ class HoldRequestClient extends APIClient
         // Check statusCode range
         if ($response['statusCode'] === 200) {
             return new HoldRequest($response['data']);
-        } elseif ($response['statusCode'] >= 500 && $response['statusCode'] <= 599) {
-            throw new APIException(
+        } elseif ($statusCode >= 500 && $statusCode <= 599) {
+            throw new RetryableException(
                 'Server Error',
                 'patchHoldRequestById met a server error',
                 $response['statusCode'],

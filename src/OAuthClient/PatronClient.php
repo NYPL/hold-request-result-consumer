@@ -2,7 +2,7 @@
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
-use NYPL\Starter\APIException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 use NYPL\Starter\Model\Response\ErrorResponse;
@@ -12,7 +12,7 @@ class PatronClient extends APIClient
     /**
      * @param string $patronId
      * @return null|Patron
-     * @throws APIException
+     * @throws RetryableException
      */
     public static function getPatronById($patronId = '')
     {
@@ -30,7 +30,7 @@ class PatronClient extends APIClient
         if ($statusCode === 200) {
             return new Patron($response['data']);
         } elseif ($statusCode >= 500 && $statusCode <= 599) {
-            throw new APIException(
+            throw new RetryableException(
                 'Server Error',
                 'getPatronById met a server error',
                 $statusCode,
