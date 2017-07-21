@@ -4,7 +4,7 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
-use NYPL\HoldRequestResultConsumer\Model\Exception\NotRetryableException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
@@ -16,7 +16,7 @@ class BibClient extends APIClient
      * @param string $bibId
      * @param $nyplSource
      * @return null|Bib
-     * @throws NotRetryableException
+     * @throws NonRetryableException
      * @throws RetryableException
      */
     public static function getBibByIdAndSource($bibId = '', $nyplSource)
@@ -60,7 +60,7 @@ class BibClient extends APIClient
                 )
             );
         } catch (ClientException $exception) {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Client Error from '. __FUNCTION__,
                 'Client Error from '. __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),

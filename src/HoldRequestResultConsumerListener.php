@@ -7,7 +7,7 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
-use NYPL\HoldRequestResultConsumer\Model\Exception\NotRetryableException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
@@ -31,7 +31,7 @@ class HoldRequestResultConsumerListener extends Listener
         $listenerData = $listenerEvent->getListenerData();
 
         if ($listenerData === null) {
-            throw new NotRetryableException('No listener data');
+            throw new NonRetryableException('No listener data');
         }
 
         $data = $listenerData->getData();
@@ -72,7 +72,7 @@ class HoldRequestResultConsumerListener extends Listener
         APILogger::addDebug('HoldRequest', (array) $holdRequest);
 
         if ($holdRequest === null) {
-            throw new NotRetryableException('Cannot get Hold Request for Request Id ' .
+            throw new NonRetryableException('Cannot get Hold Request for Request Id ' .
                 $holdRequestResult->getHoldRequestId());
         }
 
@@ -95,7 +95,7 @@ class HoldRequestResultConsumerListener extends Listener
         APILogger::addDebug('BibIds', (array) $item->getBibIds());
 
         if ($item === null) {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Hold request record missing Item data for Request Id ' .
                 $holdRequestResult->getHoldRequestId()
             );
@@ -116,7 +116,7 @@ class HoldRequestResultConsumerListener extends Listener
         APILogger::addDebug('Bib', (array) $bib);
 
         if ($bib === null) {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Hold request record missing Bib data for Request Id ' .
                 $holdRequestResult->getHoldRequestId()
             );
@@ -134,7 +134,7 @@ class HoldRequestResultConsumerListener extends Listener
         if ($holdRequestResult->getError() !== null &&
             $holdRequestResult->getError()->getType() == 'hold-request-record-missing-item-data'
         ) {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Hold request record missing Item data for Request Id ' .
                 $holdRequestResult->getHoldRequestId()
             );
@@ -150,7 +150,7 @@ class HoldRequestResultConsumerListener extends Listener
         if ($holdRequestResult->getError() !== null &&
             $holdRequestResult->getError()->getType() == 'hold-request-record-missing-patron-data'
         ) {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Hold request record missing Patron data for Request Id ' .
                 $holdRequestResult->getHoldRequestId()
             );
@@ -252,9 +252,9 @@ class HoldRequestResultConsumerListener extends Listener
                     ', Error code: ' . $exception->getCode()
                 );
                 return new ListenerResult(false, 'Retrying process');
-            } catch (NotRetryableException $exception) {
+            } catch (NonRetryableException $exception) {
                 APILogger::addError(
-                    'NotRetryableException thrown: ' . $exception->getMessage() .
+                    'NonRetryableException thrown: ' . $exception->getMessage() .
                     ', Error code: ' . $exception->getCode()
                 );
             } catch (\Exception $exception) {

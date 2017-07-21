@@ -4,7 +4,7 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
-use NYPL\HoldRequestResultConsumer\Model\Exception\NotRetryableException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
@@ -21,7 +21,7 @@ class HoldRequestClient extends APIClient
     public static function validateRequestId(int $holdRequestId)
     {
         if (!isset($holdRequestId) || !is_numeric($holdRequestId) || $holdRequestId < 1) {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Not Acceptable: Invalid hold request id: ' . $holdRequestId,
                 'Not Acceptable: Invalid hold request id: ' . $holdRequestId,
                 406,
@@ -42,7 +42,7 @@ class HoldRequestClient extends APIClient
     public static function validateProcessed($processed)
     {
         if (!isset($processed)) {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Not Acceptable: Processed flag not set',
                 'Not Acceptable: Processed flag is not set.',
                 406,
@@ -63,7 +63,7 @@ class HoldRequestClient extends APIClient
     public static function validateSuccess($success)
     {
         if (!isset($success)) {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Not Acceptable: Success flag not set',
                 'Not Acceptable: Success flag is not set.',
                 406,
@@ -79,7 +79,7 @@ class HoldRequestClient extends APIClient
     /**
      * @param $holdRequestId
      * @return null|HoldRequest
-     * @throws NotRetryableException
+     * @throws NonRetryableException
      * @throws RetryableException
      */
     public static function getHoldRequestById($holdRequestId)
@@ -123,7 +123,7 @@ class HoldRequestClient extends APIClient
                 )
             );
         } catch (ClientException $exception) {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Client Error from '. __FUNCTION__,
                 'Client Error from '. __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),
@@ -143,7 +143,7 @@ class HoldRequestClient extends APIClient
      * @param bool $processed
      * @param bool $success
      * @return null|HoldRequest
-     * @throws NotRetryableException
+     * @throws NonRetryableException
      * @throws RetryableException
      */
     public static function patchHoldRequestById($holdRequestId = '', bool $processed, bool $success)
@@ -192,7 +192,7 @@ class HoldRequestClient extends APIClient
                 )
             );
         } catch (ClientException $exception) {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Client Error from '. __FUNCTION__,
                 'Client Error from '. __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),

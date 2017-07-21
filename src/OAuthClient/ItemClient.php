@@ -4,7 +4,7 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
-use NYPL\HoldRequestResultConsumer\Model\Exception\NotRetryableException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
@@ -16,7 +16,7 @@ class ItemClient extends APIClient
      * @param string $itemId
      * @param $nyplSource
      * @return null|Item
-     * @throws NotRetryableException
+     * @throws NonRetryableException
      * @throws RetryableException
      */
     public static function getItemByIdAndSource($itemId = '', $nyplSource)
@@ -61,7 +61,7 @@ class ItemClient extends APIClient
                 )
             );
         } catch (ClientException $exception) {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Client Error from '. __FUNCTION__,
                 'Client Error from '. __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),

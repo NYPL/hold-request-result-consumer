@@ -4,6 +4,6 @@ namespace NYPL\HoldRequestResultConsumer\Model\Exception;
 
 use NYPL\Starter\APIException;
 
-class NotRetryableException extends APIException
+class NonRetryableException extends APIException
 {
 }

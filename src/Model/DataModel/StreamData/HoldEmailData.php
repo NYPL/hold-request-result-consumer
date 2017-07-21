@@ -7,7 +7,7 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Location;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
-use NYPL\HoldRequestResultConsumer\Model\Exception\NotRetryableException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\Starter\APIException;
 use NYPL\Starter\Model\Response\ErrorResponse;
 
@@ -91,7 +91,7 @@ class HoldEmailData extends StreamData
     /**
      * @param Patron $patron
      * @return string
-     * @throws NotRetryableException
+     * @throws NonRetryableException
      */
     public function fixPatronName(Patron $patron): string
     {
@@ -103,7 +103,7 @@ class HoldEmailData extends StreamData
             $name = ucfirst(strtolower($fullName[1])) . " " . ucfirst(strtolower($fullName[0]));
             return $name;
         } else {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'Not Acceptable: No names for patron',
                 'Not Acceptable: No names for patron',
                 406,
@@ -118,7 +118,7 @@ class HoldEmailData extends StreamData
      * @param HoldRequest $holdRequest
      * @param Patron $patron
      * @return string
-     * @throws NotRetryableException
+     * @throws NonRetryableException
      */
     public function fixPatronEmail(HoldRequest $holdRequest, Patron $patron): string
     {
@@ -138,7 +138,7 @@ class HoldEmailData extends StreamData
         } elseif (count($patron->getEmails()) > 0) {
             return $patron->getEmails()[0];
         } else {
-            throw new NotRetryableException(
+            throw new NonRetryableException(
                 'No-email',
                 'Patron did not provide an e-mail address.',
                 0,
