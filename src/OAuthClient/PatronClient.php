@@ -48,28 +48,28 @@ class PatronClient extends APIClient
             }
         } catch (ServerException $exception) {
             throw new RetryableException(
-                'Server Error',
-                'getPatronById met a server error',
+                'Server Error from ' . __FUNCTION__,
+                'Server Error from ' . __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'internal-server-error',
-                    'getPatronById met a server error'
+                    'Server Error from ' . __FUNCTION__
                 )
             );
         } catch (ClientException $exception) {
             throw new NotRetryableException(
-                'Client Error',
-                'getPatronById met a client error',
+                'Client Error from '. __FUNCTION__,
+                'Client Error from '. __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'client-error',
-                    'getPatronById met a client error'
+                    'Client Error from '. __FUNCTION__
                 )
             );
         }

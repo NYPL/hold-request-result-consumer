@@ -111,28 +111,28 @@ class HoldRequestClient extends APIClient
             }
         } catch (ServerException $exception) {
             throw new RetryableException(
-                'Server Error',
-                'getHoldRequestById met a server error',
+                'Server Error from ' . __FUNCTION__,
+                'Server Error from ' . __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'internal-server-error',
-                    'getHoldRequestById met a server error'
+                    'Server Error from ' . __FUNCTION__
                 )
             );
         } catch (ClientException $exception) {
             throw new NotRetryableException(
-                'Client Error',
-                'getHoldRequestById met a client error',
+                'Client Error from '. __FUNCTION__,
+                'Client Error from '. __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'client-error',
-                    'getHoldRequestById met a client error'
+                    'Client Error from '. __FUNCTION__
                 )
             );
         }
@@ -154,9 +154,9 @@ class HoldRequestClient extends APIClient
 
         $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
-        APILogger::addDebug('Patching hold request by id', (array) $url);
-
         $body = ["processed" => $processed, "success" => $success];
+
+        APILogger::addDebug('Patching hold request by id', array($url, $body));
 
         try {
             $response = self::patch($url, ["body" => json_encode($body)]);
@@ -180,28 +180,28 @@ class HoldRequestClient extends APIClient
             }
         } catch (ServerException $exception) {
             throw new RetryableException(
-                'Server Error',
-                'patchHoldRequestById met a server error',
+                'Server Error from ' . __FUNCTION__,
+                'Server Error from ' . __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'internal-server-error',
-                    'patchHoldRequestById met a server error'
+                    'Server Error from ' . __FUNCTION__
                 )
             );
         } catch (ClientException $exception) {
             throw new NotRetryableException(
-                'Client Error',
-                'patchHoldRequestById met a client error',
+                'Client Error from '. __FUNCTION__,
+                'Client Error from '. __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'client-error',
-                    'patchHoldRequestById met a client error'
+                    'Client Error from '. __FUNCTION__
                 )
             );
         }

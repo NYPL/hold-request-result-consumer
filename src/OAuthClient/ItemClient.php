@@ -1,8 +1,10 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
-
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
+use NYPL\HoldRequestResultConsumer\Model\Exception\NotRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
@@ -14,6 +16,7 @@ class ItemClient extends APIClient
      * @param string $itemId
      * @param $nyplSource
      * @return null|Item
+     * @throws NotRetryableException
      * @throws RetryableException
      */
     public static function getItemByIdAndSource($itemId = '', $nyplSource)
@@ -22,39 +25,54 @@ class ItemClient extends APIClient
 
         APILogger::addDebug('Retrieving item by Id and Source', (array) $url);
 
-        $response = self::get($url);
+        try {
+            $response = self::get($url);
 
-        $statusCode = $response->getStatusCode();
+            $statusCode = $response->getStatusCode();
 
-        $response = json_decode((string) $response->getBody(), true);
+            $response = json_decode((string)$response->getBody(), true);
 
-        APILogger::addDebug(
-            'Retrieve item by id and source',
-            $response['data']
-        );
+            APILogger::addDebug(
+                'Retrieve item by id and source',
+                $response['data']
+            );
 
-        // Check statusCode range
-        if ($statusCode === 200) {
-            return new Item($response['data']);
-        } elseif ($statusCode >= 500 && $statusCode <= 599) {
+            // Check statusCode range
+            if ($statusCode === 200) {
+                return new Item($response['data']);
+            } else {
+                APILogger::addError(
+                    'Failed',
+                    array('Failed to retrieve item ', $itemId, $response['type'], $response['message'])
+                );
+                return null;
+            }
+        } catch (ServerException $exception) {
             throw new RetryableException(
-                'Server Error',
-                'getItemByIdAndSource met a server error',
-                $statusCode,
+                'Server Error from ' . __FUNCTION__,
+                'Server Error from ' . __FUNCTION__,
+                $exception->getResponse()->getStatusCode(),
                 null,
-                $statusCode,
+                $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
-                    $statusCode,
+                    $exception->getResponse()->getStatusCode(),
                     'internal-server-error',
-                    'getItemByIdAndSource met a server error'
+                    'Server Error from ' . __FUNCTION__
                 )
             );
-        } else {
-            APILogger::addError(
-                'Failed',
-                array('Failed to retrieve item ', $itemId, $response['type'], $response['message'])
+        } catch (ClientException $exception) {
+            throw new NotRetryableException(
+                'Client Error from '. __FUNCTION__,
+                'Client Error from '. __FUNCTION__,
+                $exception->getResponse()->getStatusCode(),
+                null,
+                $exception->getResponse()->getStatusCode(),
+                new ErrorResponse(
+                    $exception->getResponse()->getStatusCode(),
+                    'client-error',
+                    'Client Error from '. __FUNCTION__
+                )
             );
-            return null;
         }
     }
 }

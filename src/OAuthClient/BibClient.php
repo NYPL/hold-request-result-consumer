@@ -48,28 +48,28 @@ class BibClient extends APIClient
             }
         } catch (ServerException $exception) {
             throw new RetryableException(
-                'Server Error',
-                'getBibByIdAndSource met a server error',
+                'Server Error from ' . __FUNCTION__,
+                'Server Error from ' . __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'internal-server-error',
-                    'getBibByIdAndSource met a server error'
+                    'Server Error from ' . __FUNCTION__
                 )
             );
         } catch (ClientException $exception) {
             throw new NotRetryableException(
-                'Client Error',
-                'getBibByIdAndSource met a client error',
+                'Client Error from '. __FUNCTION__,
+                'Client Error from '. __FUNCTION__,
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'client-error',
-                    'getBibByIdAndSource met a client error'
+                    'Client Error from '. __FUNCTION__
                 )
             );
         }
