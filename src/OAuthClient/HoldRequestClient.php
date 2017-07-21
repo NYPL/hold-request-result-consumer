@@ -1,6 +1,8 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
@@ -86,8 +88,7 @@ class HoldRequestClient extends APIClient
 
         $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
-        APILogger::addDebug('Retrieving hold request by id', (array) $url);
-
+        APILogger::addDebug('Retrieving hold request by id', (array)$url);
 
         $response = ClientHelper::getResponse($url, __FUNCTION__);
 
@@ -100,19 +101,6 @@ class HoldRequestClient extends APIClient
         // Check statusCode range
         if ($statusCode === 200) {
             return new HoldRequest($response['data']);
-        } elseif ($statusCode >= 500 && $statusCode <= 599) {
-            throw new RetryableException(
-                'Server Error',
-                'getHoldRequestById met a server error',
-                $statusCode,
-                null,
-                $statusCode,
-                new ErrorResponse(
-                    $statusCode,
-                    'internal-server-error',
-                    'getHoldRequestById met a server error'
-                )
-            );
         } else {
             APILogger::addError(
                 'Failed',
@@ -127,6 +115,7 @@ class HoldRequestClient extends APIClient
      * @param bool $processed
      * @param bool $success
      * @return null|HoldRequest
+     * @throws NonRetryableException
      * @throws RetryableException
      */
     public static function patchHoldRequestById($holdRequestId = '', bool $processed, bool $success)
@@ -152,19 +141,6 @@ class HoldRequestClient extends APIClient
         // Check statusCode range
         if ($statusCode === 200) {
             return new HoldRequest($response['data']);
-        } elseif ($statusCode >= 500 && $statusCode <= 599) {
-            throw new RetryableException(
-                'Server Error',
-                'patchHoldRequestById met a server error',
-                $statusCode,
-                null,
-                $statusCode,
-                new ErrorResponse(
-                    $statusCode,
-                    'internal-server-error',
-                    'patchHoldRequestById met a server error'
-                )
-            );
         } else {
             APILogger::addError(
                 'Failed',
