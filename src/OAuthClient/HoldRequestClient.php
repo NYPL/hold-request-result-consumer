@@ -180,28 +180,28 @@ class HoldRequestClient extends APIClient
             }
         } catch (ServerException $exception) {
             throw new RetryableException(
-                'Server Error from ' . __FUNCTION__,
-                'Server Error from ' . __FUNCTION__,
+                'Server Error from ' . __FUNCTION__ . $exception->getMessage(),
+                'Server Error from ' . __FUNCTION__ . $exception->getMessage(),
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'internal-server-error',
-                    'Server Error from ' . __FUNCTION__
+                    'Server Error from ' . __FUNCTION__ . $exception->getMessage()
                 )
             );
         } catch (ClientException $exception) {
             throw new NonRetryableException(
-                'Client Error from '. __FUNCTION__,
-                'Client Error from '. __FUNCTION__,
+                'Client Error from '. __FUNCTION__ . $exception->getMessage(),
+                'Client Error from '. __FUNCTION__ . $exception->getMessage(),
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'client-error',
-                    'Client Error from '. __FUNCTION__
+                    'Client Error from '. __FUNCTION__ . $exception->getMessage()
                 )
             );
         }
