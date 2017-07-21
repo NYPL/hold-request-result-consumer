@@ -1,7 +1,10 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
+use NYPL\HoldRequestResultConsumer\Model\Exception\NotRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
@@ -12,6 +15,7 @@ class PatronClient extends APIClient
     /**
      * @param string $patronId
      * @return null|Patron
+     * @throws NotRetryableException
      * @throws RetryableException
      */
     public static function getPatronById($patronId = '')
@@ -20,34 +24,54 @@ class PatronClient extends APIClient
 
         APILogger::addDebug('Retrieving patron by id', (array) $url);
 
-        $response = self::get($url);
+        try {
+            $response = self::get($url);
 
-        $statusCode = $response->getStatusCode();
+            $statusCode = $response->getStatusCode();
 
-        $response = json_decode((string) $response->getBody(), true);
+            $response = json_decode((string) $response->getBody(), true);
 
-        // Check statusCode range
-        if ($statusCode === 200) {
-            return new Patron($response['data']);
-        } elseif ($statusCode >= 500 && $statusCode <= 599) {
+            APILogger::addDebug(
+                'Retrieved patron by id',
+                $response['data']
+            );
+
+            // Check statusCode range
+            if ($statusCode === 200) {
+                return new Patron($response['data']);
+            } else {
+                APILogger::addError(
+                    'Failed',
+                    array('Failed to retrieve patron ', $patronId, $response['type'], $response['message'])
+                );
+                return null;
+            }
+        } catch (ServerException $exception) {
             throw new RetryableException(
                 'Server Error',
                 'getPatronById met a server error',
-                $statusCode,
+                $exception->getResponse()->getStatusCode(),
                 null,
-                $statusCode,
+                $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
-                    $statusCode,
+                    $exception->getResponse()->getStatusCode(),
                     'internal-server-error',
                     'getPatronById met a server error'
                 )
             );
-        } else {
-            APILogger::addError(
-                'Failed',
-                array('Failed to retrieve patron ', $patronId, $response['type'], $response['message'])
+        } catch (ClientException $exception) {
+            throw new NotRetryableException(
+                'Client Error',
+                'getPatronById met a client error',
+                $exception->getResponse()->getStatusCode(),
+                null,
+                $exception->getResponse()->getStatusCode(),
+                new ErrorResponse(
+                    $exception->getResponse()->getStatusCode(),
+                    'client-error',
+                    'getPatronById met a client error'
+                )
             );
-            return null;
         }
     }
 }

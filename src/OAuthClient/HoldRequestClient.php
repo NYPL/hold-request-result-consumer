@@ -1,6 +1,8 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NotRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
@@ -75,9 +77,10 @@ class HoldRequestClient extends APIClient
     }
 
     /**
-     * @param  $holdRequestId
-     * @return HoldRequest
-     * @throws APIException
+     * @param $holdRequestId
+     * @return null|HoldRequest
+     * @throws NotRetryableException
+     * @throws RetryableException
      */
     public static function getHoldRequestById($holdRequestId)
     {
@@ -87,36 +90,51 @@ class HoldRequestClient extends APIClient
 
         APILogger::addDebug('Retrieving hold request by id', (array) $url);
 
-        $response = self::get($url);
+        try {
+            $response = self::get($url);
 
-        $statusCode = $response->getStatusCode();
+            $statusCode = $response->getStatusCode();
 
-        $response = json_decode((string)$response->getBody(), true);
+            $response = json_decode((string)$response->getBody(), true);
 
-        APILogger::addDebug('Retrieved hold request by id', $response['data']);
+            APILogger::addDebug('Retrieved hold request by id', $response['data']);
 
-        // Check statusCode range
-        if ($statusCode === 200) {
-            return new HoldRequest($response['data']);
-        } elseif ($statusCode >= 500 && $statusCode <= 599) {
+            // Check statusCode range
+            if ($statusCode === 200) {
+                return new HoldRequest($response['data']);
+            } else {
+                APILogger::addError(
+                    'Failed',
+                    array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
+                );
+                return null;
+            }
+        } catch (ServerException $exception) {
             throw new RetryableException(
                 'Server Error',
                 'getHoldRequestById met a server error',
-                $statusCode,
+                $exception->getResponse()->getStatusCode(),
                 null,
-                $statusCode,
+                $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
-                    $statusCode,
+                    $exception->getResponse()->getStatusCode(),
                     'internal-server-error',
                     'getHoldRequestById met a server error'
                 )
             );
-        } else {
-            APILogger::addError(
-                'Failed',
-                array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
+        } catch (ClientException $exception) {
+            throw new NotRetryableException(
+                'Client Error',
+                'getHoldRequestById met a client error',
+                $exception->getResponse()->getStatusCode(),
+                null,
+                $exception->getResponse()->getStatusCode(),
+                new ErrorResponse(
+                    $exception->getResponse()->getStatusCode(),
+                    'client-error',
+                    'getHoldRequestById met a client error'
+                )
             );
-            return null;
         }
     }
 
@@ -125,6 +143,7 @@ class HoldRequestClient extends APIClient
      * @param bool $processed
      * @param bool $success
      * @return null|HoldRequest
+     * @throws NotRetryableException
      * @throws RetryableException
      */
     public static function patchHoldRequestById($holdRequestId = '', bool $processed, bool $success)
@@ -139,36 +158,52 @@ class HoldRequestClient extends APIClient
 
         $body = ["processed" => $processed, "success" => $success];
 
-        $response = self::patch($url, ["body" => json_encode($body)]);
+        try {
+            $response = self::patch($url, ["body" => json_encode($body)]);
 
-        $statusCode = $response['statusCode'];
 
-        $response = json_decode((string)$response->getBody(), true);
+            $statusCode = $response->getStatusCode();
 
-        APILogger::addDebug('Patched hold request by id', $response['data']);
+            $response = json_decode((string)$response->getBody(), true);
 
-        // Check statusCode range
-        if ($response['statusCode'] === 200) {
-            return new HoldRequest($response['data']);
-        } elseif ($statusCode >= 500 && $statusCode <= 599) {
+            APILogger::addDebug('Patched hold request by id', $response['data']);
+
+            // Check statusCode range
+            if ($statusCode === 200) {
+                return new HoldRequest($response['data']);
+            } else {
+                APILogger::addError(
+                    'Failed',
+                    array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
+                );
+                return null;
+            }
+        } catch (ServerException $exception) {
             throw new RetryableException(
                 'Server Error',
                 'patchHoldRequestById met a server error',
-                $response['statusCode'],
+                $exception->getResponse()->getStatusCode(),
                 null,
-                $response['statusCode'],
+                $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
-                    $response['statusCode'],
+                    $exception->getResponse()->getStatusCode(),
                     'internal-server-error',
                     'patchHoldRequestById met a server error'
                 )
             );
-        } else {
-            APILogger::addError(
-                'Failed',
-                array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
+        } catch (ClientException $exception) {
+            throw new NotRetryableException(
+                'Client Error',
+                'patchHoldRequestById met a client error',
+                $exception->getResponse()->getStatusCode(),
+                null,
+                $exception->getResponse()->getStatusCode(),
+                new ErrorResponse(
+                    $exception->getResponse()->getStatusCode(),
+                    'client-error',
+                    'patchHoldRequestById met a client error'
+                )
             );
-            return null;
         }
     }
 }
