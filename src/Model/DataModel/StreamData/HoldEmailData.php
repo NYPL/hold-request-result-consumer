@@ -8,6 +8,7 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\Location;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
+use NYPL\HoldRequestResultConsumer\OAuthClient\LocationClient;
 use NYPL\Starter\APIException;
 use NYPL\Starter\Model\Response\ErrorResponse;
 
@@ -76,8 +77,8 @@ class HoldEmailData extends StreamData
         $this->setAuthor($bib->getAuthor());
         $this->setBarcode($item->getBarcode());
         $this->setTitle($bib->getTitle());
-        $this->setDeliveryLocation($holdRequest->getDeliveryLocation());
-//        $this->setPickupLocation($this->fixPickupLocation($holdRequest->getPickupLocation()));
+        $this->setDeliveryLocation($this->fixDeliveryLocation($holdRequest->getDeliveryLocation()));
+        $this->setPickupLocation($this->fixPickupLocation($holdRequest->getPickupLocation()));
         $this->setSuccess($holdRequestResult->isSuccess());
 
 
@@ -156,7 +157,16 @@ class HoldEmailData extends StreamData
      */
     public function fixPickupLocation($pickupLocation)
     {
-        return (Location::getLocationName($pickupLocation));
+        return (LocationClient::getSierraLocationById($pickupLocation));
+    }
+
+    /**
+     * @param $deliveryLocation
+     * @return string
+     */
+    public function fixDeliveryLocation($deliveryLocation)
+    {
+        return (LocationClient::getRecapLocationById($deliveryLocation));
     }
 
     /**

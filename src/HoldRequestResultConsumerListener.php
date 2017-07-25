@@ -249,9 +249,9 @@ class HoldRequestResultConsumerListener extends Listener
 
                             $bib = $this->getBib($item, $holdRequestResult);
 
-                            $location = LocationClient::getRecapLocationById($holdRequest->getDeliveryLocation());
+//                            $location = LocationClient::getRecapLocationById($holdRequest->getDeliveryLocation());
 
-//                            $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
+                            $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
                         }
                     }
                 }

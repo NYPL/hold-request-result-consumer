@@ -44,21 +44,34 @@
         padding: 2rem 0;
         position: relative;
     }
-
 </style>
 
 <body>
 {# @var data \NYPL\HoldRequestResultConsumer\Model\DataModel\HoldEmailData #}
 <div class="welcome">
-    <h1 class="hold">Item Reserved</h1>
+    <h1 class="hold">NYPL Off-Site Request Status Update</h1>
 </div>
 
 <p>Dear {{ data.patronName }},</p>
-<p>Your item has successfully been reserved. Please allow up to 1 week for the item to arrive.</p>
-<p><strong>Title</strong>: {{ data.title }}<br/>
-    <strong>Author</strong>: {{ data.author }}<br/>
-    <strong>Barcode</strong>: {{ data.barcode }}<br/>
-    <strong>Pickup at</strong>: {{ data.pickupLocation }} or {{ data.deliveryLocation }}
+<p>The recent request you placed for materials from off-site storage has been received. Please check your library account for updates. The item will be listed as Ready under your Holds tab when it is available. You will also receive an email confirmation after your item has arrived.
+</p>
+
+<p>IN PROCESS</p>
+<table>
+    <thead>
+        <th style="padding:1rem;">Request date</th>
+        <th>Barcode</th>
+        <th>Title</th>
+        <th>Pickup Location</th>
+    </thead>
+    <tbody>
+        <td style="padding-right: 3rem;">&nbsp;</td>
+        <td style="padding-right: 3rem;">{{ data.barcode }}</td>
+        <td style="padding-right: 3rem;">{{ data.title }}</td>
+        <td>{{ data.pickupLocation }}</td>
+    </tbody>
+</table>
+<p>If you would like to cancel your request, or if you have further questions, please contact 917-275-6975 (917-ASK-NYPL).
 </p>
 <p>The New York Public Library</p>
 </body>
