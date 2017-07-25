@@ -203,7 +203,7 @@ class HoldRequestResultConsumerListener extends Listener
                     $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
                     if ($patron === null) {
-                        throw new APIException(
+                        throw new NonRetryableException(
                             'Hold request record missing Patron data for Request Id ' .
                             $holdRequestResult->getHoldRequestId()
                         );
@@ -231,7 +231,7 @@ class HoldRequestResultConsumerListener extends Listener
                         $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
                         if ($patron === null) {
-                            throw new APIException(
+                            throw new NonRetryableException(
                                 'Hold request record missing Patron data for Request Id ' .
                                 $holdRequestResult->getHoldRequestId()
                             );
