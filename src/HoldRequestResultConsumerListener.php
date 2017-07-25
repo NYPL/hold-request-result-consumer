@@ -204,8 +204,6 @@ class HoldRequestResultConsumerListener extends Listener
                     if (!$holdRequest->isProcessed()) {
                         $this->patchHoldRequestService($holdRequestResult);
 
-                        $holdRequest = $this->getHoldRequest($holdRequestResult);
-
                         $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
                         if ($patron === null) {
@@ -232,8 +230,6 @@ class HoldRequestResultConsumerListener extends Listener
 
                         $this->skipMissingItem($holdRequestResult);
                         $this->skipMissingPatron($holdRequestResult);
-
-                        $holdRequest = $this->getHoldRequest($holdRequestResult);
 
                         $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
