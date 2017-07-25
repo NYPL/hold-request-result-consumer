@@ -352,7 +352,7 @@ class HoldRequest extends DataModel
     }
 
     /**
-     * @param string $deliveryLocation
+     * @param string|null $deliveryLocation
      */
     public function setDeliveryLocation($deliveryLocation)
     {
