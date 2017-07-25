@@ -24,7 +24,7 @@ class HoldRequestResultConsumerListener extends Listener
     /**
      * @param ListenerEvent $listenerEvent
      * @return HoldRequestResult
-     * @throws APIException
+     * @throws NonRetryableException
      */
     protected function getHoldRequestResult(ListenerEvent $listenerEvent)
     {
@@ -37,6 +37,10 @@ class HoldRequestResultConsumerListener extends Listener
         $data = $listenerData->getData();
 
         APILogger::addDebug('data', $data);
+
+        if ($data === null) {
+            throw new NonRetryableException('No data');
+        }
 
         $holdRequestResult = new HoldRequestResult($data);
 
@@ -195,12 +199,13 @@ class HoldRequestResultConsumerListener extends Listener
 
                 if ($holdRequestResult->isSuccess() === true) {
                     // Assumes error === null
-
-                    $this->patchHoldRequestService($holdRequestResult);
-
                     $holdRequest = $this->getHoldRequest($holdRequestResult);
 
                     if (!$holdRequest->isProcessed()) {
+                        $this->patchHoldRequestService($holdRequestResult);
+
+                        $holdRequest = $this->getHoldRequest($holdRequestResult);
+
                         $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
                         if ($patron === null) {
