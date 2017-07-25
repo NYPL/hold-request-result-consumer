@@ -200,21 +200,23 @@ class HoldRequestResultConsumerListener extends Listener
 
                     $holdRequest = $this->getHoldRequest($holdRequestResult);
 
-                    $patron = PatronClient::getPatronById($holdRequest->getPatron());
+                    if (!$holdRequest->isProcessed()) {
+                        $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
-                    if ($patron === null) {
-                        throw new NonRetryableException(
-                            'Hold request record missing Patron data for Request Id ' .
-                            $holdRequestResult->getHoldRequestId()
-                        );
-                    }
+                        if ($patron === null) {
+                            throw new NonRetryableException(
+                                'Hold request record missing Patron data for Request Id ' .
+                                $holdRequestResult->getHoldRequestId()
+                            );
+                        }
 
-                    if ($holdRequest->getRecordType() === 'i') {
-                        $item = $this->getItem($holdRequest);
+                        if ($holdRequest->getRecordType() === 'i') {
+                            $item = $this->getItem($holdRequest);
 
-                        $bib = $this->getBib($item, $holdRequestResult);
+                            $bib = $this->getBib($item, $holdRequestResult);
 
-                        $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
+                            $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
+                        }
                     }
                 } else { // $holdRequestResult->isSuccess() === false, error !== null
                     $holdRequest = $this->getHoldRequest($holdRequestResult);
