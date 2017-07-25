@@ -77,7 +77,7 @@ class HoldEmailData extends StreamData
         $this->setBarcode($item->getBarcode());
         $this->setTitle($bib->getTitle());
         $this->setDeliveryLocation($holdRequest->getDeliveryLocation());
-        $this->setPickupLocation($this->fixPickupLocation($holdRequest->getPickupLocation()));
+//        $this->setPickupLocation($this->fixPickupLocation($holdRequest->getPickupLocation()));
         $this->setSuccess($holdRequestResult->isSuccess());
 
 

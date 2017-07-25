@@ -2,29 +2,91 @@
 
 namespace NYPL\HoldRequestResultConsumer\Model\DataModel;
 
-use NYPL\Starter\APIException;
-use NYPL\Starter\Model\Response\ErrorResponse;
+use NYPL\HoldRequestResultConsumer\Model\DataModel;
 
-class Location
+class Location extends DataModel
 {
     /**
-     * @param $locationCode
-     * @return string
-     * @throws APIException
+     * @var string
      */
-    public static function getLocationName($locationCode)
+    public $code = '';
+
+    /**
+     * @var string
+     */
+    public $label = '';
+
+    /**
+     * @var string
+     */
+    public $locationsApiSlug = '';
+
+    /**
+     * @var string
+     */
+    public $deliveryLocationTypes = '';
+
+    /**
+     * @return string
+     */
+    public function getCode(): string
     {
-        // TODO: Make filename a configuration setting
-        $data = file_get_contents(dirname(__DIR__) . '/../../src/locations.json');
+        return $this->code;
+    }
 
-        $json = json_decode($data, true);
+    /**
+     * @param string $code
+     */
+    public function setCode(string $code)
+    {
+        $this->code = $code;
+    }
 
-        foreach ($json['@graph'] as $field => $value) {
-            if ($value['skos:notation'] === $locationCode) {
-                return (string) $value['skos:prefLabel'];
-            }
-        }
+    /**
+     * @return string
+     */
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
 
-        return '';
+    /**
+     * @param string $label
+     */
+    public function setLabel(string $label)
+    {
+        $this->label = $label;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocationsApiSlug(): string
+    {
+        return $this->locationsApiSlug;
+    }
+
+    /**
+     * @param string $locationsApiSlug
+     */
+    public function setLocationsApiSlug(string $locationsApiSlug)
+    {
+        $this->locationsApiSlug = $locationsApiSlug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeliveryLocationTypes(): string
+    {
+        return $this->deliveryLocationTypes;
+    }
+
+    /**
+     * @param string $deliveryLocationTypes
+     */
+    public function setDeliveryLocationTypes(string $deliveryLocationTypes)
+    {
+        $this->deliveryLocationTypes = $deliveryLocationTypes;
     }
 }
