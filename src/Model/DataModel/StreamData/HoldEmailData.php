@@ -39,14 +39,14 @@ class HoldEmailData extends StreamData
     public $barcode = '';
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $pickupLocation = '';
+    public $pickupLocation;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $deliveryLocation = '';
+    public $deliveryLocation;
 
 
     /**
@@ -239,33 +239,33 @@ class HoldEmailData extends StreamData
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPickupLocation(): string
+    public function getPickupLocation()
     {
         return $this->pickupLocation;
     }
 
     /**
-     * @param string $pickupLocation
+     * @param string|null $pickupLocation
      */
-    public function setPickupLocation(string $pickupLocation)
+    public function setPickupLocation($pickupLocation)
     {
         $this->pickupLocation = $pickupLocation;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDeliveryLocation(): string
+    public function getDeliveryLocation()
     {
         return $this->deliveryLocation;
     }
 
     /**
-     * @param string $deliveryLocation
+     * @param string|null $deliveryLocation
      */
-    public function setDeliveryLocation(string $deliveryLocation)
+    public function setDeliveryLocation($deliveryLocation)
     {
         $this->deliveryLocation = $deliveryLocation;
     }
