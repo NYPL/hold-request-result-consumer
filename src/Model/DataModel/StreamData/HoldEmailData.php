@@ -10,6 +10,8 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\OAuthClient\LocationClient;
 use NYPL\Starter\APIException;
+use NYPL\Starter\APILogger;
+use NYPL\Starter\Model\LocalDateTime;
 use NYPL\Starter\Model\Response\ErrorResponse;
 
 class HoldEmailData extends StreamData
@@ -56,6 +58,11 @@ class HoldEmailData extends StreamData
     public $docDeliveryData;
 
     /**
+     * @var string
+     */
+    public $requestDate = '';
+
+    /**
      * @var bool
      */
     public $success;
@@ -87,6 +94,11 @@ class HoldEmailData extends StreamData
         $this->setPatronEmail($this->fixPatronEmail($holdRequest, $patron));
 
         $this->setDocDeliveryData($holdRequest->getDocDeliveryData());
+
+        if ($holdRequest->getCreatedDate() !== null) {
+            $creationDate = new LocalDateTime(LocalDateTime::FORMAT_DATE, $holdRequest->getCreatedDate());
+            $this->setRequestDate($creationDate->getDateTime()->format('Y-m-d'));
+        }
     }
 
 
@@ -263,6 +275,20 @@ class HoldEmailData extends StreamData
     public function setPickupLocation($pickupLocation)
     {
         $this->pickupLocation = $pickupLocation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestDate(): string
+    {
+        return $this->requestDate;
+    }/**
+     * @param string $requestDate
+     */
+    public function setRequestDate(string $requestDate)
+    {
+        $this->requestDate = $requestDate;
     }
 
     /**
