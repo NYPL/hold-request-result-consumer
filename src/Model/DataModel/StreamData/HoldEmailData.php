@@ -97,7 +97,7 @@ class HoldEmailData extends StreamData
 
         if ($holdRequest->getCreatedDate() !== null) {
             $creationDate = new LocalDateTime(LocalDateTime::FORMAT_DATE, $holdRequest->getCreatedDate());
-            $this->setRequestDate($creationDate->getDateTime()->format('Y-m-d'));
+            $this->setRequestDate($creationDate->getDateTime()->format('M j, Y'));
         }
     }
 
