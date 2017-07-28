@@ -101,7 +101,7 @@ class HoldRequestResultConsumerListener extends Listener
         if ($item === null) {
             throw new NonRetryableException(
                 'Hold request record missing Item data for Request Id ' .
-                $holdRequestResult->getHoldRequestId()
+                $holdRequest->getId()
             );
         }
 
@@ -254,7 +254,10 @@ class HoldRequestResultConsumerListener extends Listener
                     'RetryableException thrown: ' . $exception->getMessage() .
                     ', Error code: ' . $exception->getCode()
                 );
-                return new ListenerResult(false, 'Retrying process');
+                return new ListenerResult(
+                    false,
+                    'Retrying process'
+                );
             } catch (NonRetryableException $exception) {
                 APILogger::addError(
                     'NonRetryableException thrown: ' . $exception->getMessage() .

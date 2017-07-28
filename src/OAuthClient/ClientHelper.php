@@ -1,5 +1,4 @@
 <?php
-
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use GuzzleHttp\Exception\ClientException;
@@ -10,6 +9,13 @@ use NYPL\Starter\Model\Response\ErrorResponse;
 
 class ClientHelper extends APIClient
 {
+    /**
+     * @param string $url
+     * @param string $sourceFunction
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws NonRetryableException
+     * @throws RetryableException
+     */
     public static function getResponse($url = '', $sourceFunction = '')
     {
         try {
@@ -45,6 +51,14 @@ class ClientHelper extends APIClient
         }
     }
 
+    /**
+     * @param string $url
+     * @param array $body
+     * @param string $sourceFunction
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws NonRetryableException
+     * @throws RetryableException
+     */
     public static function patchResponse($url = '', $body = array(), $sourceFunction = '')
     {
         try {
