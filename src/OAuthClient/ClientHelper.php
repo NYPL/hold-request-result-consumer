@@ -24,28 +24,28 @@ class ClientHelper extends APIClient
             return $response;
         } catch (ServerException $exception) {
             throw new RetryableException(
-                'Server Error from ' . $sourceFunction . $exception->getMessage(),
-                'Server Error from ' . $sourceFunction . $exception->getMessage(),
+                'Server Error from ' . $sourceFunction . ' ' . $exception->getMessage(),
+                'Server Error from ' . $sourceFunction . ' ' . $exception->getMessage(),
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'internal-server-error',
-                    'Server Error from ' . $sourceFunction . $exception->getMessage()
+                    'Server Error from ' . $sourceFunction . ' ' . $exception->getMessage()
                 )
             );
         } catch (ClientException $exception) {
             throw new NonRetryableException(
-                'Client Error from '. $sourceFunction . $exception->getMessage(),
-                'Client Error from '. $sourceFunction . $exception->getMessage(),
+                'Client Error from '. $sourceFunction . ' ' . $exception->getMessage(),
+                'Client Error from '. $sourceFunction . ' ' . $exception->getMessage(),
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'client-error',
-                    'Client Error from '. $sourceFunction . $exception->getMessage()
+                    'Client Error from '. $sourceFunction . ' ' . $exception->getMessage()
                 )
             );
         }
@@ -67,28 +67,28 @@ class ClientHelper extends APIClient
             return $response;
         } catch (ServerException $exception) {
             throw new RetryableException(
-                'Server Error from ' . $sourceFunction . $exception->getMessage(),
-                'Server Error from ' . $sourceFunction . $exception->getMessage(),
+                'Server Error from ' . $sourceFunction . ' ' . $exception->getMessage(),
+                'Server Error from ' . $sourceFunction . ' ' . $exception->getMessage(),
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'internal-server-error',
-                    'Server Error from ' . $sourceFunction . $exception->getMessage()
+                    'Server Error from ' . $sourceFunction . ' ' . $exception->getMessage()
                 )
             );
         } catch (ClientException $exception) {
             throw new NonRetryableException(
-                'Client Error from '. $sourceFunction . $exception->getMessage(),
-                'Client Error from '. $sourceFunction . $exception->getMessage(),
+                'Client Error from '. $sourceFunction . ' ' . $exception->getMessage(),
+                'Client Error from '. $sourceFunction . ' ' . $exception->getMessage(),
                 $exception->getResponse()->getStatusCode(),
                 null,
                 $exception->getResponse()->getStatusCode(),
                 new ErrorResponse(
                     $exception->getResponse()->getStatusCode(),
                     'client-error',
-                    'Client Error from '. $sourceFunction . $exception->getMessage()
+                    'Client Error from '. $sourceFunction . ' ' . $exception->getMessage()
                 )
             );
         }

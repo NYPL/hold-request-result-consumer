@@ -201,6 +201,7 @@ class HoldRequestResultConsumerListener extends Listener
                     // Assumes error === null
                     $holdRequest = $this->getHoldRequest($holdRequestResult);
 
+                    // TODO: Remove this logic when this loop is fixed
                     if (!$holdRequest->isProcessed()) {
                         $this->patchHoldRequestService($holdRequestResult);
 
