@@ -10,6 +10,7 @@ use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 use NYPL\Starter\Model\Response\ErrorResponse;
+use SendGrid\Client;
 
 class HoldRequestClient extends APIClient
 {
@@ -90,51 +91,24 @@ class HoldRequestClient extends APIClient
 
         APILogger::addDebug('Retrieving hold request by id', (array) $url);
 
-        try {
-            $response = self::get($url);
 
-            $statusCode = $response->getStatusCode();
+        $response = ClientHelper::getResponse($url, __FUNCTION__);
 
-            $response = json_decode((string)$response->getBody(), true);
+        $statusCode = $response->getStatusCode();
 
-            APILogger::addDebug('Retrieved hold request by id', $response['data']);
+        $response = json_decode((string)$response->getBody(), true);
 
-            // Check statusCode range
-            if ($statusCode === 200) {
-                return new HoldRequest($response['data']);
-            } else {
-                APILogger::addError(
-                    'Failed',
-                    array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
-                );
-                return null;
-            }
-        } catch (ServerException $exception) {
-            throw new RetryableException(
-                'Server Error from ' . __FUNCTION__,
-                'Server Error from ' . __FUNCTION__,
-                $exception->getResponse()->getStatusCode(),
-                null,
-                $exception->getResponse()->getStatusCode(),
-                new ErrorResponse(
-                    $exception->getResponse()->getStatusCode(),
-                    'internal-server-error',
-                    'Server Error from ' . __FUNCTION__
-                )
+        APILogger::addDebug('Retrieved hold request by id', $response['data']);
+
+        // Check statusCode range
+        if ($statusCode === 200) {
+            return new HoldRequest($response['data']);
+        } else {
+            APILogger::addError(
+                'Failed',
+                array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
             );
-        } catch (ClientException $exception) {
-            throw new NonRetryableException(
-                'Client Error from '. __FUNCTION__,
-                'Client Error from '. __FUNCTION__,
-                $exception->getResponse()->getStatusCode(),
-                null,
-                $exception->getResponse()->getStatusCode(),
-                new ErrorResponse(
-                    $exception->getResponse()->getStatusCode(),
-                    'client-error',
-                    'Client Error from '. __FUNCTION__
-                )
-            );
+            return null;
         }
     }
 
@@ -158,52 +132,23 @@ class HoldRequestClient extends APIClient
 
         APILogger::addDebug('Patching hold request by id', array($url, $body));
 
-        try {
-            $response = self::patch($url, ["body" => json_encode($body)]);
+        $response = ClientHelper::patchResponse($url, $body, __FUNCTION__);
 
+        $statusCode = $response->getStatusCode();
 
-            $statusCode = $response->getStatusCode();
+        $response = json_decode((string)$response->getBody(), true);
 
-            $response = json_decode((string)$response->getBody(), true);
+        APILogger::addDebug('Patched hold request by id', $response['data']);
 
-            APILogger::addDebug('Patched hold request by id', $response['data']);
-
-            // Check statusCode range
-            if ($statusCode === 200) {
-                return new HoldRequest($response['data']);
-            } else {
-                APILogger::addError(
-                    'Failed',
-                    array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
-                );
-                return null;
-            }
-        } catch (ServerException $exception) {
-            throw new RetryableException(
-                'Server Error from ' . __FUNCTION__ . $exception->getMessage(),
-                'Server Error from ' . __FUNCTION__ . $exception->getMessage(),
-                $exception->getResponse()->getStatusCode(),
-                null,
-                $exception->getResponse()->getStatusCode(),
-                new ErrorResponse(
-                    $exception->getResponse()->getStatusCode(),
-                    'internal-server-error',
-                    'Server Error from ' . __FUNCTION__ . $exception->getMessage()
-                )
+        // Check statusCode range
+        if ($statusCode === 200) {
+            return new HoldRequest($response['data']);
+        } else {
+            APILogger::addError(
+                'Failed',
+                array('Failed to retrieve Hold Request ', $holdRequestId, $response['type'], $response['message'])
             );
-        } catch (ClientException $exception) {
-            throw new NonRetryableException(
-                'Client Error from '. __FUNCTION__ . $exception->getMessage(),
-                'Client Error from '. __FUNCTION__ . $exception->getMessage(),
-                $exception->getResponse()->getStatusCode(),
-                null,
-                $exception->getResponse()->getStatusCode(),
-                new ErrorResponse(
-                    $exception->getResponse()->getStatusCode(),
-                    'client-error',
-                    'Client Error from '. __FUNCTION__ . $exception->getMessage()
-                )
-            );
+            return null;
         }
     }
 }

@@ -24,54 +24,26 @@ class PatronClient extends APIClient
 
         APILogger::addDebug('Retrieving patron by id', (array) $url);
 
-        try {
-            $response = self::get($url);
+        $response = ClientHelper::getResponse($url, __FUNCTION__);
 
-            $statusCode = $response->getStatusCode();
+        $statusCode = $response->getStatusCode();
 
-            $response = json_decode((string) $response->getBody(), true);
+        $response = json_decode((string) $response->getBody(), true);
 
-            APILogger::addDebug(
-                'Retrieved patron by id',
-                $response['data']
+        APILogger::addDebug(
+            'Retrieved patron by id',
+            $response['data']
+        );
+
+        // Check statusCode range
+        if ($statusCode === 200) {
+            return new Patron($response['data']);
+        } else {
+            APILogger::addError(
+                'Failed',
+                array('Failed to retrieve patron ', $patronId, $response['type'], $response['message'])
             );
-
-            // Check statusCode range
-            if ($statusCode === 200) {
-                return new Patron($response['data']);
-            } else {
-                APILogger::addError(
-                    'Failed',
-                    array('Failed to retrieve patron ', $patronId, $response['type'], $response['message'])
-                );
-                return null;
-            }
-        } catch (ServerException $exception) {
-            throw new RetryableException(
-                'Server Error from ' . __FUNCTION__ . $exception->getMessage(),
-                'Server Error from ' . __FUNCTION__ . $exception->getMessage(),
-                $exception->getResponse()->getStatusCode(),
-                null,
-                $exception->getResponse()->getStatusCode(),
-                new ErrorResponse(
-                    $exception->getResponse()->getStatusCode(),
-                    'internal-server-error',
-                    'Server Error from ' . __FUNCTION__ . $exception->getMessage()
-                )
-            );
-        } catch (ClientException $exception) {
-            throw new NonRetryableException(
-                'Client Error from '. __FUNCTION__ . $exception->getMessage(),
-                'Client Error from '. __FUNCTION__ . $exception->getMessage(),
-                $exception->getResponse()->getStatusCode(),
-                null,
-                $exception->getResponse()->getStatusCode(),
-                new ErrorResponse(
-                    $exception->getResponse()->getStatusCode(),
-                    'client-error',
-                    'Client Error from '. __FUNCTION__ . $exception->getMessage()
-                )
-            );
+            return null;
         }
     }
 }
