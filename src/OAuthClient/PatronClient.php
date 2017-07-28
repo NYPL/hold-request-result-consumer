@@ -22,13 +22,11 @@ class PatronClient extends APIClient
 
         APILogger::addDebug('Retrieving patron by id', (array)$url);
 
-
         $response = ClientHelper::getResponse($url, __FUNCTION__);
 
         $statusCode = $response->getStatusCode();
 
-        $response = json_decode((string)$response->getBody(), true);
-
+        $response = json_decode((string) $response->getBody(), true);
 
         APILogger::addDebug(
             'Retrieved patron by id',

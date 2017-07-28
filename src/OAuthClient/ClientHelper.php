@@ -1,4 +1,5 @@
 <?php
+
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use GuzzleHttp\Exception\ClientException;
@@ -50,6 +51,7 @@ class ClientHelper extends APIClient
             );
         }
     }
+
 
     /**
      * @param string $url

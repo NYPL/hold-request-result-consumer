@@ -10,6 +10,7 @@ use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 use NYPL\Starter\Model\Response\ErrorResponse;
+use SendGrid\Client;
 
 class HoldRequestClient extends APIClient
 {
@@ -88,7 +89,7 @@ class HoldRequestClient extends APIClient
 
         $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
-        APILogger::addDebug('Retrieving hold request by id', (array)$url);
+        APILogger::addDebug('Retrieving hold request by id', (array) $url);
 
         $response = ClientHelper::getResponse($url, __FUNCTION__);
 
