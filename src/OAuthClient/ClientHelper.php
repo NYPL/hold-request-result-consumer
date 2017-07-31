@@ -52,7 +52,6 @@ class ClientHelper extends APIClient
         }
     }
 
-
     /**
      * @param string $url
      * @param array $body
