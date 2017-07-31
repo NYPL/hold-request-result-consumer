@@ -11,7 +11,7 @@ class HoldSuccessEmail extends Email
      */
     public function getSubject()
     {
-        return 'Your Hold Request is Successful';
+        return 'NYPL Off-Site Request Status Update';
     }
 
     /**

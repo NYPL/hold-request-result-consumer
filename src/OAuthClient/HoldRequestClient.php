@@ -3,8 +3,6 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
-use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
-use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 use NYPL\Starter\Model\Response\ErrorResponse;
@@ -12,9 +10,9 @@ use NYPL\Starter\Model\Response\ErrorResponse;
 class HoldRequestClient extends APIClient
 {
     /**
-     * @param $holdRequestId
+     * @param int $holdRequestId
      * @return bool
-     * @throws APIException
+     * @throws NonRetryableException
      */
     public static function validateRequestId(int $holdRequestId)
     {
@@ -35,7 +33,7 @@ class HoldRequestClient extends APIClient
     /**
      * @param $processed
      * @return bool
-     * @throws APIException
+     * @throws NonRetryableException
      */
     public static function validateProcessed($processed)
     {
@@ -56,7 +54,7 @@ class HoldRequestClient extends APIClient
     /**
      * @param $success
      * @return bool
-     * @throws APIException
+     * @throws NonRetryableException
      */
     public static function validateSuccess($success)
     {
@@ -77,8 +75,6 @@ class HoldRequestClient extends APIClient
     /**
      * @param $holdRequestId
      * @return null|HoldRequest
-     * @throws NonRetryableException
-     * @throws RetryableException
      */
     public static function getHoldRequestById($holdRequestId)
     {
@@ -87,7 +83,6 @@ class HoldRequestClient extends APIClient
         $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
         APILogger::addDebug('Retrieving hold request by id', (array) $url);
-
 
         $response = ClientHelper::getResponse($url, __FUNCTION__);
 
@@ -114,8 +109,6 @@ class HoldRequestClient extends APIClient
      * @param bool $processed
      * @param bool $success
      * @return null|HoldRequest
-     * @throws NonRetryableException
-     * @throws RetryableException
      */
     public static function patchHoldRequestById($holdRequestId = '', bool $processed, bool $success)
     {

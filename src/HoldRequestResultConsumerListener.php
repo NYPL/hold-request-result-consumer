@@ -12,6 +12,7 @@ use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\ItemClient;
+use NYPL\HoldRequestResultConsumer\OAuthClient\LocationClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
 use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;

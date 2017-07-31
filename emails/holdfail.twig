@@ -50,15 +50,16 @@
 <body>
 {# @var data \NYPL\HoldRequestResultConsumer\Model\DataModel\HoldEmailData #}
 <div class="welcome">
-    <h1 class="hold">Hold Failed</h1>
+    <h1 class="hold">NYPL Request Status Update</h1>
 </div>
 
 <p>Dear {{ data.patronName }},</p>
-<p>Your item cannot be reserved at this time. Please try again at a later date.</p>
+<p>We could not process your request for the following item:</p>
 <p><strong>Title</strong>: {{ data.title }}<br/>
     <strong>Author</strong>: {{ data.author }}<br/>
     <strong>Barcode</strong>: {{ data.barcode }}
 </p>
+<p>Please try again or contact 917-ASK-NYPL (917-275-6975).</p>
 <p>The New York Public Library</p>
 </body>
 </html>

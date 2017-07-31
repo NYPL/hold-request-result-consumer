@@ -1,4 +1,5 @@
 <?php
+
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use GuzzleHttp\Exception\ClientException;

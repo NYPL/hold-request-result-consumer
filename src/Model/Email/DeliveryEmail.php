@@ -12,7 +12,7 @@ class DeliveryEmail extends Email
      */
     public function getSubject()
     {
-        return 'Electronic Document Delivery';
+        return 'NYPL Electronic Delivery Request Status Update';
     }
 
     /**

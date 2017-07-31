@@ -8,7 +8,10 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\Location;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
+use NYPL\HoldRequestResultConsumer\OAuthClient\LocationClient;
 use NYPL\Starter\APIException;
+use NYPL\Starter\APILogger;
+use NYPL\Starter\Model\LocalDateTime;
 use NYPL\Starter\Model\Response\ErrorResponse;
 
 class HoldEmailData extends StreamData
@@ -55,6 +58,11 @@ class HoldEmailData extends StreamData
     public $docDeliveryData;
 
     /**
+     * @var string
+     */
+    public $requestDate = '';
+
+    /**
      * @var bool
      */
     public $success;
@@ -76,17 +84,22 @@ class HoldEmailData extends StreamData
         $this->setAuthor($bib->getAuthor());
         $this->setBarcode($item->getBarcode());
         $this->setTitle($bib->getTitle());
-        $this->setDeliveryLocation($holdRequest->getDeliveryLocation());
+        $this->setDeliveryLocation($this->fixDeliveryLocation($holdRequest->getDeliveryLocation()));
         $this->setPickupLocation($this->fixPickupLocation($holdRequest->getPickupLocation()));
         $this->setSuccess($holdRequestResult->isSuccess());
-
 
         $this->setPatronName($this->fixPatronName($patron));
 
         $this->setPatronEmail($this->fixPatronEmail($holdRequest, $patron));
 
         $this->setDocDeliveryData($holdRequest->getDocDeliveryData());
+
+        if ($holdRequest->getCreatedDate() !== null) {
+            $creationDate = new LocalDateTime(LocalDateTime::FORMAT_DATE, $holdRequest->getCreatedDate());
+            $this->setRequestDate($creationDate->getDateTime()->format('M j, Y'));
+        }
     }
+
 
     /**
      * @param Patron $patron
@@ -105,11 +118,11 @@ class HoldEmailData extends StreamData
         } else {
             throw new NonRetryableException(
                 'Not Acceptable: No names for patron',
-                'Not Acceptable: No names for patron',
+                [],
                 406,
                 null,
                 406,
-                new ErrorResponse(500, 'no-name', 'Not Acceptable: No names for patron')
+                new ErrorResponse(406, 'no-patron-name', 'Not Acceptable: No names for patron')
             );
         }
     }
@@ -143,8 +156,8 @@ class HoldEmailData extends StreamData
                 'Patron did not provide an e-mail address.',
                 0,
                 null,
-                500,
-                new ErrorResponse(500, 'no-email', 'Patron did not provide an e-mail address')
+                406,
+                new ErrorResponse(406, 'no-email', 'Patron did not provide an e-mail address')
             );
         }
     }
@@ -155,7 +168,16 @@ class HoldEmailData extends StreamData
      */
     public function fixPickupLocation($pickupLocation)
     {
-        return (Location::getLocationName($pickupLocation));
+        return (LocationClient::getSierraLocationById($pickupLocation));
+    }
+
+    /**
+     * @param $deliveryLocation
+     * @return string
+     */
+    public function fixDeliveryLocation($deliveryLocation)
+    {
+        return (LocationClient::getRecapLocationById($deliveryLocation));
     }
 
     /**
@@ -252,6 +274,20 @@ class HoldEmailData extends StreamData
     public function setPickupLocation($pickupLocation)
     {
         $this->pickupLocation = $pickupLocation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestDate(): string
+    {
+        return $this->requestDate;
+    }/**
+     * @param string $requestDate
+     */
+    public function setRequestDate(string $requestDate)
+    {
+        $this->requestDate = $requestDate;
     }
 
     /**

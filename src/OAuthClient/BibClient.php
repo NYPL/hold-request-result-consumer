@@ -1,14 +1,10 @@
 <?php
+
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
-use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
-use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
-use NYPL\Starter\Model\Response\ErrorResponse;
 
 class BibClient extends APIClient
 {
@@ -16,14 +12,12 @@ class BibClient extends APIClient
      * @param string $bibId
      * @param $nyplSource
      * @return null|Bib
-     * @throws NonRetryableException
-     * @throws RetryableException
      */
     public static function getBibByIdAndSource($bibId = '', $nyplSource)
     {
-        $url = Config::get('API_BIB_URL') . '/'. $nyplSource . '/' . $bibId;
+        $url = Config::get('API_BIB_URL') . '/' . $nyplSource . '/' . $bibId;
 
-        APILogger::addDebug('Retrieving bib by Id and Source', (array) $url);
+        APILogger::addDebug('Retrieving bib by Id and Source', (array)$url);
 
         $response = ClientHelper::getResponse($url, __FUNCTION__);
 
