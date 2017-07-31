@@ -25,6 +25,8 @@ class BibClient extends APIClient
 
         $response = ClientHelper::getResponse($url, __FUNCTION__);
 
+        $statusCode = $response->getStatusCode();
+
         $response = json_decode((string)$response->getBody(), true);
 
         APILogger::addDebug(
