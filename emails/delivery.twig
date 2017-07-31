@@ -50,25 +50,12 @@
 <blockquote>
 {# @var data \NYPL\HoldRequestResultConsumer\Model\DataModel\HoldEmailData #}
 <div class="edd">
-    <h1 class="edd">Document Delivery System</h1>
+    <h1 class="edd">NYPL Electronic Delivery Request Status Update</h1>
 </div>
 
 <p>Dear {{ data.patronName }},</p>
-<p>The recent request you placed via our Catalog's "Request Material From Off-site Storage" form is in the process of being delivered to your selected viewing location.
+    <p>The recent request you placed for materials for electronic delivery has been received. Soon, you will receive a notification from the Library’s ILL email address (<a href="mailto:interlibraryloan@nypl.org">interlibraryloan@nypl.org</a>). The subject of the email contains the requested item's barcode, and you will see a "oc.lc" link and password to retrieve document. Once you enter the password, your download will begin automatically.
 </p>
-    <p>You will receive an e-mail confirmation when your item has arrived and is ready for pick-up at your requested location; no appointment necessary. For estimated arrival dates, details about procedures and contact information, please read our Offsite Collections homepage:</p>
-
-<blockquote><a href="http://www.nypl.org/help/get-what-you-need/access-offsite-collections">http://www.nypl.org/help/get-what-you-need/access-offsite-collections</a></blockquote>
-
-    <p> We kindly ask that you wait to call or e-mail the appropriate division until the expected arrival date has passed with no confirmation sent to you.</p>
-<p> Title: {{ data.title }}<br/>
-    Author: {{ data.author }}<br/>
-    Barcode: {{ data.barcode }}<br/>
-    Pickup Location: {{ data.pickupLocation }}<br/>
-    Chapter Title: {{ data.docDeliveryData.chapterTitle }}<br/>
-    Issue: {{ data.docDeliveryData.issue }}<br/>
-    Volume: {{ data.docDeliveryData.volume }}<br/>
-    Start Page: {{ data.docDeliveryData.startPage }}<br/>
-    End Page: {{ data.docDeliveryData.endPage }}</p>
+    <p>If you would like to cancel your request, or if you have further questions, please contact 917-275-6975 (917-ASK-NYPL).</p>
 </body>
 </html>

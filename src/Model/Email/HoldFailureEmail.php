@@ -18,7 +18,7 @@ class HoldFailureEmail extends Email
      */
     public function getSubject()
     {
-        return 'Your Hold Request Failed';
+        return 'NYPL Request Status Update';
     }
 
     /**
