@@ -12,13 +12,13 @@ use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\ItemClient;
-use NYPL\HoldRequestResultConsumer\OAuthClient\LocationClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
 use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Listener\Listener;
 use NYPL\Starter\Listener\ListenerEvent;
 use NYPL\Starter\Listener\ListenerResult;
+use NYPL\Starter\Model\Response\ErrorResponse;
 
 class HoldRequestResultConsumerListener extends Listener
 {
@@ -32,7 +32,14 @@ class HoldRequestResultConsumerListener extends Listener
         $listenerData = $listenerEvent->getListenerData();
 
         if ($listenerData === null) {
-            throw new NonRetryableException('No listener data');
+            throw new NonRetryableException(
+                'Not Acceptable: No listener data',
+                array($listenerEvent),
+                406,
+                null,
+                406,
+                new ErrorResponse(406, 'no-listener-data', 'Not Acceptable: No listener data')
+            );
         }
 
         $data = $listenerData->getData();
@@ -40,7 +47,14 @@ class HoldRequestResultConsumerListener extends Listener
         APILogger::addDebug('data', $data);
 
         if ($data === null) {
-            throw new NonRetryableException('No data');
+            throw new NonRetryableException(
+                'Not Acceptable: No data from listener data',
+                array($listenerData),
+                406,
+                null,
+                406,
+                new ErrorResponse(406, 'no-data-from-listener-data', 'Not Acceptable: No data from listener data')
+            );
         }
 
         $holdRequestResult = new HoldRequestResult($data);
@@ -77,8 +91,18 @@ class HoldRequestResultConsumerListener extends Listener
         APILogger::addDebug('HoldRequest', (array) $holdRequest);
 
         if ($holdRequest === null) {
-            throw new NonRetryableException('Cannot get Hold Request for Request Id ' .
-                $holdRequestResult->getHoldRequestId());
+            throw new NonRetryableException(
+                'Cannot get Hold Request for Request Id ' . $holdRequestResult->getHoldRequestId(),
+                array($holdRequestResult, $holdRequest),
+                406,
+                null,
+                406,
+                new ErrorResponse(
+                    406,
+                    'no-hold-request',
+                    'Not Acceptable: Cannot get Hold Request for Request Id ' . $holdRequestResult->getHoldRequestId()
+                )
+            );
         }
 
         return $holdRequest;
@@ -101,8 +125,16 @@ class HoldRequestResultConsumerListener extends Listener
 
         if ($item === null) {
             throw new NonRetryableException(
-                'Hold request record missing Item data for Request Id ' .
-                $holdRequest->getId()
+                'Hold request record missing Item data for Request Id ' . $holdRequest->getId(),
+                array($holdRequest, $item),
+                406,
+                null,
+                406,
+                new ErrorResponse(
+                    406,
+                    'missing-item-data',
+                    'Not Acceptable:Hold request record missing Item data for Request Id ' . $holdRequest->getId()
+                )
             );
         }
 
@@ -122,8 +154,17 @@ class HoldRequestResultConsumerListener extends Listener
 
         if ($bib === null) {
             throw new NonRetryableException(
-                'Hold request record missing Bib data for Request Id ' .
-                $holdRequestResult->getHoldRequestId()
+                'Hold request record missing Bib data for Request Id ' . $holdRequestResult->getHoldRequestId(),
+                array($item, $holdRequestResult, $bib),
+                406,
+                null,
+                406,
+                new ErrorResponse(
+                    406,
+                    'missing-bib-data',
+                    'Not Acceptable: Hold request record missing Bib data for Request Id '
+                    . $holdRequestResult->getHoldRequestId()
+                )
             );
         }
 
@@ -140,8 +181,17 @@ class HoldRequestResultConsumerListener extends Listener
             $holdRequestResult->getError()->getType() == 'hold-request-record-missing-item-data'
         ) {
             throw new NonRetryableException(
-                'Hold request record missing Item data for Request Id ' .
-                $holdRequestResult->getHoldRequestId()
+                'Hold request record missing Item data for Request Id ' . $holdRequestResult->getHoldRequestId(),
+                array($holdRequestResult),
+                406,
+                null,
+                406,
+                new ErrorResponse(
+                    406,
+                    'missing-item-data',
+                    'Not Acceptable:Hold request record missing Item data for Request Id '
+                    . $holdRequestResult->getHoldRequestId()
+                )
             );
         }
     }
@@ -156,8 +206,17 @@ class HoldRequestResultConsumerListener extends Listener
             $holdRequestResult->getError()->getType() == 'hold-request-record-missing-patron-data'
         ) {
             throw new NonRetryableException(
-                'Hold request record missing Patron data for Request Id ' .
-                $holdRequestResult->getHoldRequestId()
+                'Hold request record missing Patron data for Request Id ' . $holdRequestResult->getHoldRequestId(),
+                array($holdRequestResult),
+                406,
+                null,
+                406,
+                new ErrorResponse(
+                    406,
+                    'missing-patron-data',
+                    'Not Acceptable: Hold request record missing Patron data for Request Id '
+                    . $holdRequestResult->getHoldRequestId()
+                )
             );
         }
     }
@@ -210,8 +269,18 @@ class HoldRequestResultConsumerListener extends Listener
 
                         if ($patron === null) {
                             throw new NonRetryableException(
-                                'Hold request record missing Patron data for Request Id ' .
-                                $holdRequestResult->getHoldRequestId()
+                                'Hold request record missing Patron data for Request Id '
+                                . $holdRequestResult->getHoldRequestId(),
+                                array($holdRequest),
+                                406,
+                                null,
+                                406,
+                                new ErrorResponse(
+                                    406,
+                                    'missing-patron-data',
+                                    'Not Acceptable: Hold request record missing Patron data for Request Id '
+                                    . $holdRequestResult->getHoldRequestId()
+                                )
                             );
                         }
 
@@ -237,8 +306,18 @@ class HoldRequestResultConsumerListener extends Listener
 
                         if ($patron === null) {
                             throw new NonRetryableException(
-                                'Hold request record missing Patron data for Request Id ' .
-                                $holdRequestResult->getHoldRequestId()
+                                'Hold request record missing Patron data for Request Id '
+                                . $holdRequestResult->getHoldRequestId(),
+                                array($holdRequest),
+                                406,
+                                null,
+                                406,
+                                new ErrorResponse(
+                                    406,
+                                    'missing-patron-data',
+                                    'Not Acceptable: Hold request record missing Patron data for Request Id '
+                                    . $holdRequestResult->getHoldRequestId()
+                                )
                             );
                         }
 
