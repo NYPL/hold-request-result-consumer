@@ -1,18 +1,23 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
-
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
-use NYPL\Starter\APIException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
+use NYPL\Starter\Model\Response\ErrorResponse;
 
 class ItemClient extends APIClient
 {
     /**
      * @param string $itemId
      * @param $nyplSource
-     * @return Item | null
+     * @return null|Item
+     * @throws NonRetryableException
+     * @throws RetryableException
      */
     public static function getItemByIdAndSource($itemId = '', $nyplSource)
     {
@@ -20,23 +25,27 @@ class ItemClient extends APIClient
 
         APILogger::addDebug('Retrieving item by Id and Source', (array) $url);
 
-        $response = self::get($url);
 
-        $response = json_decode((string) $response->getBody(), true);
+        $response = ClientHelper::getResponse($url, __FUNCTION__);
+
+        $statusCode = $response->getStatusCode();
+
+        $response = json_decode((string)$response->getBody(), true);
 
         APILogger::addDebug(
             'Retrieve item by id and source',
             $response['data']
         );
 
-        if ($response['statusCode'] !== 200) {
+        // Check statusCode range
+        if ($statusCode === 200) {
+            return new Item($response['data']);
+        } else {
             APILogger::addError(
                 'Failed',
                 array('Failed to retrieve item ', $itemId, $response['type'], $response['message'])
             );
             return null;
         }
-
-        return new Item($response['data']);
     }
 }

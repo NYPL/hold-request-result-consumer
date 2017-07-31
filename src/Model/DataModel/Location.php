@@ -25,13 +25,6 @@ class Location
             }
         }
 
-        throw new APIException(
-            'No location found',
-            'No location found given location code.',
-            0,
-            null,
-            500,
-            new ErrorResponse(500, 'location-not-found', 'No location found given location code.')
-        );
+        return '';
     }
 }
