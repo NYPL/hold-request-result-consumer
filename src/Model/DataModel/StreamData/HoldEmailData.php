@@ -88,7 +88,6 @@ class HoldEmailData extends StreamData
         $this->setPickupLocation($this->fixPickupLocation($holdRequest->getPickupLocation()));
         $this->setSuccess($holdRequestResult->isSuccess());
 
-
         $this->setPatronName($this->fixPatronName($patron));
 
         $this->setPatronEmail($this->fixPatronEmail($holdRequest, $patron));

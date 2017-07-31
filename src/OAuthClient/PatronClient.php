@@ -40,5 +40,4 @@ class PatronClient extends APIClient
             return null;
         }
     }
-
 }
