@@ -3,8 +3,6 @@
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
-use NYPL\HoldRequestResultConsumer\Model\Exception\NotRetryableException;
-use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 
@@ -13,14 +11,12 @@ class PatronClient extends APIClient
     /**
      * @param string $patronId
      * @return null|Patron
-     * @throws NotRetryableException
-     * @throws RetryableException
      */
     public static function getPatronById($patronId = '')
     {
         $url = Config::get('API_PATRON_URL') . '/' . $patronId;
 
-        APILogger::addDebug('Retrieving patron by id', (array)$url);
+        APILogger::addDebug('Retrieving patron by id', (array) $url);
 
         $response = ClientHelper::getResponse($url, __FUNCTION__);
 

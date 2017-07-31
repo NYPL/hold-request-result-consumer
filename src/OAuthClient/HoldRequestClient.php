@@ -1,23 +1,18 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
-use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
-use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 use NYPL\Starter\Model\Response\ErrorResponse;
-use SendGrid\Client;
 
 class HoldRequestClient extends APIClient
 {
     /**
-     * @param $holdRequestId
+     * @param int $holdRequestId
      * @return bool
-     * @throws APIException
+     * @throws NonRetryableException
      */
     public static function validateRequestId(int $holdRequestId)
     {
@@ -38,7 +33,7 @@ class HoldRequestClient extends APIClient
     /**
      * @param $processed
      * @return bool
-     * @throws APIException
+     * @throws NonRetryableException
      */
     public static function validateProcessed($processed)
     {
@@ -59,7 +54,7 @@ class HoldRequestClient extends APIClient
     /**
      * @param $success
      * @return bool
-     * @throws APIException
+     * @throws NonRetryableException
      */
     public static function validateSuccess($success)
     {
@@ -80,8 +75,6 @@ class HoldRequestClient extends APIClient
     /**
      * @param $holdRequestId
      * @return null|HoldRequest
-     * @throws NonRetryableException
-     * @throws RetryableException
      */
     public static function getHoldRequestById($holdRequestId)
     {
@@ -116,8 +109,6 @@ class HoldRequestClient extends APIClient
      * @param bool $processed
      * @param bool $success
      * @return null|HoldRequest
-     * @throws NonRetryableException
-     * @throws RetryableException
      */
     public static function patchHoldRequestById($holdRequestId = '', bool $processed, bool $success)
     {
