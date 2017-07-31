@@ -14,8 +14,6 @@ class BibClient extends APIClient
      * @param string $bibId
      * @param $nyplSource
      * @return null|Bib
-     * @throws NotRetryableException
-     * @throws RetryableException
      */
     public static function getBibByIdAndSource($bibId = '', $nyplSource)
     {
