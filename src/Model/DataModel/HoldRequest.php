@@ -42,23 +42,23 @@ class HoldRequest extends DataModel
     /**
      * Type of request for a processed hold request.
      *
-     * @var string
+     * @var string|null
      */
-    public $requestType = '';
+    public $requestType;
 
     /**
      * Date processed hold request created.
      *
-     * @var string
+     * @var string | null
      */
-    public $createdDate = '';
+    public $createdDate;
 
     /**
      * Date processed hold request updated.
      *
-     * @var string
+     * @var string | null
      */
-    public $updatedDate = '';
+    public $updatedDate;
 
     /**
      * @var bool
@@ -87,30 +87,30 @@ class HoldRequest extends DataModel
     /**
      * Pickup location assigned in a hold request.
      *
-     * @var string
+     * @var string | null
      */
-    public $pickupLocation = '';
+    public $pickupLocation;
 
     /**
      * The Need By date of a hold request.
      *
-     * @var string
+     * @var string|null
      */
-    public $neededBy = '';
+    public $neededBy;
 
     /**
      * Number of copies specified for Electronic Document Delivery (EDD).
      *
-     * @var int
+     * @var int|null
      */
     public $numberOfCopies;
 
     /**
      * Delivery location of hold request.
      *
-     * @var string
+     * @var string | null
      */
-    public $deliveryLocation = '';
+    public $deliveryLocation;
 
     /**
      * Document delivery data represented in an Electronic Document Delivery (EDD).
@@ -146,7 +146,7 @@ class HoldRequest extends DataModel
     /**
      * @param string $jobId
      */
-    public function setJobId(string $jobId)
+    public function setJobId($jobId)
     {
         $this->jobId = $jobId;
     }
@@ -184,49 +184,49 @@ class HoldRequest extends DataModel
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getRequestType(): string
+    public function getRequestType()
     {
         return $this->requestType;
     }
 
     /**
-     * @param string $requestType
+     * @param string|null $requestType
      */
-    public function setRequestType(string $requestType)
+    public function setRequestType($requestType)
     {
         $this->requestType = $requestType;
     }
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getCreatedDate(): string
+    public function getCreatedDate()
     {
         return $this->createdDate;
     }
 
     /**
-     * @param string $createdDate
+     * @param string|null $createdDate
      */
-    public function setCreatedDate(string $createdDate)
+    public function setCreatedDate($createdDate)
     {
         $this->createdDate = $createdDate;
     }
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getUpdatedDate(): string
+    public function getUpdatedDate()
     {
         return $this->updatedDate;
     }
 
     /**
-     * @param string $updatedDate
+     * @param string|null $updatedDate
      */
-    public function setUpdatedDate(string $updatedDate)
+    public function setUpdatedDate($updatedDate)
     {
         $this->updatedDate = $updatedDate;
     }
@@ -296,65 +296,65 @@ class HoldRequest extends DataModel
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPickupLocation(): string
+    public function getPickupLocation()
     {
         return $this->pickupLocation;
     }
 
     /**
-     * @param string $pickupLocation
+     * @param string|null $pickupLocation
      */
-    public function setPickupLocation(string $pickupLocation)
+    public function setPickupLocation($pickupLocation)
     {
         $this->pickupLocation = $pickupLocation;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getNeededBy(): string
+    public function getNeededBy()
     {
         return $this->neededBy;
     }
 
     /**
-     * @param string $neededBy
+     * @param string|null $neededBy
      */
-    public function setNeededBy(string $neededBy)
+    public function setNeededBy($neededBy)
     {
         $this->neededBy = $neededBy;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getNumberOfCopies(): int
+    public function getNumberOfCopies()
     {
         return $this->numberOfCopies;
     }
 
     /**
-     * @param int $numberOfCopies
+     * @param int|null $numberOfCopies
      */
-    public function setNumberOfCopies(int $numberOfCopies)
+    public function setNumberOfCopies($numberOfCopies)
     {
         $this->numberOfCopies = $numberOfCopies;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDeliveryLocation(): string
+    public function getDeliveryLocation()
     {
         return $this->deliveryLocation;
     }
 
     /**
-     * @param string $deliveryLocation
+     * @param string|null $deliveryLocation
      */
-    public function setDeliveryLocation(string $deliveryLocation)
+    public function setDeliveryLocation($deliveryLocation)
     {
         $this->deliveryLocation = $deliveryLocation;
     }

@@ -1,0 +1,27 @@
+{
+  "Records": [
+    {
+      "kinesis": {
+        "kinesisSchemaVersion": "1.0",
+        "partitionKey": "d0ed9b677dd3418892b69c2a1ddbc852c25bedf6",
+        "sequenceNumber": "49572948393596369563806803946923202554422056671776866306",
+        "data": "Akg5MDFiZGQxZC1iZDhmLTQzMTAtYmEzMS03ZjEzYTU1ODc3ZmQBANoM",
+        "approximateArrivalTimestamp": 1494280273.264
+      },
+      "eventSource": "aws:kinesis",
+      "eventVersion": "1.0",
+      "eventID": "shardId-000000000000:49572948393596369563806803946923202554422056671776866306",
+      "eventName": "aws:kinesis:record",
+      "invokeIdentityArn": "arn:aws:iam::946183545209:role/lambda-full-access",
+      "awsRegion": "us-east-1",
+      "eventSourceARN": "arn:aws:kinesis:us-east-1:946183545209:stream/HoldRequestResult-qa"
+    }
+  ],
+  "eventSource": "aws:kinesis",
+  "eventVersion": "1.0",
+  "eventID": "shardId-000000000000:49572948393596369563806808629790452119861765831598800898",
+  "eventName": "aws:kinesis:record",
+  "invokeIdentityArn": "arn:aws:iam::946183545209:role/lambda-full-access",
+  "awsRegion": "us-east-1",
+  "eventSourceARN": "arn:aws:kinesis:us-east-1:946183545209:stream/HoldRequestResult-qa"
+}

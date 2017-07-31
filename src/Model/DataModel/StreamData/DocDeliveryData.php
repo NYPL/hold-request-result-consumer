@@ -17,6 +17,16 @@ class DocDeliveryData extends StreamData
     public $emailAddress = '';
 
     /**
+     * @var string|null
+     */
+    public $author;
+
+    /**
+     * @var string|null
+     */
+    public $requestNotes;
+
+    /**
      * Title of a chapter in the document delivery
      *
      * @var string
@@ -26,16 +36,16 @@ class DocDeliveryData extends StreamData
     /**
      * Issue number of requested document delivery.
      *
-     * @var string
+     * @var string|null
      */
-    public $issue = '';
+    public $issue;
 
     /**
      * Volume number of requested document delivery.
      *
-     * @var string
+     * @var string|null
      */
-    public $volume = '';
+    public $volume;
 
     /**
      * Starting page number of requested document delivery.
@@ -68,6 +78,38 @@ class DocDeliveryData extends StreamData
     }
 
     /**
+     * @return null|string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param null|string $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getRequestNotes()
+    {
+        return $this->requestNotes;
+    }
+
+    /**
+     * @param null|string $requestNotes
+     */
+    public function setRequestNotes($requestNotes)
+    {
+        $this->requestNotes = $requestNotes;
+    }
+
+    /**
      * @return string
      */
     public function getChapterTitle(): string
@@ -84,33 +126,33 @@ class DocDeliveryData extends StreamData
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getIssue(): string
+    public function getIssue()
     {
         return $this->issue;
     }
 
     /**
-     * @param string $issue
+     * @param string|null $issue
      */
-    public function setIssue(string $issue)
+    public function setIssue($issue)
     {
         $this->issue = $issue;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getVolume(): string
+    public function getVolume()
     {
         return $this->volume;
     }
 
     /**
-     * @param string $volume
+     * @param string|null $volume
      */
-    public function setVolume(string $volume)
+    public function setVolume($volume)
     {
         $this->volume = $volume;
     }
