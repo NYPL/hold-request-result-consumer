@@ -2,21 +2,31 @@
 
 namespace NYPL\HoldRequestResultConsumer\Test;
 
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\Error;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
-use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequest;
 use PHPUnit\Framework\TestCase;
 
 class HoldRequestResultTest extends TestCase
 {
     public $fakeHoldRequestResult;
+    public $fakeError;
 
     public function setUp()
     {
-        $this->fakeHoldRequestResult = new class extends HoldRequestResult {
+        $this->fakeError = new class extends Error
+        {
+            public function __construct($data = null, $decodeJson = false, $validateData = false)
+            {
+                parent::__construct($data, $decodeJson, $validateData);
+            }
+        };
+        $this->fakeHoldRequestResult = new class extends HoldRequestResult
+        {
             public function __construct($data = [
                 'jobId' => 'Test jobId',
                 'success' => false,
-                'holdRequestId' => 0
+                'holdRequestId' => 0,
+                'error' => null
             ])
             {
                 parent::__construct($data);
@@ -47,5 +57,14 @@ class HoldRequestResultTest extends TestCase
     public function testHoldRequestId()
     {
         $this->assertEquals(0, $this->fakeHoldRequestResult->getHoldRequestId());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult
+     */
+    public function testError()
+    {
+        $this->fakeHoldRequestResult->setError($this->fakeError);
+        $this->assertEquals($this->fakeError, $this->fakeHoldRequestResult->getError());
     }
 }
