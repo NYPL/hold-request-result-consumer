@@ -84,7 +84,7 @@ class HoldRequestResultConsumerListener extends Listener
      * @return HoldRequest|null
      * @throws APIException
      */
-    protected function getHoldRequest($holdRequestResult)
+    protected function getHoldRequest(HoldRequestResult $holdRequestResult)
     {
         $holdRequest = HoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
 
