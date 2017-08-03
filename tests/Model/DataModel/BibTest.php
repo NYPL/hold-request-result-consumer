@@ -26,26 +26,41 @@ class BibTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
+     */
     public function testId()
     {
         $this->assertEquals('', $this->fakeBib->getId());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
+     */
     public function testNyplSource()
     {
         $this->assertEquals('', $this->fakeBib->getNyplSource());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
+     */
     public function testNyplType()
     {
         $this->assertEquals('', $this->fakeBib->getNyplType());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
+     */
     public function testTitle()
     {
         $this->assertEquals('', $this->fakeBib->getTitle());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
+     */
     public function testAuthor()
     {
         $this->assertEquals('', $this->fakeBib->getAuthor());
