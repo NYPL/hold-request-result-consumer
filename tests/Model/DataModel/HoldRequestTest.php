@@ -63,4 +63,19 @@ class HoldRequestTest extends TestCase
     {
         $this->assertEquals('', $this->fakeHoldRequest->getNyplSource());
     }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
+    public function testRequestType()
+    {
+        $this->assertEquals('', $this->fakeHoldRequest->getRequestType());
+    }
+
+    public function testCreatedDate()
+    {
+        $this->assertEquals('', $this->fakeHoldRequest->getCreatedDate());
+    }
+
+    
 }
