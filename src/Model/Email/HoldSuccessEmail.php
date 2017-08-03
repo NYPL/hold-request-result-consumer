@@ -19,7 +19,7 @@ class HoldSuccessEmail extends Email
      */
     public function getFromAddress()
     {
-        return 'holdrequests@nypl.org';
+        return 'webfeedback@nypl.org';
     }
 
     /**

@@ -73,10 +73,10 @@ class HoldRequestClient extends APIClient
     }
 
     /**
-     * @param $holdRequestId
+     * @param int $holdRequestId
      * @return null|HoldRequest
      */
-    public static function getHoldRequestById($holdRequestId)
+    public static function getHoldRequestById(int $holdRequestId)
     {
         self::validateRequestId($holdRequestId);
 
@@ -105,12 +105,12 @@ class HoldRequestClient extends APIClient
     }
 
     /**
-     * @param string $holdRequestId
+     * @param int $holdRequestId
      * @param bool $processed
      * @param bool $success
      * @return null|HoldRequest
      */
-    public static function patchHoldRequestById($holdRequestId = '', bool $processed, bool $success)
+    public static function patchHoldRequestById(int $holdRequestId, bool $processed, bool $success)
     {
         self::validateRequestId($holdRequestId);
         self::validateProcessed($processed);

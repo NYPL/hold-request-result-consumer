@@ -26,7 +26,7 @@ class HoldFailureEmail extends Email
      */
     public function getFromAddress()
     {
-        return 'holdrequests@nypl.org';
+        return 'webfeedback@nypl.org';
     }
 
     /**

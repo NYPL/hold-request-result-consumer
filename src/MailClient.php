@@ -90,6 +90,8 @@ class MailClient
         if ($response->statusCode() >= 400) {
             throw new APIException('Error sending mail: ' . $response->body());
         }
+
+        APILogger::addDebug('E-mail sent successfully');
     }
 
     /**

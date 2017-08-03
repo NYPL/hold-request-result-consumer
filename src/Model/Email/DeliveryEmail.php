@@ -20,7 +20,7 @@ class DeliveryEmail extends Email
      */
     public function getFromAddress()
     {
-        return 'documentdelivery@nypl.org';
+        return 'webfeedback@nypl.org';
     }
 
     public function getTemplate()
