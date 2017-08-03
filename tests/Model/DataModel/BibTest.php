@@ -1,4 +1,5 @@
 <?php
+namespace NYPL\HoldRequestResultConsumer\Test;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
 use PHPUnit\Framework\TestCase;
