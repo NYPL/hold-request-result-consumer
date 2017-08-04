@@ -157,6 +157,14 @@ class HoldRequestTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
      */
+    public function testNeededBy()
+    {
+        $this->assertEquals('', $this->fakeHoldRequest->getNeededBy());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
     public function testNumberOfCopies()
     {
         $this->assertEquals(0, $this->fakeHoldRequest->getNumberOfCopies());
@@ -170,11 +178,17 @@ class HoldRequestTest extends TestCase
         $this->assertEquals('', $this->fakeHoldRequest->getDeliveryLocation());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
     public function testDocDeliveryDataCanBeNull()
     {
         $this->assertNull($this->fakeHoldRequest->getDocDeliveryData());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
     public function testDocDeliveryData()
     {
         $this->fakeHoldRequest->setDocDeliveryData($this->fakeDocDeliveryData);
