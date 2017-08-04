@@ -2,11 +2,14 @@
 namespace NYPL\HoldRequestResultConsumer\Test;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData;
 use PHPUnit\Framework\TestCase;
 
 class HoldRequestTest extends TestCase
 {
     public $fakeHoldRequest;
+
+    public $fakeDocDeliveryData;
 
     public function setUp()
     {
@@ -18,14 +21,37 @@ class HoldRequestTest extends TestCase
                 'patron' => '',
                 'nyplSource' => '',
                 'requestType' => '',
-                'createDate' => '',
-                'updateDate' => '',
+                'createdDate' => '',
+                'updatedDate' => '',
                 'success' => false,
                 'processed' => false,
                 'recordType' => '',
-
+                'record' => '',
+                'pickupLocation' => '',
+                'neededBy' => '',
+                'numberOfCopies' => 0,
+                'deliveryLocation' => '',
+                'docDeliveryData' => null
             ])
             {
+                parent::__construct($data);
+            }
+        };
+
+        $this->fakeDocDeliveryData = new class extends DocDeliveryData
+        {
+            public function __construct(
+                $data = [
+                    'emailAddress' => 'fake@example.com',
+                    'author' => '',
+                    'requestNotes' => '',
+                    'chapterTitle' => '',
+                    'issue' => '',
+                    'volume' => '',
+                    'startPage' => '',
+                    'endPage' => ''
+                ]
+            ) {
                 parent::__construct($data);
             }
         };
@@ -72,10 +98,40 @@ class HoldRequestTest extends TestCase
         $this->assertEquals('', $this->fakeHoldRequest->getRequestType());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
     public function testCreatedDate()
     {
         $this->assertEquals('', $this->fakeHoldRequest->getCreatedDate());
     }
 
-    
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
+    public function testUpdatedDate()
+    {
+        $this->assertEquals('', $this->fakeHoldRequest->getUpdatedDate());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
+    public function testSuccess()
+    {
+        $this->assertFalse($this->fakeHoldRequest->isSuccess());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
+    public function testProcessed()
+    {
+        $this->assertFalse($this->fakeHoldRequest->isProcessed());
+    }
+
+    public function testRecordType()
+    {
+        $this->assertEquals('', $this->fakeHoldRequest->getRecordType());
+    }
 }
