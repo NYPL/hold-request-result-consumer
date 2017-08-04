@@ -130,8 +130,54 @@ class HoldRequestTest extends TestCase
         $this->assertFalse($this->fakeHoldRequest->isProcessed());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
     public function testRecordType()
     {
         $this->assertEquals('', $this->fakeHoldRequest->getRecordType());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
+    public function testRecord()
+    {
+        $this->assertEquals('', $this->fakeHoldRequest->getRecord());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
+    public function testPickupLocation()
+    {
+        $this->assertEquals('', $this->fakeHoldRequest->getPickupLocation());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
+    public function testNumberOfCopies()
+    {
+        $this->assertEquals(0, $this->fakeHoldRequest->getNumberOfCopies());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest
+     */
+    public function testDeliveryLocation()
+    {
+        $this->assertEquals('', $this->fakeHoldRequest->getDeliveryLocation());
+    }
+
+    public function testDocDeliveryDataCanBeNull()
+    {
+        $this->assertNull($this->fakeHoldRequest->getDocDeliveryData());
+    }
+
+    public function testDocDeliveryData()
+    {
+        $this->fakeHoldRequest->setDocDeliveryData($this->fakeDocDeliveryData);
+        $this->assertEquals($this->fakeDocDeliveryData, $this->fakeHoldRequest->getDocDeliveryData());
     }
 }
