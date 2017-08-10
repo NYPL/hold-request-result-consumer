@@ -112,8 +112,10 @@ class HoldEmailData extends StreamData
         if (count($patron->getNames()) > 0) {
             $name = $patron->getNames()[0];
             $fullName = explode(",", $name);
-            $fullName[1] = trim($fullName[1]);
-            $name = ucfirst(strtolower($fullName[1])) . " " . ucfirst(strtolower($fullName[0]));
+            if (count($fullName) > 1) {
+                $fullName[1] = trim($fullName[1]);
+                $name = ucfirst(strtolower($fullName[1])) . " " . ucfirst(strtolower($fullName[0]));
+            }
             return $name;
         } else {
             throw new NonRetryableException(
