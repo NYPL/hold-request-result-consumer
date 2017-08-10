@@ -67,7 +67,7 @@ class ClientHelper extends APIClient
 
             return $response;
         } catch (ServerException $exception) {
-            throw new RetryableException(
+            throw new NonRetryableException(
                 'Server Error from ' . $sourceFunction . ' ' . $exception->getMessage(),
                 'Server Error from ' . $sourceFunction . ' ' . $exception->getMessage(),
                 $exception->getResponse()->getStatusCode(),
