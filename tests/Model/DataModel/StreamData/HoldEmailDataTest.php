@@ -2,8 +2,13 @@
 
 namespace NYPL\HoldRequestResultConsumer\Test;
 
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
 use PHPUnit\Framework\TestCase;
 
 class HoldEmailDataTest extends TestCase
@@ -11,6 +16,16 @@ class HoldEmailDataTest extends TestCase
     public $fakeHoldEmailData;
 
     public $fakeDocDeliveryData;
+
+    public $fakePatron;
+
+    public $fakeBib;
+
+    public $fakeItem;
+
+    public $fakeHoldRequest;
+
+    public $fakeHoldRequestResult;
 
     public function setUp()
     {
@@ -38,11 +53,92 @@ class HoldEmailDataTest extends TestCase
                 'title' => '',
                 'author' => '',
                 'barcode' => '',
-                'pickupLocation' => '',
-                'deliveryLocation' => '',
+                'pickupLocation' => 'mal',
+                'deliveryLocation' => 'NW',
                 'docDeliveryData' => null,
                 'requestDate' => '',
                 'success' => false
+            ])
+            {
+                parent::__construct($data);
+            }
+        };
+
+        $this->fakePatron = new class extends Patron
+        {
+            public function __construct($data = [
+                'id' => '',
+                'barCodes' => array(),
+                'names' => array('Patron, Test'),
+                'emails' => array('test@example.com')
+            ])
+            {
+                parent::__construct($data);
+            }
+        };
+
+        $this->fakeBib = new class extends Bib
+        {
+            public function __construct($data = [
+                'id' => '',
+                'nyplSource' => '',
+                'nyplType' => '',
+                'title' => '',
+                'author' => ''
+            ])
+            {
+                parent::__construct($data);
+            }
+        };
+
+        $this->fakeItem = new class extends Item
+        {
+            public function __construct($data = [
+                'id' => '',
+                'nyplSource' => '',
+                'bibIds' => [],
+                'nyplType' => '',
+                'barcode' => '',
+                'callNumber' => '',
+                'itemType' => ''
+            ])
+            {
+                parent::__construct($data);
+            }
+        };
+
+        $this->fakeHoldRequest = new class extends HoldRequest
+        {
+            public function __construct($data = [
+                'id' => 0,
+                'jobId' => '',
+                'patron' => '',
+                'nyplSource' => '',
+                'requestType' => '',
+                'createdDate' => '',
+                'updatedDate' => '',
+                'success' => false,
+                'processed' => false,
+                'recordType' => '',
+                'record' => '',
+                'pickupLocation' => '',
+                'neededBy' => '',
+                'numberOfCopies' => 0,
+                'deliveryLocation' => '',
+                'docDeliveryData' => null
+            ])
+            {
+                parent::__construct($data);
+            }
+        };
+
+        $this->fakeHoldRequestResult = new class extends HoldRequestResult
+        {
+            public function __construct($data = [
+                'jobId' => 'Test jobId',
+                'success' => false,
+                'holdRequestId' => 0,
+                'error' => null
             ])
             {
                 parent::__construct($data);
@@ -96,7 +192,7 @@ class HoldEmailDataTest extends TestCase
      */
     public function testPickupLocation()
     {
-        $this->assertEquals('', $this->fakeHoldEmailData->getPickupLocation());
+        $this->assertEquals('mal', $this->fakeHoldEmailData->getPickupLocation());
     }
 
     /**
@@ -112,7 +208,7 @@ class HoldEmailDataTest extends TestCase
      */
     public function testDeliveryLocation()
     {
-        $this->assertEquals('', $this->fakeHoldEmailData->getDeliveryLocation());
+        $this->assertEquals('NW', $this->fakeHoldEmailData->getDeliveryLocation());
     }
 
     /**
@@ -130,5 +226,30 @@ class HoldEmailDataTest extends TestCase
     {
         $this->fakeHoldEmailData->setDocDeliveryData($this->fakeDocDeliveryData);
         $this->assertEquals($this->fakeDocDeliveryData, $this->fakeHoldEmailData->getDocDeliveryData());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
+    public function testSuccess()
+    {
+        $this->assertFalse($this->fakeHoldEmailData->isSuccess());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
+    public function testAssembleData()
+    {
+        $this->fakeHoldEmailData->assembleData(
+            $this->fakePatron,
+            $this->fakeBib,
+            $this->fakeItem,
+            $this->fakeHoldRequest,
+            $this->fakeHoldRequestResult
+        );
+        $this->assertEquals('test@example.com', $this->fakeHoldEmailData->getPatronEmail());
+        $this->assertEquals('Test Patron', $this->fakeHoldEmailData->getPatronName());
+        $this->assertEquals('LBL Restricted - NU', $this->fakeHoldEmailData->getPickupLocation());
     }
 }
