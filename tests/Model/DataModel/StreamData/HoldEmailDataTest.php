@@ -51,51 +51,81 @@ class HoldEmailDataTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
     public function testPatronName()
     {
         $this->assertEquals('', $this->fakeHoldEmailData->getPatronName());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
     public function testPatronEmail()
     {
         $this->assertEquals('', $this->fakeHoldEmailData->getPatronEmail());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
     public function testTitle()
     {
         $this->assertEquals('', $this->fakeHoldEmailData->getTitle());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
     public function testAuthor()
     {
         $this->assertEquals('', $this->fakeHoldEmailData->getAuthor());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
     public function testBarcode()
     {
         $this->assertEquals('', $this->fakeHoldEmailData->getBarcode());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
     public function testPickupLocation()
     {
         $this->assertEquals('', $this->fakeHoldEmailData->getPickupLocation());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
     public function testRequestDate()
     {
         $this->assertEquals('', $this->fakeHoldEmailData->getRequestDate());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
     public function testDeliveryLocation()
     {
         $this->assertEquals('', $this->fakeHoldEmailData->getDeliveryLocation());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
     public function testDocDeliveryDataCanBeNull()
     {
         $this->assertNull($this->fakeHoldEmailData->getDocDeliveryData());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
+     */
     public function testDocDeliveryData()
     {
         $this->fakeHoldEmailData->setDocDeliveryData($this->fakeDocDeliveryData);

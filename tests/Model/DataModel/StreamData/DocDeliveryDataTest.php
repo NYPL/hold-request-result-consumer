@@ -16,11 +16,11 @@ class DocDeliveryDataTest extends TestCase
             public function __construct(
                 $data = [
                     'emailAddress' => 'fake@example.com',
-                    'author' => '',
-                    'requestNotes' => '',
+                    'author' => null,
+                    'requestNotes' => null,
                     'chapterTitle' => '',
-                    'issue' => '',
-                    'volume' => '',
+                    'issue' => null,
+                    'volume' => null,
                     'startPage' => '',
                     'endPage' => ''
                 ]
@@ -42,23 +42,41 @@ class DocDeliveryDataTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData
      */
-    public function testAuthor()
+    public function testAuthorCanBeNull()
     {
+        $this->assertNull($this->fakeDocDeliveryData->getAuthor());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData
+     */
+    public function testAuthorCanBeString()
+    {
+        $this->fakeDocDeliveryData->setAuthor('');
         $this->assertEquals('', $this->fakeDocDeliveryData->getAuthor());
     }
 
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData
      */
-    public function testRequestNotes()
+    public function testRequestNotesCanBeNull()
     {
+        $this->assertNull($this->fakeDocDeliveryData->getRequestNotes());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData
+     */
+    public function testRequestNotesCanBeString()
+    {
+        $this->fakeDocDeliveryData->setRequestNotes('');
         $this->assertEquals('', $this->fakeDocDeliveryData->getRequestNotes());
     }
 
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData
      */
-    public function testChapterTitle()
+    public function testChapterTitleCanBeString()
     {
         $this->assertEquals('', $this->fakeDocDeliveryData->getChapterTitle());
     }
@@ -66,23 +84,41 @@ class DocDeliveryDataTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData
      */
-    public function testIssue()
+    public function testIssueCanBeNull()
     {
+        $this->assertNull($this->fakeDocDeliveryData->getIssue());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData
+     */
+    public function testIssueCanBeString()
+    {
+        $this->fakeDocDeliveryData->setIssue('');
         $this->assertEquals('', $this->fakeDocDeliveryData->getIssue());
     }
 
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData
      */
-    public function testVolume()
+    public function testVolumeCanBeNull()
     {
+        $this->assertNull($this->fakeDocDeliveryData->getVolume());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData
+     */
+    public function testVolumeCanBeString()
+    {
+        $this->fakeDocDeliveryData->setVolume('');
         $this->assertEquals('', $this->fakeDocDeliveryData->getVolume());
     }
 
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData
      */
-    public function testStartPage()
+    public function testStartPageCanBeString()
     {
         $this->assertEquals('', $this->fakeDocDeliveryData->getStartPage());
     }
@@ -90,7 +126,7 @@ class DocDeliveryDataTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData
      */
-    public function testEndPage()
+    public function testEndPageCanBeString()
     {
         $this->assertEquals('', $this->fakeDocDeliveryData->getEndPage());
     }
