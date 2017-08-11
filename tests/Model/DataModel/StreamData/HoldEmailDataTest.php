@@ -9,6 +9,7 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\DocDeliveryData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
+use NYPL\HoldRequestResultConsumer\Test\Mocks\MockConfig;
 use PHPUnit\Framework\TestCase;
 
 class HoldEmailDataTest extends TestCase
@@ -29,6 +30,7 @@ class HoldEmailDataTest extends TestCase
 
     public function setUp()
     {
+        MockConfig::initialize(__DIR__ . '/../../../../');
         $this->fakeDocDeliveryData = new class extends DocDeliveryData
         {
             public function __construct($data = [
