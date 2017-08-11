@@ -252,6 +252,5 @@ class HoldEmailDataTest extends TestCase
         );
         $this->assertEquals('test@example.com', $this->fakeHoldEmailData->getPatronEmail());
         $this->assertEquals('Test Patron', $this->fakeHoldEmailData->getPatronName());
-        $this->assertEquals('LBL Restricted - NU', $this->fakeHoldEmailData->getPickupLocation());
     }
 }

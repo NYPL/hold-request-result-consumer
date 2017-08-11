@@ -1,0 +1,23 @@
+{
+  "mal": {
+    "code": "mal",
+    "label": "Test Pickup Location",
+    "locationsApiSlug": "test-pickup-location",
+    "collectionTypes": [ "Branch" ],
+    "recapLocation": {
+      "code": "NH",
+      "label": "Test Recap Location",
+      "eddRequestable": true
+    },
+    "sierraDeliveryLocations": [
+      {
+        "code": "mal",
+        "label": "Test Delivery Location",
+        "locationsApiSlug": "test-delivery-location",
+        "deliveryLocationTypes": [ "Research" ]
+      }
+    ],
+    "requestable": false,
+    "deliveryLocationTypes": [ "Research" ]
+  }
+}
