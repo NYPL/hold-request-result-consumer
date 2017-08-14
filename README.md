@@ -79,7 +79,7 @@ Configures Lambda event sources (triggers) specific to each environment.
 To use `node-lambda` to process the sample event(s), run:
 
 ~~~~
-npm run test-send-email
+npm run test-event
 ~~~~
 
 ## Deployment
