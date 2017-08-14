@@ -4,7 +4,7 @@
   "description": "Processing Hold Request Results for ReCap",
   "main": "listener.js",
   "scripts": {
-    "deploy-dev": "node-lambda deploy -e dev -f config/var_dev.env -S config/event_sources_dev.json -b subnet-f4fe56af -g sg-1d544067",
+    "deploy-dev": "node-lambda deploy -e development -f config/var_dev.env -S config/event_sources_dev.json -b subnet-f4fe56af -g sg-1d544067",
     "deploy-qa": "node-lambda deploy -e qa -f config/var_qa.env -S config/event_sources_qa.json -b subnet-f4fe56af -g sg-1d544067",
     "deploy-production": "node-lambda deploy -e production -f config/var_production.env -S config/event_sources_production.json -b subnet-f4fe56af -g sg-1d544067",
     "test-event": "node-lambda run -j events/kinesis_hold_request_success.json -x events/context.json"
