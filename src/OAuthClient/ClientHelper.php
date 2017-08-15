@@ -6,6 +6,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
+use NYPL\Starter\APILogger;
 use NYPL\Starter\Model\Response\ErrorResponse;
 
 class ClientHelper extends APIClient
@@ -63,8 +64,9 @@ class ClientHelper extends APIClient
     public static function patchResponse($url = '', $body = array(), $sourceFunction = '')
     {
         try {
+            APILogger::addDebug('patchResponse ', array($url, json_encode($body)));
             $response = self::patch($url, ["body" => json_encode($body)]);
-
+            APILogger::addDebug('Response from patchResponse ', array($response));
             return $response;
         } catch (ServerException $exception) {
             throw new NonRetryableException(
