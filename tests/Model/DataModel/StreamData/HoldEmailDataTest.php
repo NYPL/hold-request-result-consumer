@@ -148,7 +148,7 @@ class HoldEmailDataTest extends TestCase
                 parent::__construct($data);
             }
         };
-        
+
         parent::setUp();
     }
 
