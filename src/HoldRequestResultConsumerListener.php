@@ -291,6 +291,9 @@ class HoldRequestResultConsumerListener extends Listener
 
                             $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
                         }
+                    } else {
+                        APILogger::addDebug('Hold Request Id ' .
+                            $holdRequestResult->getHoldRequestId() . ' is already processed.');
                     }
                 } else { // $holdRequestResult->isSuccess() === false, error !== null
                     $holdRequest = $this->getHoldRequest($holdRequestResult);
@@ -328,6 +331,9 @@ class HoldRequestResultConsumerListener extends Listener
 
                             $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
                         }
+                    } else {
+                        APILogger::addDebug('Hold Request Id ' .
+                            $holdRequestResult->getHoldRequestId() . ' is already processed.');
                     }
                 }
             } catch (RetryableException $exception) {
