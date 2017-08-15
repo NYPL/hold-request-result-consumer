@@ -31,22 +31,7 @@ class HoldEmailDataTest extends TestCase
     public function setUp()
     {
         MockConfig::initialize(__DIR__ . '/../../../../');
-        $this->fakeDocDeliveryData = new class extends DocDeliveryData
-        {
-            public function __construct($data = [
-                'emailAddress' => '',
-                'author' => '',
-                'requestNotes' => '',
-                'chapterTitle' => '',
-                'issue' => '',
-                'volume' => '',
-                'startPage' => '',
-                'endPage' => ''
-            ])
-            {
-                parent::__construct($data);
-            }
-        };
+
         $this->fakeHoldEmailData = new class extends HoldEmailData
         {
             public function __construct($data = [
@@ -60,6 +45,23 @@ class HoldEmailDataTest extends TestCase
                 'docDeliveryData' => null,
                 'requestDate' => '',
                 'success' => false
+            ])
+            {
+                parent::__construct($data);
+            }
+        };
+
+        $this->fakeDocDeliveryData = new class extends DocDeliveryData
+        {
+            public function __construct($data = [
+                'emailAddress' => '',
+                'author' => '',
+                'requestNotes' => '',
+                'chapterTitle' => '',
+                'issue' => '',
+                'volume' => '',
+                'startPage' => '',
+                'endPage' => ''
             ])
             {
                 parent::__construct($data);
@@ -146,6 +148,7 @@ class HoldEmailDataTest extends TestCase
                 parent::__construct($data);
             }
         };
+        
         parent::setUp();
     }
 
