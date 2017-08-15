@@ -85,8 +85,8 @@ class HoldEmailDataTest extends TestCase
                 'id' => '',
                 'nyplSource' => '',
                 'nyplType' => '',
-                'title' => '',
-                'author' => ''
+                'title' => 'Test Bib Title',
+                'author' => 'Test Bib Author'
             ])
             {
                 parent::__construct($data);
@@ -100,7 +100,7 @@ class HoldEmailDataTest extends TestCase
                 'nyplSource' => '',
                 'bibIds' => [],
                 'nyplType' => '',
-                'barcode' => '',
+                'barcode' => '32101078922455',
                 'callNumber' => '',
                 'itemType' => ''
             ])
@@ -117,16 +117,16 @@ class HoldEmailDataTest extends TestCase
                 'patron' => '',
                 'nyplSource' => '',
                 'requestType' => '',
-                'createdDate' => '',
+                'createdDate' => '2017-08-15T12:25:02-04:00',
                 'updatedDate' => '',
                 'success' => false,
                 'processed' => false,
                 'recordType' => '',
                 'record' => '',
-                'pickupLocation' => '',
+                'pickupLocation' => 'mal',
                 'neededBy' => '',
                 'numberOfCopies' => 0,
-                'deliveryLocation' => '',
+                'deliveryLocation' => 'NW',
                 'docDeliveryData' => null
             ])
             {
@@ -152,95 +152,6 @@ class HoldEmailDataTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
      */
-    public function testPatronName()
-    {
-        $this->assertEquals('', $this->fakeHoldEmailData->getPatronName());
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
-     */
-    public function testPatronEmail()
-    {
-        $this->assertEquals('', $this->fakeHoldEmailData->getPatronEmail());
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
-     */
-    public function testTitle()
-    {
-        $this->assertEquals('', $this->fakeHoldEmailData->getTitle());
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
-     */
-    public function testAuthor()
-    {
-        $this->assertEquals('', $this->fakeHoldEmailData->getAuthor());
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
-     */
-    public function testBarcode()
-    {
-        $this->assertEquals('', $this->fakeHoldEmailData->getBarcode());
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
-     */
-    public function testPickupLocation()
-    {
-        $this->assertEquals('mal', $this->fakeHoldEmailData->getPickupLocation());
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
-     */
-    public function testRequestDate()
-    {
-        $this->assertEquals('', $this->fakeHoldEmailData->getRequestDate());
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
-     */
-    public function testDeliveryLocation()
-    {
-        $this->assertEquals('NW', $this->fakeHoldEmailData->getDeliveryLocation());
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
-     */
-    public function testDocDeliveryDataCanBeNull()
-    {
-        $this->assertNull($this->fakeHoldEmailData->getDocDeliveryData());
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
-     */
-    public function testDocDeliveryData()
-    {
-        $this->fakeHoldEmailData->setDocDeliveryData($this->fakeDocDeliveryData);
-        $this->assertEquals($this->fakeDocDeliveryData, $this->fakeHoldEmailData->getDocDeliveryData());
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
-     */
-    public function testSuccess()
-    {
-        $this->assertFalse($this->fakeHoldEmailData->isSuccess());
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData
-     */
     public function testAssembleData()
     {
         $this->fakeHoldEmailData->assembleData(
@@ -250,7 +161,16 @@ class HoldEmailDataTest extends TestCase
             $this->fakeHoldRequest,
             $this->fakeHoldRequestResult
         );
-        $this->assertEquals('test@example.com', $this->fakeHoldEmailData->getPatronEmail());
+
+        $this->assertEquals($this->fakePatron->getEmails()[0], $this->fakeHoldEmailData->getPatronEmail());
         $this->assertEquals('Test Patron', $this->fakeHoldEmailData->getPatronName());
+        $this->assertEquals($this->fakeBib->getTitle(), $this->fakeHoldEmailData->getTitle());
+        $this->assertEquals($this->fakeBib->getAuthor(), $this->fakeHoldEmailData->getAuthor());
+        $this->assertEquals('Test Delivery Location', $this->fakeHoldEmailData->getDeliveryLocation());
+        $this->assertNull($this->fakeHoldEmailData->getDocDeliveryData());
+        $this->assertEquals('Test Pickup Location', $this->fakeHoldEmailData->getPickupLocation());
+        $this->assertEquals($this->fakeItem->getBarcode(), $this->fakeHoldEmailData->getBarcode());
+        $this->assertEquals('Aug 15, 2017', $this->fakeHoldEmailData->getRequestDate());
+        $this->assertFalse($this->fakeHoldEmailData->isSuccess());
     }
 }
