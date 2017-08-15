@@ -81,7 +81,7 @@ class HoldRequestResult extends StreamData
     /**
      * @return Error | null
      */
-    public function getError(): Error
+    public function getError()
     {
         return $this->error;
     }
