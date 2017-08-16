@@ -1,0 +1,32 @@
+{
+  "data": {
+    "id": 813,
+    "jobId": "33345970baf5d34e6",
+    "createdDate": "2017-07-20T10:15:17-04:00",
+    "updatedDate": "2017-08-07T14:49:49-04:00",
+    "success": false,
+    "processed": false,
+    "patron": "6202562",
+    "nyplSource": "sierra-nypl",
+    "requestType": "hold",
+    "recordType": "i",
+    "record": "10011630",
+    "pickupLocation": "mal",
+    "deliveryLocation": "NW",
+    "neededBy": "2018-01-07T02:32:51+00:00",
+    "numberOfCopies": 1,
+    "docDeliveryData": {
+      "emailAddress": "digitallionprojectteam@nypl.org",
+      "chapterTitle": "Chapter One",
+      "startPage": "100",
+      "endPage": "150",
+      "author": "Anonymous",
+      "issue": "Summer 2017",
+      "volume": "159",
+      "requestNotes": "Backup physical delivery requested."
+    }
+  },
+  "count": 1,
+  "statusCode": 200,
+  "debugInfo": []
+}

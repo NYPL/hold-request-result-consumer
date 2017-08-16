@@ -173,6 +173,32 @@ class HoldRequestResultConsumerListener extends Listener
     }
 
     /**
+     * @param HoldRequest $holdRequest
+     * @throws NonRetryableException
+     */
+    protected function getPatron($holdRequest)
+    {
+        $patron = PatronClient::getPatronById($holdRequest->getPatron());
+
+        if ($patron === null) {
+            throw new NonRetryableException(
+                'Hold request record missing Patron data for Patron Id '
+                . $holdRequest->getPatron(),
+                array($holdRequest),
+                406,
+                null,
+                406,
+                new ErrorResponse(
+                    406,
+                    'missing-patron-data',
+                    'Not Acceptable: Hold request record missing Patron data for Patron Id '
+                    . $holdRequest->getPatron()
+                )
+            );
+        }
+    }
+
+    /**
      * @param HoldRequestResult $holdRequestResult
      * @throws APIException
      */
@@ -267,24 +293,7 @@ class HoldRequestResultConsumerListener extends Listener
                     $this->skipMissingItem($holdRequestResult);
                     $this->skipMissingPatron($holdRequestResult);
 
-                    $patron = PatronClient::getPatronById($holdRequest->getPatron());
-
-                    if ($patron === null) {
-                        throw new NonRetryableException(
-                            'Hold request record missing Patron data for Request Id '
-                            . $holdRequestResult->getHoldRequestId(),
-                            array($holdRequest),
-                            406,
-                            null,
-                            406,
-                            new ErrorResponse(
-                                406,
-                                'missing-patron-data',
-                                'Not Acceptable: Hold request record missing Patron data for Request Id '
-                                . $holdRequestResult->getHoldRequestId()
-                            )
-                        );
-                    }
+                    $patron = $this->getPatron($holdRequest);
 
                     if ($holdRequest->getRecordType() === 'i') {
                         $item = $this->getItem($holdRequest);

@@ -4,17 +4,16 @@ namespace NYPL\HoldRequestResultConsumer\Test;
 
 use NYPL\HoldRequestResultConsumer\HoldRequestResultConsumerListener;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
-use NYPL\HoldRequestResultConsumer\OAuthClient\ClientHelper;
-use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
+use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockBibClient;
+use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockHoldRequestClient;
+use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockItemClient;
+use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockPatronClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\MockConfig;
-use NYPL\HoldRequestResultConsumer\Test\Mocks\MockHoldRequestClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\MockListenerData;
-use NYPL\Starter\AvroDeserializer;
-use NYPL\Starter\Listener\ListenerData;
+use NYPL\Starter\APILogger;
 use NYPL\Starter\Listener\ListenerEvent\KinesisEvent;
-use NYPL\Starter\Listener\ListenerEvents;
 use NYPL\Starter\Listener\ListenerEvents\KinesisEvents;
-use NYPL\Starter\SchemaClient;
 use PHPUnit\Framework\TestCase;
 
 class HoldRequestResultConsumerListenerTest extends TestCase
@@ -106,10 +105,92 @@ class HoldRequestResultConsumerListenerTest extends TestCase
             "arn:aws:kinesis:us-east-1:946183545209:stream/HoldRequestResult-qa"
         );
 
-        $this->fakeHoldRequestResultConsumerListener = new class extends HoldRequestResultConsumerListener {
+        $this->fakeHoldRequestResultConsumerListener = new class extends HoldRequestResultConsumerListener
+        {
             public function __construct()
             {
                 parent::__construct();
+            }
+
+            /**
+             * @param HoldRequestResult $holdRequestResult
+             * @return null|HoldRequest
+             */
+            protected function getHoldRequest(HoldRequestResult $holdRequestResult)
+            {
+                APILogger::addDebug(
+                    'Retrieved Hold Request By Id ',
+                    MockHoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId())
+                );
+                return MockHoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
+            }
+
+            /**
+             * @param HoldRequestResult $holdRequestResult
+             * @return null|HoldRequest
+             */
+            protected function patchHoldRequestService($holdRequestResult)
+            {
+                APILogger::addDebug(
+                    'Patched Hold Request Service',
+                    MockHoldRequestClient::patchHoldRequestById(
+                        $holdRequestResult->getHoldRequestId(),
+                        true,
+                        $holdRequestResult->isSuccess()
+                    )
+                );
+
+                return MockHoldRequestClient::patchHoldRequestById(
+                    $holdRequestResult->getHoldRequestId(),
+                    true,
+                    $holdRequestResult->isSuccess()
+                );
+            }
+
+            protected function getPatron($holdRequest)
+            {
+                APILogger::addDebug(
+                    'Retrieved Patron Info',
+                    MockPatronClient::getPatronById($holdRequest->getPatron())
+                );
+                return MockPatronClient::getPatronById($holdRequest->getPatron());
+            }
+
+            protected function getItem($holdRequest)
+            {
+                APILogger::addDebug(
+                    'Retrieved Item',
+                    MockItemClient::getItemByIdAndSource(
+                        $holdRequest->getRecord(),
+                        $holdRequest->getNyplSource()
+                    )
+                );
+
+                return MockItemClient::getItemByIdAndSource(
+                    $holdRequest->getRecord(),
+                    $holdRequest->getNyplSource()
+                );
+            }
+
+            protected function getBib($item, $holdRequestResult)
+            {
+                APILogger::addDebug(
+                    'Retrieved Bib',
+                    MockBibClient::getBibByIdAndSource(
+                        $item->getBibIds()[0],
+                        $item->getNyplSource()
+                    )
+                );
+
+                return MockBibClient::getBibByIdAndSource(
+                    $item->getBibIds()[0],
+                    $item->getNyplSource()
+                );
+            }
+
+            protected function sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult)
+            {
+                APILogger::addDebug('E-mail Sent Successfully.');
             }
         };
     }

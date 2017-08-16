@@ -1,0 +1,293 @@
+{
+  "data": {
+    "id": "6202562",
+    "updatedDate": "2017-08-16T19:13:22+00:00",
+    "createdDate": "2015-01-03T18:08:59+00:00",
+    "deletedDate": null,
+    "deleted": false,
+    "suppressed": false,
+    "names": [
+      "BIRD, BERNARD"
+    ],
+    "barCodes": [
+      "23333080894825"
+    ],
+    "expirationDate": "2017-10-03",
+    "homeLibraryCode": "gk",
+    "birthDate": "1972-01-03",
+    "emails": [
+      "digitallionprojectteam@nypl.org"
+    ],
+    "fixedFields": {
+      "43": {
+        "label": "Expiration Date",
+        "value": "2017-10-03T08:00:00Z",
+        "display": null
+      },
+      "44": {
+        "label": "E-Communications",
+        "value": "-",
+        "display": null
+      },
+      "45": {
+        "label": "Education Level",
+        "value": "t",
+        "display": null
+      },
+      "46": {
+        "label": "Home Region",
+        "value": "4",
+        "display": null
+      },
+      "47": {
+        "label": "Patron Type",
+        "value": "11",
+        "display": null
+      },
+      "48": {
+        "label": "Total Checkouts",
+        "value": 397,
+        "display": null
+      },
+      "49": {
+        "label": "Total Renewals",
+        "value": 0,
+        "display": null
+      },
+      "50": {
+        "label": "Current Checkouts",
+        "value": 1,
+        "display": null
+      },
+      "51": {
+        "label": "Birth Date",
+        "value": "1972-01-03",
+        "display": null
+      },
+      "53": {
+        "label": "Home Library",
+        "value": "gk   ",
+        "display": null
+      },
+      "54": {
+        "label": "Patron Message",
+        "value": "-",
+        "display": null
+      },
+      "55": {
+        "label": "Highest Overdues",
+        "value": 0,
+        "display": null
+      },
+      "56": {
+        "label": "Manual Block",
+        "value": "-",
+        "display": null
+      },
+      "80": {
+        "label": "Record Type",
+        "value": "p",
+        "display": null
+      },
+      "81": {
+        "label": "Record Number",
+        "value": "6202562",
+        "display": null
+      },
+      "83": {
+        "label": "Created Date",
+        "value": "2015-01-03T18:08:59Z",
+        "display": null
+      },
+      "84": {
+        "label": "Updated Date",
+        "value": "2017-08-16T19:13:22Z",
+        "display": null
+      },
+      "85": {
+        "label": "No. of Revisions",
+        "value": "1155",
+        "display": null
+      },
+      "86": {
+        "label": "Agency",
+        "value": "1",
+        "display": null
+      },
+      "95": {
+        "label": "Claims Returned",
+        "value": 0,
+        "display": null
+      },
+      "96": {
+        "label": "Money Owed",
+        "value": 0,
+        "display": null
+      },
+      "98": {
+        "label": "PDATE",
+        "value": "2017-08-16T18:41:48Z",
+        "display": null
+      },
+      "99": {
+        "label": "FIRM",
+        "value": "     ",
+        "display": null
+      },
+      "102": {
+        "label": "Current Item A",
+        "value": 0,
+        "display": null
+      },
+      "103": {
+        "label": "Current Item B",
+        "value": 0,
+        "display": null
+      },
+      "104": {
+        "label": "PIUSE",
+        "value": 0,
+        "display": null
+      },
+      "105": {
+        "label": "Overdue Penalty",
+        "value": 0,
+        "display": null
+      },
+      "122": {
+        "label": "ILL Request",
+        "value": 0,
+        "display": null
+      },
+      "123": {
+        "label": "Debit Balance",
+        "value": 0,
+        "display": null
+      },
+      "124": {
+        "label": "Current Item C",
+        "value": 0,
+        "display": null
+      },
+      "125": {
+        "label": "Current Item D",
+        "value": 1,
+        "display": null
+      },
+      "126": {
+        "label": "School Code",
+        "value": "0",
+        "display": null
+      },
+      "158": {
+        "label": "Patron Agency",
+        "value": "51",
+        "display": null
+      },
+      "163": {
+        "label": "Last Circ Activity",
+        "value": "2017-08-16T19:13:22Z",
+        "display": null
+      },
+      "263": {
+        "label": "Preferred Language",
+        "value": "eng",
+        "display": null
+      },
+      "268": {
+        "label": "Notice Preference",
+        "value": "z",
+        "display": null
+      },
+      "269": {
+        "label": "Registrations on Record",
+        "value": 0,
+        "display": null
+      },
+      "270": {
+        "label": "Total Registrations",
+        "value": 0,
+        "display": null
+      },
+      "271": {
+        "label": "Total Programs Attended",
+        "value": 0,
+        "display": null
+      },
+      "297": {
+        "label": "Waitlists on Record",
+        "value": 0,
+        "display": null
+      }
+    },
+    "varFields": [
+      {
+        "fieldTag": "=",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "ILEOIsTpoV6Z2",
+        "subFields": null
+      },
+      {
+        "fieldTag": "b",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "23333080894825",
+        "subFields": null
+      },
+      {
+        "fieldTag": "r",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "robkelly@nypl.org",
+        "subFields": null
+      },
+      {
+        "fieldTag": "u",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "nypltest2",
+        "subFields": null
+      },
+      {
+        "fieldTag": "z",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "digitallionprojectteam@nypl.org",
+        "subFields": null
+      },
+      {
+        "fieldTag": "a",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "123 SESAME STREET$ANYTOWN NY 1001 APT 10",
+        "subFields": null
+      },
+      {
+        "fieldTag": "n",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "BIRD, BERNARD",
+        "subFields": null
+      },
+      {
+        "fieldTag": "t",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "123-456-7890",
+        "subFields": null
+      }
+    ]
+  },
+  "count": 1,
+  "statusCode": 200,
+  "debugInfo": []
+}

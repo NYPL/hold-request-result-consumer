@@ -1,0 +1,232 @@
+{
+  "data": {
+    "nyplSource": "sierra-nypl",
+    "bibIds": [
+      "10026554"
+    ],
+    "id": "10011630",
+    "nyplType": "item",
+    "updatedDate": "2017-07-17T16:13:25-04:00",
+    "createdDate": "2009-02-03T00:51:00-05:00",
+    "deletedDate": null,
+    "deleted": false,
+    "location": {
+      "code": "rc2ma",
+      "name": "OFFSITE - Request in Advance"
+    },
+    "status": {
+      "code": "-",
+      "display": "AVAILABLE",
+      "duedate": null
+    },
+    "barcode": "33433096271360",
+    "callNumber": "|hJLD 73-1573",
+    "itemType": null,
+    "fixedFields": {
+      "57": {
+        "label": "BIB HOLD",
+        "value": false,
+        "display": null
+      },
+      "58": {
+        "label": "Copy No.",
+        "value": 1,
+        "display": null
+      },
+      "59": {
+        "label": "Item Code 1",
+        "value": "0",
+        "display": null
+      },
+      "60": {
+        "label": "Item Code 2",
+        "value": "-",
+        "display": null
+      },
+      "61": {
+        "label": "Item Type",
+        "value": "55",
+        "display": "book, limited circ, MaRLI"
+      },
+      "62": {
+        "label": "Price",
+        "value": 0,
+        "display": null
+      },
+      "64": {
+        "label": "Checkout Location",
+        "value": 814,
+        "display": null
+      },
+      "68": {
+        "label": "Last Checkin",
+        "value": "2017-07-17T16:13:25Z",
+        "display": null
+      },
+      "69": {
+        "label": "Inventory Date",
+        "value": "2014-08-01T08:00:00Z",
+        "display": null
+      },
+      "70": {
+        "label": "Checkin Location",
+        "value": 0,
+        "display": null
+      },
+      "74": {
+        "label": "Item Use 3",
+        "value": 0,
+        "display": null
+      },
+      "76": {
+        "label": "Total Checkouts",
+        "value": 2,
+        "display": null
+      },
+      "77": {
+        "label": "Total Renewals",
+        "value": 0,
+        "display": null
+      },
+      "78": {
+        "label": "Last Checkout Date",
+        "value": "2017-07-17T16:13:23Z",
+        "display": null
+      },
+      "79": {
+        "label": "Location",
+        "value": "rc2ma",
+        "display": "OFFSITE - Request in Advance"
+      },
+      "80": {
+        "label": "Record Type",
+        "value": "i",
+        "display": null
+      },
+      "81": {
+        "label": "Record Number",
+        "value": "10011630",
+        "display": null
+      },
+      "83": {
+        "label": "Created Date",
+        "value": "2009-02-03T00:51:00Z",
+        "display": null
+      },
+      "84": {
+        "label": "Updated Date",
+        "value": "2017-07-17T16:13:25Z",
+        "display": null
+      },
+      "85": {
+        "label": "No. of Revisions",
+        "value": "22",
+        "display": null
+      },
+      "86": {
+        "label": "Agency",
+        "value": "1",
+        "display": null
+      },
+      "88": {
+        "label": "Status",
+        "value": "-",
+        "display": "AVAILABLE"
+      },
+      "93": {
+        "label": "Inhouse Use",
+        "value": 0,
+        "display": null
+      },
+      "94": {
+        "label": "Copy Use",
+        "value": 0,
+        "display": null
+      },
+      "97": {
+        "label": "Item Message",
+        "value": "-",
+        "display": null
+      },
+      "98": {
+        "label": "PDATE",
+        "value": "2017-07-17T16:13:24Z",
+        "display": null
+      },
+      "108": {
+        "label": "OPAC Message",
+        "value": "2",
+        "display": null
+      },
+      "109": {
+        "label": "Year-to-Date Circ",
+        "value": 1,
+        "display": null
+      },
+      "110": {
+        "label": "Last Year Circ",
+        "value": 0,
+        "display": null
+      },
+      "127": {
+        "label": "Item Agency",
+        "value": "214",
+        "display": "ReCAP (NA) - NYPL Standard"
+      },
+      "161": {
+        "label": "VI Central",
+        "value": 0,
+        "display": null
+      },
+      "162": {
+        "label": "IR Dist Learn Same Site",
+        "value": "0",
+        "display": null
+      },
+      "264": {
+        "label": "Holdings Item Tag",
+        "value": "6",
+        "display": null
+      },
+      "265": {
+        "label": "Inherit Location",
+        "value": false,
+        "display": null
+      }
+    },
+    "varFields": [
+      {
+        "fieldTag": "b",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "33433096271360",
+        "subFields": null
+      },
+      {
+        "fieldTag": "c",
+        "marcTag": "852",
+        "ind1": "8",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "h",
+            "content": "JLD 73-1573"
+          }
+        ]
+      },
+      {
+        "fieldTag": "t",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "barco/cs",
+        "subFields": null
+      }
+    ]
+  },
+  "count": 1,
+  "statusCode": 200,
+  "debugInfo": []
+}

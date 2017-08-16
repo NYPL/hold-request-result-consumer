@@ -1,0 +1,498 @@
+{
+  "data": {
+    "id": "10026554",
+    "nyplSource": "sierra-nypl",
+    "nyplType": "bib",
+    "updatedDate": "2014-07-24T01:03:57-04:00",
+    "createdDate": "2008-12-13T16:19:00-05:00",
+    "deletedDate": null,
+    "deleted": false,
+    "locations": [
+      {
+        "code": "mal",
+        "name": "SASB - Service Desk Rm 315"
+      }
+    ],
+    "suppressed": false,
+    "lang": {
+      "code": "ger",
+      "name": "German"
+    },
+    "title": "Marxismus und deutsche Arbeiterbewegung. Studien zur sozialistischen Bewegung im letzten Drittel des 19. Jahrhunderts. ",
+    "author": "",
+    "materialType": {
+      "code": "a",
+      "value": "BOOK/TEXT"
+    },
+    "bibLevel": {
+      "code": "m",
+      "value": "MONOGRAPH"
+    },
+    "publishYear": 1970,
+    "catalogDate": "2000-10-03",
+    "country": {
+      "code": "gw ",
+      "name": "Germany"
+    },
+    "normTitle": "marxismus und deutsche arbeiterbewegung studien zur sozialistischen bewegung im letzten drittel des 19 jahrhunderts",
+    "normAuthor": "",
+    "fixedFields": {
+      "24": {
+        "label": "Language",
+        "value": "ger",
+        "display": "German"
+      },
+      "25": {
+        "label": "Skip",
+        "value": "0",
+        "display": null
+      },
+      "26": {
+        "label": "Location",
+        "value": "mal  ",
+        "display": "SASB - Service Desk Rm 315"
+      },
+      "27": {
+        "label": "COPIES",
+        "value": "2",
+        "display": null
+      },
+      "28": {
+        "label": "Cat. Date",
+        "value": "2000-10-03",
+        "display": null
+      },
+      "29": {
+        "label": "Bib Level",
+        "value": "m",
+        "display": "MONOGRAPH"
+      },
+      "30": {
+        "label": "Material Type",
+        "value": "a",
+        "display": "BOOK/TEXT"
+      },
+      "31": {
+        "label": "Bib Code 3",
+        "value": "-",
+        "display": null
+      },
+      "80": {
+        "label": "Record Type",
+        "value": "b",
+        "display": null
+      },
+      "81": {
+        "label": "Record Number",
+        "value": "10026554",
+        "display": null
+      },
+      "83": {
+        "label": "Created Date",
+        "value": "2008-12-13T16:19:00Z",
+        "display": null
+      },
+      "84": {
+        "label": "Updated Date",
+        "value": "2014-07-24T01:03:57Z",
+        "display": null
+      },
+      "85": {
+        "label": "No. of Revisions",
+        "value": "10",
+        "display": null
+      },
+      "86": {
+        "label": "Agency",
+        "value": "1",
+        "display": null
+      },
+      "89": {
+        "label": "Country",
+        "value": "gw ",
+        "display": "Germany"
+      },
+      "98": {
+        "label": "PDATE",
+        "value": "2012-03-24T00:59:32Z",
+        "display": null
+      },
+      "107": {
+        "label": "MARC Type",
+        "value": " ",
+        "display": null
+      }
+    },
+    "varFields": [
+      {
+        "fieldTag": "b",
+        "marcTag": "700",
+        "ind1": "1",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "Bartel, Horst."
+          }
+        ]
+      },
+      {
+        "fieldTag": "b",
+        "marcTag": "710",
+        "ind1": "2",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "Deutsche Akademie der Wissenschaften zu Berlin."
+          },
+          {
+            "tag": "b",
+            "content": "Institut für Geschichte."
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "650",
+        "ind1": " ",
+        "ind2": "0",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "Socialism"
+          },
+          {
+            "tag": "z",
+            "content": "Germany"
+          },
+          {
+            "tag": "x",
+            "content": "History."
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "650",
+        "ind1": " ",
+        "ind2": "0",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "Communism"
+          },
+          {
+            "tag": "z",
+            "content": "Germany"
+          },
+          {
+            "tag": "x",
+            "content": "History."
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "650",
+        "ind1": " ",
+        "ind2": "0",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "Labor movement"
+          },
+          {
+            "tag": "z",
+            "content": "Germany"
+          },
+          {
+            "tag": "x",
+            "content": "History."
+          }
+        ]
+      },
+      {
+        "fieldTag": "l",
+        "marcTag": "010",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "70509003"
+          }
+        ]
+      },
+      {
+        "fieldTag": "l",
+        "marcTag": "035",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "NN700550723"
+          }
+        ]
+      },
+      {
+        "fieldTag": "l",
+        "marcTag": "035",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "(WaOLN)nyp0026651"
+          }
+        ]
+      },
+      {
+        "fieldTag": "n",
+        "marcTag": "500",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "At head of title: Deutsche Akademie der Wissenschaften, Zentralinstitut für Geschichte."
+          }
+        ]
+      },
+      {
+        "fieldTag": "n",
+        "marcTag": "504",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "Includes bibliographical references."
+          }
+        ]
+      },
+      {
+        "fieldTag": "o",
+        "marcTag": "001",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "NYPG700550723-B",
+        "subFields": null
+      },
+      {
+        "fieldTag": "p",
+        "marcTag": "260",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "Berlin,"
+          },
+          {
+            "tag": "b",
+            "content": "Dietz,"
+          },
+          {
+            "tag": "c",
+            "content": "1970."
+          }
+        ]
+      },
+      {
+        "fieldTag": "q",
+        "marcTag": "852",
+        "ind1": "8",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "h",
+            "content": "JFD 70-737"
+          },
+          {
+            "tag": "m",
+            "content": "(SASB)"
+          }
+        ]
+      },
+      {
+        "fieldTag": "q",
+        "marcTag": "852",
+        "ind1": "8",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "h",
+            "content": "JLD 73-1573"
+          },
+          {
+            "tag": "m",
+            "content": "(SASB)"
+          }
+        ]
+      },
+      {
+        "fieldTag": "r",
+        "marcTag": "300",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "671 p."
+          },
+          {
+            "tag": "c",
+            "content": "22 cm."
+          }
+        ]
+      },
+      {
+        "fieldTag": "t",
+        "marcTag": "245",
+        "ind1": "0",
+        "ind2": "0",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "Marxismus und deutsche Arbeiterbewegung."
+          },
+          {
+            "tag": "b",
+            "content": "Studien zur sozialistischen Bewegung im letzten Drittel des 19. Jahrhunderts. "
+          },
+          {
+            "tag": "c",
+            "content": "(Hrsg. von Horst Bartel [u. a.])"
+          }
+        ]
+      },
+      {
+        "fieldTag": "v",
+        "marcTag": "959",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": ".b10269605"
+          },
+          {
+            "tag": "b",
+            "content": "07-18-08"
+          },
+          {
+            "tag": "c",
+            "content": "07-29-91"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "005",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "20000629165204.0",
+        "subFields": null
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "008",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "701228s1970    gw            00| 0|ger| cam   ",
+        "subFields": null
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "040",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "c",
+            "content": "NN"
+          },
+          {
+            "tag": "d",
+            "content": "NN"
+          },
+          {
+            "tag": "d",
+            "content": "WaOLN"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "997",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subFields": [
+          {
+            "tag": "a",
+            "content": "hg"
+          },
+          {
+            "tag": "b",
+            "content": "10-03-00"
+          },
+          {
+            "tag": "c",
+            "content": "m"
+          },
+          {
+            "tag": "d",
+            "content": "a"
+          },
+          {
+            "tag": "e",
+            "content": "-"
+          },
+          {
+            "tag": "f",
+            "content": "ger"
+          },
+          {
+            "tag": "g",
+            "content": "gw "
+          },
+          {
+            "tag": "h",
+            "content": "0"
+          }
+        ]
+      },
+      {
+        "fieldTag": "_",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "00000cam  2200289   4500",
+        "subFields": null
+      }
+    ]
+  },
+  "count": 1,
+  "statusCode": 200,
+  "debugInfo": []
+}
