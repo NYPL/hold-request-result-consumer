@@ -3,7 +3,11 @@
 namespace NYPL\HoldRequestResultConsumer\Test;
 
 use NYPL\HoldRequestResultConsumer\HoldRequestResultConsumerListener;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
+use NYPL\HoldRequestResultConsumer\OAuthClient\ClientHelper;
+use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\MockConfig;
+use NYPL\HoldRequestResultConsumer\Test\Mocks\MockHoldRequestClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\MockListenerData;
 use NYPL\Starter\AvroDeserializer;
 use NYPL\Starter\Listener\ListenerData;
@@ -41,6 +45,8 @@ class HoldRequestResultConsumerListenerTest extends TestCase
 
     public $fakeHoldRequestResultConsumerListener;
 
+    public $fakeClientHelper;
+
     public function setUp()
     {
         parent::setUp();
@@ -48,8 +54,6 @@ class HoldRequestResultConsumerListenerTest extends TestCase
         MockConfig::initialize(__DIR__ . '/../');
 
         $this->fakeListenerData = MockListenerData::getListenerData();
-
-        var_dump($this->fakeListenerData->getData());
 
         $this->fakeKinesisEvent = new class (MockListenerData::getListenerData()) extends KinesisEvent {
         };
@@ -71,7 +75,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
                     true
                 );
                 $record = $allRecords['Records'][0];
-                print_r($record);
+
                 parent::translateEvents($record);
             }
 
@@ -107,18 +111,16 @@ class HoldRequestResultConsumerListenerTest extends TestCase
             {
                 parent::__construct();
             }
-
-            public function setListenerEvents(ListenerEvents $listenerEvents)
-            {
-                parent::setListenerEvents($listenerEvents);
-            }
         };
-
-        $this->fakeHoldRequestResultConsumerListener->setListenerEvents($this->fakeKinesisEvents);
     }
 
     public function testProcessListenerEvents()
     {
+        $this->invokeMethod(
+            $this->fakeHoldRequestResultConsumerListener,
+            'setListenerEvents',
+            array($this->fakeKinesisEvents)
+        );
         $this->assertInstanceOf(
             'NYPL\Starter\Listener\ListenerResult',
             $this->invokeMethod(
