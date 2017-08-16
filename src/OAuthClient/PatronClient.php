@@ -26,7 +26,7 @@ class PatronClient extends APIClient
 
         APILogger::addDebug(
             'Retrieved patron by id',
-            $response['data']
+            $response['data']['id']
         );
 
         // Check statusCode range
