@@ -1,0 +1,54 @@
+{
+  "data": {
+    "id": 292,
+    "offsetBegin": 0,
+    "offsetEnd": 0,
+    "schemaObject": {
+      "name": "HoldRequestResult",
+      "type": "record",
+      "fields": [
+        {
+          "name": "jobId",
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        {
+          "name": "success",
+          "type": "boolean"
+        },
+        {
+          "name": "error",
+          "default": null,
+          "type": [
+            "null",
+            {
+              "name": "Error",
+              "type": "record",
+              "fields": [
+                {
+                  "name": "message",
+                  "type": "string"
+                },
+                {
+                  "name": "type",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "holdRequestId",
+          "type": "int"
+        }
+      ]
+    },
+    "stream": "HoldRequestResult",
+    "schema": "{\n  \"name\": \"HoldRequestResult\",\n  \"type\": \"record\",\n  \"fields\": [\n    {\n      \"name\": \"jobId\",\n      \"type\": [\n        \"null\",\n        \"string\"\n      ]\n    },\n    {\n      \"name\": \"success\",\n      \"type\": \"boolean\"\n    },\n    {\n      \"name\": \"error\",\n      \"default\": null,\n      \"type\": [\n        \"null\",\n        {\n          \"name\": \"Error\",\n          \"type\": \"record\",\n          \"fields\": [\n            {\n              \"name\": \"message\",\n              \"type\": \"string\"\n            },\n            {\n              \"name\": \"type\",\n              \"type\": \"string\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"name\": \"holdRequestId\",\n      \"type\": \"int\"\n    }\n  ]\n}"
+  },
+  "count": 1,
+  "statusCode": 200,
+  "debugInfo": []
+}

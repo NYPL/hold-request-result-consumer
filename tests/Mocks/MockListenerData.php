@@ -2,6 +2,9 @@
 
 namespace NYPL\HoldRequestResultConsumer\Test\Mocks;
 
+use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockSchemaClient;
+use NYPL\Starter\APILogger;
+use NYPL\Starter\AvroDeserializer;
 use NYPL\Starter\Listener\ListenerData;
 
 class MockListenerData
@@ -15,7 +18,14 @@ class MockListenerData
             "HoldRequestResult"
         );
 
-        self::$mockListenerData->decodeRawData('HoldRequestResult');
+        APILogger::addDebug('Decoding Avro data using ' . self::$mockListenerData->getSchemaName() . ' schema');
+
+        self::$mockListenerData->setData(
+            AvroDeserializer::deserializeWithSchema(
+                MockSchemaClient::getSchema(self::$mockListenerData->getSchemaName()),
+                self::$mockListenerData->getRawAvroData()
+            )
+        );
     }
 
     public static function getListenerData()
