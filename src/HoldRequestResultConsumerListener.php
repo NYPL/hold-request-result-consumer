@@ -258,84 +258,44 @@ class HoldRequestResultConsumerListener extends Listener
             try {
                 $holdRequestResult = $this->getHoldRequestResult($listenerEvent);
 
-                if ($holdRequestResult->isSuccess() === true) {
-                    // Assumes error === null
-                    $holdRequest = $this->getHoldRequest($holdRequestResult);
+                $holdRequest = $this->getHoldRequest($holdRequestResult);
 
-                    // TODO: Remove this logic when this loop is fixed
-                    if (!$holdRequest->isProcessed()) {
-                        $this->patchHoldRequestService($holdRequestResult);
+                // TODO: Remove this logic when this loop is fixed
+                if (!$holdRequest->isProcessed()) {
+                    $this->patchHoldRequestService($holdRequestResult);
 
-                        $patron = PatronClient::getPatronById($holdRequest->getPatron());
+                    $this->skipMissingItem($holdRequestResult);
+                    $this->skipMissingPatron($holdRequestResult);
 
-                        if ($patron === null) {
-                            throw new NonRetryableException(
-                                'Hold request record missing Patron data for Request Id '
-                                . $holdRequestResult->getHoldRequestId(),
-                                array($holdRequest),
+                    $patron = PatronClient::getPatronById($holdRequest->getPatron());
+
+                    if ($patron === null) {
+                        throw new NonRetryableException(
+                            'Hold request record missing Patron data for Request Id '
+                            . $holdRequestResult->getHoldRequestId(),
+                            array($holdRequest),
+                            406,
+                            null,
+                            406,
+                            new ErrorResponse(
                                 406,
-                                null,
-                                406,
-                                new ErrorResponse(
-                                    406,
-                                    'missing-patron-data',
-                                    'Not Acceptable: Hold request record missing Patron data for Request Id '
-                                    . $holdRequestResult->getHoldRequestId()
-                                )
-                            );
-                        }
-
-                        if ($holdRequest->getRecordType() === 'i') {
-                            $item = $this->getItem($holdRequest);
-
-                            $bib = $this->getBib($item, $holdRequestResult);
-
-                            $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
-                        }
-                    } else {
-                        APILogger::addDebug('Hold Request Id ' .
-                            $holdRequestResult->getHoldRequestId() . ' is already processed.');
+                                'missing-patron-data',
+                                'Not Acceptable: Hold request record missing Patron data for Request Id '
+                                . $holdRequestResult->getHoldRequestId()
+                            )
+                        );
                     }
-                } else { // $holdRequestResult->isSuccess() === false, error !== null
-                    $holdRequest = $this->getHoldRequest($holdRequestResult);
 
-                    // TODO: Remove this logic when this loop is fixed
-                    if (!$holdRequest->isProcessed()) {
-                        $this->patchHoldRequestService($holdRequestResult);
+                    if ($holdRequest->getRecordType() === 'i') {
+                        $item = $this->getItem($holdRequest);
 
-                        $this->skipMissingItem($holdRequestResult);
-                        $this->skipMissingPatron($holdRequestResult);
+                        $bib = $this->getBib($item, $holdRequestResult);
 
-                        $patron = PatronClient::getPatronById($holdRequest->getPatron());
-
-                        if ($patron === null) {
-                            throw new NonRetryableException(
-                                'Hold request record missing Patron data for Request Id '
-                                . $holdRequestResult->getHoldRequestId(),
-                                array($holdRequest),
-                                406,
-                                null,
-                                406,
-                                new ErrorResponse(
-                                    406,
-                                    'missing-patron-data',
-                                    'Not Acceptable: Hold request record missing Patron data for Request Id '
-                                    . $holdRequestResult->getHoldRequestId()
-                                )
-                            );
-                        }
-
-                        if ($holdRequest->getRecordType() === 'i') {
-                            $item = $this->getItem($holdRequest);
-
-                            $bib = $this->getBib($item, $holdRequestResult);
-
-                            $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
-                        }
-                    } else {
-                        APILogger::addDebug('Hold Request Id ' .
-                            $holdRequestResult->getHoldRequestId() . ' is already processed.');
+                        $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
                     }
+                } else {
+                    APILogger::addDebug('Hold Request Id ' .
+                        $holdRequestResult->getHoldRequestId() . ' is already processed.');
                 }
             } catch (RetryableException $exception) {
                 APILogger::addError(
