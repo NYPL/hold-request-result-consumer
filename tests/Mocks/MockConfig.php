@@ -4,6 +4,7 @@ namespace NYPL\HoldRequestResultConsumer\Test\Mocks;
 
 use Dotenv\Dotenv;
 use Aws\Kms\KmsClient;
+use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 
 class MockConfig extends Config
@@ -47,6 +48,8 @@ class MockConfig extends Config
         date_default_timezone_set(
             Config::get('TIME_ZONE', self::DEFAULT_TIME_ZONE)
         );
+
+        APILogger::addDebug('MockConfig initialized');
     }
 
     protected static function loadConfiguration()
