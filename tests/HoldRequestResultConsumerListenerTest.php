@@ -29,6 +29,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
      */
     public function invokeMethod(&$object, $methodName, array $parameters = array())
     {
+        APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -62,24 +63,26 @@ class HoldRequestResultConsumerListenerTest extends TestCase
         $this->fakeKinesisEvents = new class extends KinesisEvents {
             public function getEvents()
             {
+                APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
                 $this->addEvent(array(), '');
                 return $this->events;
             }
 
             public function addEvent(array $record, $schemaName = '')
             {
+                APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
                 $allRecords = json_decode(
                     file_get_contents(__DIR__ . '/../events/kinesis_hold_edd_success.json'),
                     true
                 );
                 $record = $allRecords['Records'][0];
                 $schemaName = 'HoldRequestResult';
-                parent::addEvent($record, $schemaName);
+
             }
         };
 
         $this->fakeKinesisEvents->setEventSourceARN(
-            "arn:aws:kinesis:us-east-1:946183545209:stream/HoldRequestResult-qa"
+            "arn:aws:kinesis:us-east-1:946183545209:stream/HoldRequestResult"
         );
 
         $this->fakeHoldRequestResultConsumerListener = new class extends HoldRequestResultConsumerListener

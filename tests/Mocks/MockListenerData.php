@@ -13,10 +13,12 @@ class MockListenerData
 
     public static function setListenerData()
     {
+        APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
         self::$mockListenerData = new ListenerData(
-            base64_decode("Akg5MDFiZGQxZC1iZDhmLTQzMTAtYmEzMS03ZjEzYTU1ODc3ZmQBAIIB"),
-            "HoldRequestResult"
+            base64_decode("Akg5MDFiZGQxZC1iZDhmLTQzMTAtYmEzMS03ZjEzYTU1ODc3ZmQBAIIB")
         );
+
+        self::$mockListenerData->setSchemaName("HoldRequestResult");
 
         APILogger::addDebug('Decoding Avro data using ' . self::$mockListenerData->getSchemaName() . ' schema');
 
@@ -30,6 +32,7 @@ class MockListenerData
 
     public static function getListenerData()
     {
+        APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
         self::setListenerData();
         return self::$mockListenerData;
     }
