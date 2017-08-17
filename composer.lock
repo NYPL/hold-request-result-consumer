@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "09224421996e453f5f7bf9510494bc51",
-    "content-hash": "b57fe0cd90b70e6635b9354a5c980b28",
+    "hash": "596b89a65f9048ad445dd48070089fa4",
+    "content-hash": "fff946f86c5bc9a3f42b549f5c5c514a",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -816,16 +816,16 @@
         },
         {
             "name": "nypl/microservice-starter",
-            "version": "1.0.49",
+            "version": "1.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NYPL/php-microservice-starter.git",
-                "reference": "acfc3dc549b9a3b1b76ae692f55f373a0ffe4a94"
+                "reference": "6bfac07a0c3743310fe282344fcdc53c9c21e0e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NYPL/php-microservice-starter/zipball/acfc3dc549b9a3b1b76ae692f55f373a0ffe4a94",
-                "reference": "acfc3dc549b9a3b1b76ae692f55f373a0ffe4a94",
+                "url": "https://api.github.com/repos/NYPL/php-microservice-starter/zipball/6bfac07a0c3743310fe282344fcdc53c9c21e0e9",
+                "reference": "6bfac07a0c3743310fe282344fcdc53c9c21e0e9",
                 "shasum": ""
             },
             "require": {
@@ -854,7 +854,7 @@
                 }
             ],
             "description": "NYPL Microservice Starter",
-            "time": "2017-08-02 16:19:52"
+            "time": "2017-08-15 20:45:09"
         },
         {
             "name": "pimple/pimple",
@@ -1317,16 +1317,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937"
+                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/f29dca382a6485c3cbe6379f0c61230167681937",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
+                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
                 "shasum": ""
             },
             "require": {
@@ -1338,7 +1338,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.5-dev"
                 }
             },
             "autoload": {
@@ -1372,7 +1372,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-09 14:24:12"
+            "time": "2017-06-14 15:44:48"
         },
         {
             "name": "twig/twig",
