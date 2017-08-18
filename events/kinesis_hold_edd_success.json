@@ -14,7 +14,7 @@
       "eventName": "aws:kinesis:record",
       "invokeIdentityArn": "arn:aws:iam::946183545209:role/lambda-full-access",
       "awsRegion": "us-east-1",
-      "eventSourceARN": "arn:aws:kinesis:us-east-1:946183545209:stream/HoldRequestResult-qa"
+      "eventSourceARN": "arn:aws:kinesis:us-east-1:946183545209:stream/HoldRequestResult"
     }
   ],
   "eventSource": "aws:kinesis",
@@ -23,5 +23,5 @@
   "eventName": "aws:kinesis:record",
   "invokeIdentityArn": "arn:aws:iam::946183545209:role/lambda-full-access",
   "awsRegion": "us-east-1",
-  "eventSourceARN": "arn:aws:kinesis:us-east-1:946183545209:stream/HoldRequestResult-qa"
+  "eventSourceARN": "arn:aws:kinesis:us-east-1:946183545209:stream/HoldRequestResult"
 }
