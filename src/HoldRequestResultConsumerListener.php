@@ -173,7 +173,8 @@ class HoldRequestResultConsumerListener extends Listener
     }
 
     /**
-     * @param HoldRequest $holdRequest
+     * @param $holdRequest
+     * @return null|Patron
      * @throws NonRetryableException
      */
     protected function getPatron($holdRequest)
@@ -196,6 +197,8 @@ class HoldRequestResultConsumerListener extends Listener
                 )
             );
         }
+
+        return $patron;
     }
 
     /**
