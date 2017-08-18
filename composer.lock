@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c5a44d27458068e296b3e660f82a1ffa",
-    "content-hash": "02a61a4c26592f2e9ff4cd8711383597",
+    "hash": "503663b37c8a0e91da6d2a89f619ef1c",
+    "content-hash": "64f37cfe16f69e52b2d49ae3bb67527d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -816,16 +816,16 @@
         },
         {
             "name": "nypl/microservice-starter",
-            "version": "1.1.6",
+            "version": "1.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NYPL/php-microservice-starter.git",
-                "reference": "6bfac07a0c3743310fe282344fcdc53c9c21e0e9"
+                "reference": "8942de504370202215dda97436d04f857735eed4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NYPL/php-microservice-starter/zipball/6bfac07a0c3743310fe282344fcdc53c9c21e0e9",
-                "reference": "6bfac07a0c3743310fe282344fcdc53c9c21e0e9",
+                "url": "https://api.github.com/repos/NYPL/php-microservice-starter/zipball/8942de504370202215dda97436d04f857735eed4",
+                "reference": "8942de504370202215dda97436d04f857735eed4",
                 "shasum": ""
             },
             "require": {
@@ -854,7 +854,7 @@
                 }
             ],
             "description": "NYPL Microservice Starter",
-            "time": "2017-08-15 20:45:09"
+            "time": "2017-08-18 16:36:26"
         },
         {
             "name": "pimple/pimple",
