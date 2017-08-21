@@ -6,3 +6,4 @@
 - [Setup](https://github.com/NYPL/hold-request-result-consumer/wiki/Setup)
 - [E-mail Types](https://github.com/NYPL/hold-request-result-consumer/wiki/Email-Types)
 - [Environment](https://github.com/NYPL/hold-request-result-consumer/wiki/Environment)
+- [AWS Lambda Management](https://github.com/NYPL/hold-request-result-consumer/wiki/AWS-Lambda-Management)
