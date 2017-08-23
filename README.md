@@ -5,3 +5,6 @@
 
 - [Setup](https://github.com/NYPL/hold-request-result-consumer/wiki/Setup)
 - [E-mail Types](https://github.com/NYPL/hold-request-result-consumer/wiki/Email-Types)
+- [Environment Configuration Files](https://github.com/NYPL/hold-request-result-consumer/wiki/Environment-Configuration-Files)
+- [AWS Lambda Management](https://github.com/NYPL/hold-request-result-consumer/wiki/AWS-Lambda-Management)
+- [Environment Variables](https://github.com/NYPL/hold-request-result-consumer/wiki/Environment-Variables)

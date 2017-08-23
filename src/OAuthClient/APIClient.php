@@ -21,6 +21,7 @@ abstract class APIClient
     protected static function getOptions(array $options = [])
     {
         $options['headers']['Authorization'] = 'Bearer ' . OAuthClient::getAccessToken();
+        $options['headers']['Content-type'] = 'application/json';
 
         return $options;
     }

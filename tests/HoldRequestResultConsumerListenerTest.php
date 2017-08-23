@@ -77,7 +77,6 @@ class HoldRequestResultConsumerListenerTest extends TestCase
                 );
                 $record = $allRecords['Records'][0];
                 $schemaName = 'HoldRequestResult';
-
             }
         };
 
