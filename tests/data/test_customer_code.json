@@ -1,0 +1,17 @@
+{
+  "NW": {
+    "label": "Test Delivery Location",
+    "eddRequestable": true,
+    "sierraLocation": null,
+    "sierraDeliveryLocations": [
+      {
+        "code": "mal",
+        "label": "Test Delivery Location",
+        "locationsApiSlug": "test-delivery-location",
+        "deliveryLocationTypes": [
+          "Research"
+        ]
+      }
+    ]
+  }
+}

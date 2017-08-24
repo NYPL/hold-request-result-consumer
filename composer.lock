@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "503663b37c8a0e91da6d2a89f619ef1c",
-    "content-hash": "64f37cfe16f69e52b2d49ae3bb67527d",
+    "hash": "09224421996e453f5f7bf9510494bc51",
+    "content-hash": "b57fe0cd90b70e6635b9354a5c980b28",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -816,16 +816,16 @@
         },
         {
             "name": "nypl/microservice-starter",
-            "version": "1.1.12",
+            "version": "1.1.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NYPL/php-microservice-starter.git",
-                "reference": "8942de504370202215dda97436d04f857735eed4"
+                "reference": "92b8f715b24af0ca516bd6f7ed0a6a82ef31343b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NYPL/php-microservice-starter/zipball/8942de504370202215dda97436d04f857735eed4",
-                "reference": "8942de504370202215dda97436d04f857735eed4",
+                "url": "https://api.github.com/repos/NYPL/php-microservice-starter/zipball/92b8f715b24af0ca516bd6f7ed0a6a82ef31343b",
+                "reference": "92b8f715b24af0ca516bd6f7ed0a6a82ef31343b",
                 "shasum": ""
             },
             "require": {
@@ -854,7 +854,7 @@
                 }
             ],
             "description": "NYPL Microservice Starter",
-            "time": "2017-08-18 16:36:26"
+            "time": "2017-08-23 14:09:39"
         },
         {
             "name": "pimple/pimple",
@@ -1699,6 +1699,119 @@
             ],
             "abandoned": "guzzlehttp/guzzle",
             "time": "2015-03-18 18:23:50"
+        },
+        {
+            "name": "hamcrest/hamcrest-php",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hamcrest/hamcrest-php.git",
+                "reference": "776503d3a8e85d4f9a1148614f95b7a608b046ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hamcrest/hamcrest-php/zipball/776503d3a8e85d4f9a1148614f95b7a608b046ad",
+                "reference": "776503d3a8e85d4f9a1148614f95b7a608b046ad",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3|^7.0"
+            },
+            "replace": {
+                "cordoval/hamcrest-php": "*",
+                "davedevelopment/hamcrest-php": "*",
+                "kodova/hamcrest-php": "*"
+            },
+            "require-dev": {
+                "phpunit/php-file-iterator": "1.3.3",
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "hamcrest"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "description": "This is the PHP port of Hamcrest Matchers",
+            "keywords": [
+                "test"
+            ],
+            "time": "2016-01-20 08:20:44"
+        },
+        {
+            "name": "mockery/mockery",
+            "version": "1.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mockery/mockery.git",
+                "reference": "0b23f71799b3e43406f4ce7fef112ac3f0b7a385"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/0b23f71799b3e43406f4ce7fef112ac3f0b7a385",
+                "reference": "0b23f71799b3e43406f4ce7fef112ac3f0b7a385",
+                "shasum": ""
+            },
+            "require": {
+                "hamcrest/hamcrest-php": "~2.0",
+                "lib-pcre": ">=7.0",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Mockery": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Pádraic Brady",
+                    "email": "padraic.brady@gmail.com",
+                    "homepage": "http://blog.astrumfutura.com"
+                },
+                {
+                    "name": "Dave Marshall",
+                    "email": "dave.marshall@atstsolutions.co.uk",
+                    "homepage": "http://davedevelopment.co.uk"
+                }
+            ],
+            "description": "Mockery is a simple yet flexible PHP mock object framework for use in unit testing with PHPUnit, PHPSpec or any other testing framework. Its core goal is to offer a test double framework with a succinct API capable of clearly defining all possible object operations and interactions using a human readable Domain Specific Language (DSL). Designed as a drop in alternative to PHPUnit's phpunit-mock-objects library, Mockery is easy to integrate with PHPUnit and can operate alongside phpunit-mock-objects without the World ending.",
+            "homepage": "http://github.com/padraic/mockery",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "library",
+                "mock",
+                "mock objects",
+                "mockery",
+                "stub",
+                "test",
+                "test double",
+                "testing"
+            ],
+            "time": "2017-02-02 08:52:46"
         },
         {
             "name": "myclabs/deep-copy",
@@ -3607,7 +3720,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "mockery/mockery": 15
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
