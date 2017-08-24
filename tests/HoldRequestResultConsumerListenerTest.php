@@ -97,10 +97,10 @@ class HoldRequestResultConsumerListenerTest extends TestCase
              */
             protected function getHoldRequest(HoldRequestResult $holdRequestResult)
             {
-//                APILogger::addDebug(
-//                    'Retrieved Hold Request By Id ',
-//                    MockHoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId())
-//                );
+                APILogger::addDebug(
+                    'Retrieved Hold Request By Id ',
+                    MockHoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId())
+                );
                 return MockHoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
             }
 
@@ -110,14 +110,14 @@ class HoldRequestResultConsumerListenerTest extends TestCase
              */
             protected function patchHoldRequestService($holdRequestResult)
             {
-//                APILogger::addDebug(
-//                    'Patched Hold Request Service',
-//                    MockHoldRequestClient::patchHoldRequestById(
-//                        $holdRequestResult->getHoldRequestId(),
-//                        true,
-//                        $holdRequestResult->isSuccess()
-//                    )
-//                );
+                APILogger::addDebug(
+                    'Patched Hold Request Service',
+                    MockHoldRequestClient::patchHoldRequestById(
+                        $holdRequestResult->getHoldRequestId(),
+                        true,
+                        $holdRequestResult->isSuccess()
+                    )
+                );
 
                 return MockHoldRequestClient::patchHoldRequestById(
                     $holdRequestResult->getHoldRequestId(),
@@ -128,22 +128,22 @@ class HoldRequestResultConsumerListenerTest extends TestCase
 
             protected function getPatron($holdRequest)
             {
-//                APILogger::addDebug(
-//                    'Retrieved Patron Info',
-//                    MockPatronClient::getPatronById($holdRequest->getPatron())
-//                );
+                APILogger::addDebug(
+                    'Retrieved Patron Info',
+                    MockPatronClient::getPatronById($holdRequest->getPatron())
+                );
                 return MockPatronClient::getPatronById($holdRequest->getPatron());
             }
 
             protected function getItem($holdRequest)
             {
-//                APILogger::addDebug(
-//                    'Retrieved Item',
-//                    MockItemClient::getItemByIdAndSource(
-//                        $holdRequest->getRecord(),
-//                        $holdRequest->getNyplSource()
-//                    )
-//                );
+                APILogger::addDebug(
+                    'Retrieved Item',
+                    MockItemClient::getItemByIdAndSource(
+                        $holdRequest->getRecord(),
+                        $holdRequest->getNyplSource()
+                    )
+                );
 
                 return MockItemClient::getItemByIdAndSource(
                     $holdRequest->getRecord(),
@@ -153,13 +153,13 @@ class HoldRequestResultConsumerListenerTest extends TestCase
 
             protected function getBib($item, $holdRequestResult)
             {
-//                APILogger::addDebug(
-//                    'Retrieved Bib',
-//                    MockBibClient::getBibByIdAndSource(
-//                        $item->getBibIds()[0],
-//                        $item->getNyplSource()
-//                    )
-//                );
+                APILogger::addDebug(
+                    'Retrieved Bib',
+                    MockBibClient::getBibByIdAndSource(
+                        $item->getBibIds()[0],
+                        $item->getNyplSource()
+                    )
+                );
 
                 return MockBibClient::getBibByIdAndSource(
                     $item->getBibIds()[0],
@@ -169,15 +169,9 @@ class HoldRequestResultConsumerListenerTest extends TestCase
 
             protected function sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult)
             {
-//                APILogger::addDebug('E-mail Sent Successfully.');
+                APILogger::addDebug('E-mail Sent Successfully.');
             }
         };
-
-        $this->invokeMethod(
-            $this->fakeHoldRequestResultConsumerListener,
-            'setListenerEvents',
-            array($this->fakeKinesisEvents)
-        );
     }
 
     public function tearDown()
@@ -192,6 +186,11 @@ class HoldRequestResultConsumerListenerTest extends TestCase
 
     public function testProcessListenerEvents()
     {
+        $this->invokeMethod(
+            $this->fakeHoldRequestResultConsumerListener,
+            'setListenerEvents',
+            array($this->fakeKinesisEvents)
+        );
         $this->assertInstanceOf(
             'NYPL\Starter\Listener\ListenerResult',
             $this->invokeMethod(
