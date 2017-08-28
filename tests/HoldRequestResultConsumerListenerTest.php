@@ -2,6 +2,7 @@
 
 namespace NYPL\HoldRequestResultConsumer\Test;
 
+use Mockery\Mock;
 use NYPL\HoldRequestResultConsumer\HoldRequestResultConsumerListener;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
@@ -10,10 +11,13 @@ use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockHoldRequestClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockItemClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockPatronClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\MockConfig;
+use NYPL\HoldRequestResultConsumer\Test\Mocks\MockKinesisEvents;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\MockListenerData;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Listener\ListenerEvent\KinesisEvent;
+use NYPL\Starter\Listener\ListenerEvents;
 use NYPL\Starter\Listener\ListenerEvents\KinesisEvents;
+use NYPL\Starter\Listener\ListenerResult;
 use PHPUnit\Framework\TestCase;
 
 class HoldRequestResultConsumerListenerTest extends TestCase
@@ -170,6 +174,16 @@ class HoldRequestResultConsumerListenerTest extends TestCase
             protected function sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult)
             {
                 APILogger::addDebug('E-mail Sent Successfully.');
+            }
+
+            protected function setListenerEvents(ListenerEvents $listenerEvents)
+            {
+                parent::setListenerEvents(new MockKinesisEvents());
+            }
+
+            protected function processListenerEvents()
+            {
+                return new ListenerResult(true, 'Success');
             }
         };
     }
