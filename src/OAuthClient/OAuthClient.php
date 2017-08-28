@@ -38,7 +38,7 @@ class OAuthClient
     {
 
         $provider = new GenericProvider([
-            'clientId' => Config::get('OAUTH_CLIENT_ID'),
+            'clientId' => Config::get('OAUTH_CLIENT_ID', null, true),
             'clientSecret' => Config::get('OAUTH_CLIENT_SECRET', null, true),
             'redirectUri' => '',
             'urlAuthorize' => Config::get('OAUTH_AUTH_URI'),
