@@ -49,7 +49,7 @@ class MockConfig extends Config
             Config::get('TIME_ZONE', self::DEFAULT_TIME_ZONE)
         );
 
-        APILogger::addDebug('MockConfig initialized');
+//        APILogger::addDebug('MockConfig initialized');
     }
 
     protected static function loadConfiguration()
