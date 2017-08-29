@@ -8,3 +8,4 @@
 - [Environment Configuration Files](https://github.com/NYPL/hold-request-result-consumer/wiki/Environment-Configuration-Files)
 - [AWS Lambda Management](https://github.com/NYPL/hold-request-result-consumer/wiki/AWS-Lambda-Management)
 - [Environment Variables](https://github.com/NYPL/hold-request-result-consumer/wiki/Environment-Variables)
+- [Exceptions](https://github.com/NYPL/hold-request-result-consumer/wiki/Exceptions)
