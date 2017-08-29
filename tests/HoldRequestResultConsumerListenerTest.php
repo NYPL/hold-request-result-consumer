@@ -11,7 +11,7 @@ use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockHoldRequestClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockItemClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockPatronClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\MockConfig;
-use NYPL\HoldRequestResultConsumer\Test\Mocks\MockKinesisEvents;
+use NYPL\HoldRequestResultConsumer\Test\Mocks\MockListenerEvents;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\MockListenerData;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Listener\ListenerEvent\KinesisEvent;
@@ -33,7 +33,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
      */
     public function invokeMethod(&$object, $methodName, array $parameters = array())
     {
-        APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
+//        APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -67,7 +67,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
         $this->fakeKinesisEvents = new class extends KinesisEvents {
             public function getEvents()
             {
-                APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
+//                APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
                 $this->addEvent(array(), '');
                 return $this->events;
             }
@@ -81,6 +81,8 @@ class HoldRequestResultConsumerListenerTest extends TestCase
                 );
                 $record = $allRecords['Records'][0];
                 $schemaName = 'HoldRequestResult';
+
+                $this->events[] = $this->translateEvent($record, $schemaName);
             }
         };
 
@@ -101,10 +103,10 @@ class HoldRequestResultConsumerListenerTest extends TestCase
              */
             protected function getHoldRequest(HoldRequestResult $holdRequestResult)
             {
-                APILogger::addDebug(
-                    'Retrieved Hold Request By Id ',
-                    MockHoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId())
-                );
+//                APILogger::addDebug(
+//                    'Retrieved Hold Request By Id ',
+//                    MockHoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId())
+//                );
                 return MockHoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
             }
 
@@ -114,14 +116,14 @@ class HoldRequestResultConsumerListenerTest extends TestCase
              */
             protected function patchHoldRequestService($holdRequestResult)
             {
-                APILogger::addDebug(
-                    'Patched Hold Request Service',
-                    MockHoldRequestClient::patchHoldRequestById(
-                        $holdRequestResult->getHoldRequestId(),
-                        true,
-                        $holdRequestResult->isSuccess()
-                    )
-                );
+//                APILogger::addDebug(
+//                    'Patched Hold Request Service',
+//                    MockHoldRequestClient::patchHoldRequestById(
+//                        $holdRequestResult->getHoldRequestId(),
+//                        true,
+//                        $holdRequestResult->isSuccess()
+//                    )
+//                );
 
                 return MockHoldRequestClient::patchHoldRequestById(
                     $holdRequestResult->getHoldRequestId(),
@@ -174,16 +176,6 @@ class HoldRequestResultConsumerListenerTest extends TestCase
             protected function sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult)
             {
                 APILogger::addDebug('E-mail Sent Successfully.');
-            }
-
-            protected function setListenerEvents(ListenerEvents $listenerEvents)
-            {
-                parent::setListenerEvents(new MockKinesisEvents());
-            }
-
-            protected function processListenerEvents()
-            {
-                return new ListenerResult(true, 'Success');
             }
         };
     }

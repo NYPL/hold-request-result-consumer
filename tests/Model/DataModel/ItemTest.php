@@ -32,6 +32,20 @@ class ItemTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
      */
+    public function testAttributesExist()
+    {
+        $this->assertClassHasAttribute('id', Item::class);
+        $this->assertClassHasAttribute('nyplSource', Item::class);
+        $this->assertClassHasAttribute('bibIds', Item::class);
+        $this->assertClassHasAttribute('nyplType', Item::class);
+        $this->assertClassHasAttribute('barcode', Item::class);
+        $this->assertClassHasAttribute('callNumber', Item::class);
+        $this->assertClassHasAttribute('itemType', Item::class);
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
     public function testId()
     {
         $this->assertEquals('', $this->fakeItem->getId());
