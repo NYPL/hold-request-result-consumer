@@ -177,6 +177,15 @@ class HoldRequestResultConsumerListenerTest extends TestCase
             {
                 APILogger::addDebug('E-mail Sent Successfully.');
             }
+
+            // Comment out this method for local machine testing.
+            protected function processListenerEvents()
+            {
+                return new ListenerResult(
+                    true,
+                    'Successfully processed event'
+                );
+            }
         };
     }
 
