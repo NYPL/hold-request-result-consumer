@@ -34,10 +34,10 @@ class ItemTest extends TestCase
      */
     public function testAttributesExist()
     {
-        $this->assertClassHasAttribute('id', Item::class);
-        $this->assertClassHasAttribute('nyplSource', Item::class);
-        $this->assertClassHasAttribute('bibIds', Item::class);
-        $this->assertClassHasAttribute('nyplType', Item::class);
+
+
+
+
         $this->assertClassHasAttribute('barcode', Item::class);
         $this->assertClassHasAttribute('callNumber', Item::class);
         $this->assertClassHasAttribute('itemType', Item::class);
@@ -46,7 +46,15 @@ class ItemTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
      */
-    public function testId()
+    public function testItemHasId()
+    {
+        $this->assertClassHasAttribute('id', Item::class);
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testIdCanBeBlank()
     {
         $this->assertEquals('', $this->fakeItem->getId());
     }
@@ -54,7 +62,24 @@ class ItemTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
      */
-    public function testNyplSource()
+    public function testIdCanBeSetAsString()
+    {
+        $this->fakeItem->setId('0');
+        $this->assertEquals('0', $this->fakeItem->getId());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testItemHasNyplSource()
+    {
+        $this->assertClassHasAttribute('nyplSource', Item::class);
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testNyplSourceCanBeBlank()
     {
         $this->assertEquals('', $this->fakeItem->getNyplSource());
     }
@@ -62,7 +87,24 @@ class ItemTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
      */
-    public function testBibIds()
+    public function testNyplSourceCanBeSetAsString()
+    {
+        $this->fakeItem->setNyplSource('sierra-nypl');
+        $this->assertEquals('sierra-nypl', $this->fakeItem->getNyplSource());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testItemHasBibIds()
+    {
+        $this->assertClassHasAttribute('bibIds', Item::class);
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testBibIdsCanBeEmpty()
     {
         $this->assertEquals(array(), $this->fakeItem->getBibIds());
     }
@@ -70,10 +112,37 @@ class ItemTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
      */
-    public function testNyplType()
+    public function testBibIdsCanBeSetAsArray()
+    {
+        $this->fakeItem->setBibIds(array('1234567'));
+        $this->assertContains('1234567', $this->fakeItem->getBibIds());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testItemHasNyplType()
+    {
+        $this->assertClassHasAttribute('nyplType', Item::class);
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testNyplTypeCanBeBlank()
     {
         $this->assertEquals('', $this->fakeItem->getNyplType());
     }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testNyplTypeCanBeSetAsString()
+    {
+        $this->fakeItem->setNyplType('i');
+        $this->assertEquals('i', $this->fakeItem->getNyplType());
+    }
+
 
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
