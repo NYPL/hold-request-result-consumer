@@ -32,16 +32,6 @@ class ItemTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
      */
-    public function testAttributesExist()
-    {
-
-        $this->assertClassHasAttribute('callNumber', Item::class);
-        $this->assertClassHasAttribute('itemType', Item::class);
-    }
-
-    /**
-     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
-     */
     public function testItemHasId()
     {
         $this->assertClassHasAttribute('id', Item::class);
@@ -158,7 +148,24 @@ class ItemTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
      */
-    public function testCallNumber()
+    public function testBarcodeCanBeSetAsString()
+    {
+        $this->fakeItem->setBarCode('111122233334444');
+        $this->assertEquals('111122233334444', $this->fakeItem->getBarCode());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testItemHasCallNumber()
+    {
+        $this->assertClassHasAttribute('callNumber', Item::class);
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testCallNumberCanBeBlank()
     {
         $this->assertEquals('', $this->fakeItem->getCallNumber());
     }
@@ -166,8 +173,33 @@ class ItemTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
      */
-    public function testItemType()
+    public function testCallNumberCanBeSetAsString()
+    {
+        $this->fakeItem->setCallNumber('J12345678');
+        $this->assertEquals('J12345678', $this->fakeItem->getCallNumber());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testItemHasItemType()
+    {
+        $this->assertClassHasAttribute('itemType', Item::class);
+    }
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testItemTypeCanBeBlank()
     {
         $this->assertEquals('', $this->fakeItem->getItemType());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testItemTypeCanBeSetAsString()
+    {
+        $this->fakeItem->setItemType('b');
+        $this->assertEquals('b', $this->fakeItem->getItemType());
     }
 }
