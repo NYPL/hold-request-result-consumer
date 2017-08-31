@@ -35,10 +35,6 @@ class ItemTest extends TestCase
     public function testAttributesExist()
     {
 
-
-
-
-        $this->assertClassHasAttribute('barcode', Item::class);
         $this->assertClassHasAttribute('callNumber', Item::class);
         $this->assertClassHasAttribute('itemType', Item::class);
     }
@@ -143,11 +139,18 @@ class ItemTest extends TestCase
         $this->assertEquals('i', $this->fakeItem->getNyplType());
     }
 
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
+     */
+    public function testItemHasBarcode()
+    {
+        $this->assertClassHasAttribute('barcode', Item::class);
+    }
 
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Item
      */
-    public function testBarcode()
+    public function testBarcodeCanBeBlank()
     {
         $this->assertEquals('', $this->fakeItem->getBarCode());
     }
