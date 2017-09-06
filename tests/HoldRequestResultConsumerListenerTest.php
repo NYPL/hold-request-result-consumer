@@ -51,6 +51,8 @@ class HoldRequestResultConsumerListenerTest extends TestCase
 
     public $fakeClientHelper;
 
+    public $fakeHoldRequestResult;
+
     public function setUp()
     {
         parent::setUp();
@@ -89,6 +91,19 @@ class HoldRequestResultConsumerListenerTest extends TestCase
         $this->fakeKinesisEvents->setEventSourceARN(
             "arn:aws:kinesis:us-east-1:946183545209:stream/HoldRequestResult"
         );
+
+        $this->fakeHoldRequestResult = new class extends HoldRequestResult
+        {
+            public function __construct($data = [
+                'jobId' => 'Test jobId',
+                'success' => false,
+                'holdRequestId' => 2,
+                'error' => []
+            ])
+            {
+                parent::__construct($data);
+            }
+        };
 
         $this->fakeHoldRequestResultConsumerListener = new class extends HoldRequestResultConsumerListener
         {
@@ -201,6 +216,17 @@ class HoldRequestResultConsumerListenerTest extends TestCase
 
     public function testProcessListenerEvents()
     {
+
+        $this->invokeMethod(
+            $this->fakeHoldRequestResultConsumerListener,
+            'skipMissingItem',
+            array($this->fakeHoldRequestResult)
+        );
+        $this->invokeMethod(
+            $this->fakeHoldRequestResultConsumerListener,
+            'skipMissingPatron',
+            array($this->fakeHoldRequestResult)
+        );
         $this->invokeMethod(
             $this->fakeHoldRequestResultConsumerListener,
             'setListenerEvents',
