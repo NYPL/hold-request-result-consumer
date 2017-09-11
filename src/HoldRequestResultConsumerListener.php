@@ -310,15 +310,6 @@ class HoldRequestResultConsumerListener extends Listener
                     APILogger::addDebug('Hold Request Id ' .
                         $holdRequestResult->getHoldRequestId() . ' is already processed.');
                 }
-            } catch (ClientTimeoutException $exception) {
-                APILogger::addError(
-                    'ClientTimeoutException thrown: ' . $exception->getMessage() .
-                    ', Error code: ' . $exception->getCode()
-                );
-                return new ListenerResult(
-                    false,
-                    'Retrying Timed Out Operation'
-                );
             } catch (RetryableException $exception) {
                 APILogger::addError(
                     'RetryableException thrown: ' . $exception->getMessage() .
