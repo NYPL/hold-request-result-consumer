@@ -8,7 +8,7 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
-use NYPL\HoldRequestResultConsumer\Model\Exception\CurlTimedOutException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\ClientTimeoutException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
@@ -310,7 +310,7 @@ class HoldRequestResultConsumerListener extends Listener
                     APILogger::addDebug('Hold Request Id ' .
                         $holdRequestResult->getHoldRequestId() . ' is already processed.');
                 }
-            } catch (CurlTimedOutException $exception) {
+            } catch (ClientTimeoutException $exception) {
                 APILogger::addError(
                     'CurlTimedOutException thrown: ' . $exception->getMessage() .
                     ', Error code: ' . $exception->getCode()

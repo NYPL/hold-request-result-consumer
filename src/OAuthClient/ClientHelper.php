@@ -4,7 +4,7 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
-use NYPL\HoldRequestResultConsumer\Model\Exception\CurlTimedOutException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\ClientTimeoutException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
@@ -16,7 +16,7 @@ class ClientHelper extends APIClient
      * @param string $url
      * @param string $sourceFunction
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws CurlTimedOutException
+     * @throws ClientTimeoutException
      * @throws NonRetryableException
      * @throws RetryableException
      * @throws \Exception
@@ -55,7 +55,7 @@ class ClientHelper extends APIClient
             );
         } catch (\Exception $exception) {
             if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
-                throw new CurlTimedOutException(
+                throw new ClientTimeoutException(
                     'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
                     'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
                     $exception->getCode(),
@@ -77,7 +77,7 @@ class ClientHelper extends APIClient
      * @param array $body
      * @param string $sourceFunction
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws CurlTimedOutException
+     * @throws ClientTimeoutException
      * @throws NonRetryableException
      * @throws \Exception
      */
@@ -116,7 +116,7 @@ class ClientHelper extends APIClient
             );
         } catch (\Exception $exception) {
             if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
-                throw new CurlTimedOutException(
+                throw new ClientTimeoutException(
                     'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
                     'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
                     $exception->getCode(),
