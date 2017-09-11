@@ -56,15 +56,15 @@ class ClientHelper extends APIClient
         } catch (\Exception $exception) {
             if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
                 throw new ClientTimeoutException(
-                    'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
-                    'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                    'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                    'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
                     $exception->getCode(),
                     null,
                     $exception->getCode(),
                     new ErrorResponse(
                         $exception->getCode(),
-                        'curl-timeout-exception',
-                        'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage()
+                        'client-timeout-exception',
+                        'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage()
                     )
                 );
             }
@@ -117,15 +117,15 @@ class ClientHelper extends APIClient
         } catch (\Exception $exception) {
             if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
                 throw new ClientTimeoutException(
-                    'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
-                    'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                    'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                    'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
                     $exception->getCode(),
                     null,
                     $exception->getCode(),
                     new ErrorResponse(
                         $exception->getCode(),
-                        'curl-timeout-exception',
-                        'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage()
+                        'client-timeout-exception',
+                        'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage()
                     )
                 );
             }

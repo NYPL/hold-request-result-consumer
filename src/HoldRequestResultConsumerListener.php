@@ -312,7 +312,7 @@ class HoldRequestResultConsumerListener extends Listener
                 }
             } catch (ClientTimeoutException $exception) {
                 APILogger::addError(
-                    'CurlTimedOutException thrown: ' . $exception->getMessage() .
+                    'ClientTimeoutException thrown: ' . $exception->getMessage() .
                     ', Error code: ' . $exception->getCode()
                 );
                 return new ListenerResult(
