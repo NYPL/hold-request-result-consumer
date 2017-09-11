@@ -54,21 +54,7 @@ class ClientHelper extends APIClient
                 )
             );
         } catch (\Exception $exception) {
-            if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
-                throw new ClientTimeoutException(
-                    'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
-                    'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
-                    $exception->getCode(),
-                    null,
-                    $exception->getCode(),
-                    new ErrorResponse(
-                        $exception->getCode(),
-                        'client-timeout-exception',
-                        'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage()
-                    )
-                );
-            }
-            throw $exception;
+            self::checkForTimeOutException($exception, $sourceFunction);
         }
     }
 
@@ -115,21 +101,32 @@ class ClientHelper extends APIClient
                 )
             );
         } catch (\Exception $exception) {
-            if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
-                throw new ClientTimeoutException(
-                    'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
-                    'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
-                    $exception->getCode(),
-                    null,
-                    $exception->getCode(),
-                    new ErrorResponse(
-                        $exception->getCode(),
-                        'client-timeout-exception',
-                        'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage()
-                    )
-                );
-            }
-            throw $exception;
+            self::checkForTimeOutException($exception, $sourceFunction);
         }
+    }
+
+    /**
+     * @param \Exception $exception
+     * @param string $sourceFunction
+     * @throws ClientTimeoutException
+     * @throws \Exception
+     */
+    public static function checkForTimeOutException(\Exception $exception, $sourceFunction = '')
+    {
+        if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
+            throw new ClientTimeoutException(
+                'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                $exception->getCode(),
+                null,
+                $exception->getCode(),
+                new ErrorResponse(
+                    $exception->getCode(),
+                    'client-timeout-exception',
+                    'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage()
+                )
+            );
+        }
+        throw $exception;
     }
 }
