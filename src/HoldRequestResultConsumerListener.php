@@ -328,6 +328,13 @@ class HoldRequestResultConsumerListener extends Listener
                     'Exception thrown: ' . $exception->getMessage() .
                     ', Error code: ' . $exception->getCode()
                 );
+
+                if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
+                    return new ListenerResult(
+                        false,
+                        'Retrying Timed Out Operation'
+                    );
+                }
             } catch (\Throwable $exception) {
                 APILogger::addError(
                     'Throwable thrown: ' . $exception->getMessage()
