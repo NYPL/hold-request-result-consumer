@@ -1,10 +1,13 @@
 language: php
 php:
-  - 7.1
+- 7.1
 script:
-  - composer update
-  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+- composer update
+- vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 after_success:
-  - vendor/bin/coveralls -v
-  - vendor/bin/phpcs -n --standard=PSR1,PSR2 src/
-  - vendor/bin/phpcbf src/
+- vendor/bin/coveralls -v
+- vendor/bin/phpcs -n --standard=PSR1,PSR2 src/
+- vendor/bin/phpcbf src/
+notifications:
+  slack:
+    secure: a8RK8eq9Dz14Q7v9XbaeWIBVS0Aow0ry033P9LAQ8a0HSNBtFVk5q5y54xV6OfCj/Y9IV27P+rMNFqkF5gz9/c2aq2ILEGF3yhBwTewmPGLW31NBVvllHyS/LZJcBRfNyFfYjJ3ABv1EU7LTlD2jOK3Q1d3FPmKJMe68LOnHfZGco95VTknutIWkzQm80DiTy+FuOzrO64bt0XKyRG6gsd0+7gkN/cOFN96AmPU7vA5TF5AkCmj258UtXD/E36B+bTHRopN4UPPtvlNI0CTv3Kx19hUgW3hbsUvbjT2u0y67Ts4Ewxq9zzMUYr7YyvdS+HYWuWx96LS66E6D37Hzd4YotvoE2H/FVHuvM1w8UK1jo5f9cm9uCJoVKTGIi22m1Mc7M66tp7A2dRRRenf8YMU3IcEv0aUpNw8l9NjYZbqYlH1Ks+ozHLuNiz8sLYBJajEmNvznYkWE5Ijg72yFpnSUpYtsCAAnNBQVLmptECRggteVLZuGhXZC73Rw5toD4J5iSS8M7eYmjrQV+d9LjgwOkjAcKJtx20aQsbOHZFSPnbP7mw3xXBKbmjSGdY1FFd8ZT+kwsrqL1h3CNccISeQqePs0sWOZa98zr5D5hPX7nbtLQ2/Ntuu/QwLzNCog02b9o2mBqwYehc1dumDkr4xfrtVMhOkYK7MeUPoYCPc=
