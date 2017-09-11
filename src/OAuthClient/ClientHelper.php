@@ -4,6 +4,7 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\CurlTimedOutException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
@@ -15,8 +16,10 @@ class ClientHelper extends APIClient
      * @param string $url
      * @param string $sourceFunction
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws CurlTimedOutException
      * @throws NonRetryableException
      * @throws RetryableException
+     * @throws \Exception
      */
     public static function getResponse($url = '', $sourceFunction = '')
     {
@@ -50,6 +53,22 @@ class ClientHelper extends APIClient
                     'Client Error from '. $sourceFunction . ' ' . $exception->getMessage()
                 )
             );
+        } catch (\Exception $exception) {
+            if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
+                throw new CurlTimedOutException(
+                    'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                    'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                    $exception->getCode(),
+                    null,
+                    $exception->getCode(),
+                    new ErrorResponse(
+                        $exception->getCode(),
+                        'curl-timeout-exception',
+                        'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage()
+                    )
+                );
+            }
+            throw $exception;
         }
     }
 
@@ -58,8 +77,9 @@ class ClientHelper extends APIClient
      * @param array $body
      * @param string $sourceFunction
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws CurlTimedOutException
      * @throws NonRetryableException
-     * @throws RetryableException
+     * @throws \Exception
      */
     public static function patchResponse($url = '', $body = array(), $sourceFunction = '')
     {
@@ -94,6 +114,22 @@ class ClientHelper extends APIClient
                     'Client Error from '. $sourceFunction . ' ' . $exception->getMessage()
                 )
             );
+        } catch (\Exception $exception) {
+            if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
+                throw new CurlTimedOutException(
+                    'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                    'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                    $exception->getCode(),
+                    null,
+                    $exception->getCode(),
+                    new ErrorResponse(
+                        $exception->getCode(),
+                        'curl-timeout-exception',
+                        'Curl Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage()
+                    )
+                );
+            }
+            throw $exception;
         }
     }
 }

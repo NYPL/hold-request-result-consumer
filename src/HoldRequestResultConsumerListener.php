@@ -8,6 +8,7 @@ use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
+use NYPL\HoldRequestResultConsumer\Model\Exception\CurlTimedOutException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
@@ -309,6 +310,15 @@ class HoldRequestResultConsumerListener extends Listener
                     APILogger::addDebug('Hold Request Id ' .
                         $holdRequestResult->getHoldRequestId() . ' is already processed.');
                 }
+            } catch (CurlTimedOutException $exception) {
+                APILogger::addError(
+                    'CurlTimedOutException thrown: ' . $exception->getMessage() .
+                    ', Error code: ' . $exception->getCode()
+                );
+                return new ListenerResult(
+                    false,
+                    'Retrying Timed Out Operation'
+                );
             } catch (RetryableException $exception) {
                 APILogger::addError(
                     'RetryableException thrown: ' . $exception->getMessage() .
@@ -328,13 +338,6 @@ class HoldRequestResultConsumerListener extends Listener
                     'Exception thrown: ' . $exception->getMessage() .
                     ', Error code: ' . $exception->getCode()
                 );
-
-                if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
-                    return new ListenerResult(
-                        false,
-                        'Retrying Timed Out Operation'
-                    );
-                }
             } catch (\Throwable $exception) {
                 APILogger::addError(
                     'Throwable thrown: ' . $exception->getMessage()
