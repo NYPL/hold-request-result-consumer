@@ -9,13 +9,17 @@ use NYPL\Starter\Config;
 class BibClient extends APIClient
 {
     /**
-     * @param string $bibId
+     * @param array $bibIds
      * @param $nyplSource
-     * @return null|Bib
+     * @return array|null
      */
-    public static function getBibByIdAndSource($bibId = '', $nyplSource)
+    public static function getBibByIdAndSource(array $bibIds, $nyplSource)
     {
-        $url = Config::get('API_BIB_URL') . '/' . $nyplSource . '/' . $bibId;
+        $bibs = array();
+
+        $bibIdList = implode(",", $bibIds);
+
+        $url = Config::get('API_BIB_URL') . '?id=' . $bibIdList;
 
         APILogger::addDebug('Retrieving bib by Id and Source', (array)$url);
 
@@ -32,7 +36,10 @@ class BibClient extends APIClient
 
         // Check statusCode range
         if ($statusCode === 200) {
-            return new Bib($response['data']);
+            foreach ($response['data'] as $bib) {
+                array_push($bibs, $bib);
+            }
+            return $bibs;
         } else {
             APILogger::addError(
                 'Failed',

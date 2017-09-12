@@ -27,9 +27,9 @@ class HoldEmailData extends StreamData
     public $patronEmail = '';
 
     /**
-     * @var string
+     * @var array
      */
-    public $title = '';
+    public $titles = array();
 
     /**
      * @var string
@@ -69,14 +69,14 @@ class HoldEmailData extends StreamData
 
     /**
      * @param Patron $patron
-     * @param Bib $bib
+     * @param array $bibs
      * @param Item $item
      * @param HoldRequest $holdRequest
      * @param HoldRequestResult $holdRequestResult
      */
     public function assembleData(
         Patron $patron,
-        Bib $bib,
+        array $bibs,
         Item $item,
         HoldRequest $holdRequest,
         HoldRequestResult $holdRequestResult
