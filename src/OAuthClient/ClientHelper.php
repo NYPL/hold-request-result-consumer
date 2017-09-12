@@ -4,6 +4,7 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use NYPL\HoldRequestResultConsumer\Model\Exception\ClientTimeoutException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\Starter\APILogger;
@@ -15,8 +16,10 @@ class ClientHelper extends APIClient
      * @param string $url
      * @param string $sourceFunction
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws ClientTimeoutException
      * @throws NonRetryableException
      * @throws RetryableException
+     * @throws \Exception
      */
     public static function getResponse($url = '', $sourceFunction = '')
     {
@@ -50,6 +53,8 @@ class ClientHelper extends APIClient
                     'Client Error from '. $sourceFunction . ' ' . $exception->getMessage()
                 )
             );
+        } catch (\Exception $exception) {
+            self::checkForTimeOutException($exception, $sourceFunction);
         }
     }
 
@@ -58,8 +63,9 @@ class ClientHelper extends APIClient
      * @param array $body
      * @param string $sourceFunction
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws ClientTimeoutException
      * @throws NonRetryableException
-     * @throws RetryableException
+     * @throws \Exception
      */
     public static function patchResponse($url = '', $body = array(), $sourceFunction = '')
     {
@@ -94,6 +100,33 @@ class ClientHelper extends APIClient
                     'Client Error from '. $sourceFunction . ' ' . $exception->getMessage()
                 )
             );
+        } catch (\Exception $exception) {
+            self::checkForTimeOutException($exception, $sourceFunction);
         }
+    }
+
+    /**
+     * @param \Exception $exception
+     * @param string $sourceFunction
+     * @throws ClientTimeoutException
+     * @throws \Exception
+     */
+    public static function checkForTimeOutException(\Exception $exception, $sourceFunction = '')
+    {
+        if (strpos($exception->getMessage(), 'Operation timed out') !== false) {
+            throw new ClientTimeoutException(
+                'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage(),
+                $exception->getCode(),
+                null,
+                $exception->getCode(),
+                new ErrorResponse(
+                    $exception->getCode(),
+                    'client-timeout-exception',
+                    'Client Timeout Exception from '. $sourceFunction . ' ' . $exception->getMessage()
+                )
+            );
+        }
+        throw $exception;
     }
 }
