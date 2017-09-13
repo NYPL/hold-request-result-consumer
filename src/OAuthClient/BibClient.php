@@ -15,6 +15,14 @@ class BibClient extends APIClient
      */
     public static function getBibsByIds(array $bibIds)
     {
+        if (count($bibIds) < 1) {
+            APILogger::addError(
+                'Failed',
+                array('No bibIds provided to ' . __FUNCTION__)
+            );
+            return null;
+        }
+
         $bibs = array();
 
         $bibIdList = implode(",", $bibIds);
@@ -30,7 +38,7 @@ class BibClient extends APIClient
         $response = json_decode((string)$response->getBody(), true);
 
         APILogger::addDebug(
-            'Retrieved bib by id and source',
+            'Retrieved bibs by ids',
             $response['data']
         );
 
