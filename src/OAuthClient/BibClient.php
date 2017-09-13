@@ -51,7 +51,7 @@ class BibClient extends APIClient
         } else {
             APILogger::addError(
                 'Failed',
-                array('Failed to retrieve bib ', $bibId, $response['type'], $response['message'])
+                array('Failed to retrieve bib ', $bibIds, $response['type'], $response['message'])
             );
             return null;
         }
