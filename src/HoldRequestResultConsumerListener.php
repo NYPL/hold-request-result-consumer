@@ -151,7 +151,7 @@ class HoldRequestResultConsumerListener extends Listener
      */
     protected function getBibs($item, $holdRequestResult)
     {
-        $bibs = BibClient::getBibByIdAndSource($item->getBibIds(), $item->getNyplSource());
+        $bibs = BibClient::getBibsByIds($item->getBibIds());
         APILogger::addDebug('Bibs', $bibs);
 
         if ($bibs === null) {

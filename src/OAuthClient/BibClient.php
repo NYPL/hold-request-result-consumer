@@ -13,7 +13,7 @@ class BibClient extends APIClient
      * @param $nyplSource
      * @return array|null
      */
-    public static function getBibByIdAndSource(array $bibIds, $nyplSource)
+    public static function getBibsByIds(array $bibIds)
     {
         $bibs = array();
 
