@@ -39,8 +39,8 @@ class HoldEmailDataTest extends TestCase
             public function __construct($data = [
                 'patronName' => '',
                 'patronEmail' => '',
-                'title' => '',
-                'author' => '',
+                'titles' => [],
+                'authors' => [],
                 'barcode' => '',
                 'pickupLocation' => 'mal',
                 'deliveryLocation' => 'NW',
@@ -97,7 +97,7 @@ class HoldEmailDataTest extends TestCase
             }
         };
 
-        $this->fakeBibs = array($this->fakeBib);
+        $this->fakeBibs = array($this->fakeBib, $this->fakeBib);
 
         $this->fakeItem = new class extends Item
         {
@@ -171,8 +171,8 @@ class HoldEmailDataTest extends TestCase
 
         $this->assertEquals($this->fakePatron->getEmails()[0], $this->fakeHoldEmailData->getPatronEmail());
         $this->assertEquals('Test Patron', $this->fakeHoldEmailData->getPatronName());
-//        $this->assertEquals($this->fakeBib->getTitle(), $this->fakeHoldEmailData->getTitle());
-//        $this->assertEquals($this->fakeBib->getAuthor(), $this->fakeHoldEmailData->getAuthor());
+        $this->assertEquals($this->fakeBib->getTitle(), $this->fakeHoldEmailData->getTitles()[0]);
+        $this->assertEquals($this->fakeBib->getAuthor(), $this->fakeHoldEmailData->getAuthors()[0]);
         $this->assertEquals('Test Delivery Location', $this->fakeHoldEmailData->getDeliveryLocation());
         $this->assertNull($this->fakeHoldEmailData->getDocDeliveryData());
         $this->assertEquals('Test Pickup Location', $this->fakeHoldEmailData->getPickupLocation());
