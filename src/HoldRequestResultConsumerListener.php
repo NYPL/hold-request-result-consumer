@@ -156,15 +156,15 @@ class HoldRequestResultConsumerListener extends Listener
 
         if ($bibs === null) {
             throw new NonRetryableException(
-                'Hold request record missing Bib data for Request Id ' . $holdRequestResult->getHoldRequestId(),
+                'Hold request record missing Bibs data for Request Id ' . $holdRequestResult->getHoldRequestId(),
                 array($item, $holdRequestResult, $bib),
                 406,
                 null,
                 406,
                 new ErrorResponse(
                     406,
-                    'missing-bib-data',
-                    'Not Acceptable: Hold request record missing Bib data for Request Id '
+                    'missing-bibs-data',
+                    'Not Acceptable: Hold request record missing Bibs data for Request Id '
                     . $holdRequestResult->getHoldRequestId()
                 )
             );
