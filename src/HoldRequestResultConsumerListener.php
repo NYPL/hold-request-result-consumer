@@ -257,9 +257,9 @@ class HoldRequestResultConsumerListener extends Listener
      * @param $bibs
      * @param $item
      * @param $holdRequest
-     * @param HoldRequestResult $holdRequestResult
+     * @param $holdRequestResult
      */
-    protected function sendEmail($patron, $bibs, $item, $holdRequest, HoldRequestResult $holdRequestResult)
+    protected function sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult)
     {
         $holdEmailData = new HoldEmailData();
         $holdEmailData->assembleData($patron, $bibs, $item, $holdRequest, $holdRequestResult);

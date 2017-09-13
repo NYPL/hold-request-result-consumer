@@ -167,7 +167,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
                 );
             }
 
-            protected function sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult)
+            protected function sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult)
             {
                 APILogger::addDebug('E-mail Sent Successfully.');
             }
