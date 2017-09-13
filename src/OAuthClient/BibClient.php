@@ -21,11 +21,13 @@ class BibClient extends APIClient
                 array('No bibIds provided to ' . __FUNCTION__)
             );
             return null;
+        } elseif (count($bibIds) > 1) {
+            $bibIdList = implode(",", $bibIds);
+        } else {
+            $bibIdList = $bibIds[0];
         }
 
         $bibs = array();
-
-        $bibIdList = implode(",", $bibIds);
 
         $url = Config::get('API_BIB_URL') . '?id=' . $bibIdList;
 
