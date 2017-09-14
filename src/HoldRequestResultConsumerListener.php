@@ -2,13 +2,11 @@
 
 namespace NYPL\HoldRequestResultConsumer;
 
-use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
-use NYPL\HoldRequestResultConsumer\Model\Exception\ClientTimeoutException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
@@ -144,8 +142,8 @@ class HoldRequestResultConsumerListener extends Listener
     }
 
     /**
-     * @param $item
-     * @param $holdRequestResult
+     * @param Item $item
+     * @param HoldRequestResult $holdRequestResult
      * @return array|null
      * @throws NonRetryableException
      */
@@ -174,7 +172,7 @@ class HoldRequestResultConsumerListener extends Listener
     }
 
     /**
-     * @param $holdRequest
+     * @param HoldRequest $holdRequest
      * @return null|Patron
      * @throws NonRetryableException
      */
@@ -253,11 +251,11 @@ class HoldRequestResultConsumerListener extends Listener
     }
 
     /**
-     * @param $patron
-     * @param $bibs
-     * @param $item
-     * @param $holdRequest
-     * @param $holdRequestResult
+     * @param Patron $patron
+     * @param array $bibs
+     * @param Item item
+     * @param HoldRequest $holdRequest
+     * @param HoldRequestResult $holdRequestResult
      */
     protected function sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult)
     {
