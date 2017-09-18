@@ -67,7 +67,7 @@ class HoldRequestResultConsumerListener extends Listener
     /**
      * @param HoldRequestResult $holdRequestResult
      */
-    protected function patchHoldRequestService($holdRequestResult)
+    protected function patchHoldRequestService(HoldRequestResult $holdRequestResult)
     {
         // Updating Hold Request Service
         $holdRequestService = HoldRequestClient::patchHoldRequestById(
@@ -113,8 +113,11 @@ class HoldRequestResultConsumerListener extends Listener
      * @return null|Item
      * @throws APIException
      */
-    protected function getItem($holdRequest)
+    protected function getItem(HoldRequest $holdRequest)
     {
+        /**
+         * @var Item|null
+         */
         $item = ItemClient::getItemByIdAndSource(
             $holdRequest->getRecord(),
             $holdRequest->getNyplSource()
@@ -147,8 +150,11 @@ class HoldRequestResultConsumerListener extends Listener
      * @return array|null
      * @throws NonRetryableException
      */
-    protected function getBibs($item, $holdRequestResult)
+    protected function getBibs($item, HoldRequestResult $holdRequestResult)
     {
+        /**
+         * @var array|null
+         */
         $bibs = BibClient::getBibsByIds($item->getBibIds());
         APILogger::addDebug('Bibs', $bibs);
 
@@ -176,8 +182,11 @@ class HoldRequestResultConsumerListener extends Listener
      * @return null|Patron
      * @throws NonRetryableException
      */
-    protected function getPatron($holdRequest)
+    protected function getPatron(HoldRequest $holdRequest)
     {
+        /**
+         * @var Patron|null
+         */
         $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
         if ($patron === null) {
@@ -253,12 +262,17 @@ class HoldRequestResultConsumerListener extends Listener
     /**
      * @param Patron $patron
      * @param array $bibs
-     * @param Item item
+     * @param Item $item
      * @param HoldRequest $holdRequest
      * @param HoldRequestResult $holdRequestResult
      */
-    protected function sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult)
-    {
+    protected function sendEmail(
+        Patron $patron,
+        array $bibs,
+        Item $item,
+        HoldRequest $holdRequest,
+        HoldRequestResult $holdRequestResult
+    ) {
         $holdEmailData = new HoldEmailData();
         $holdEmailData->assembleData($patron, $bibs, $item, $holdRequest, $holdRequestResult);
 

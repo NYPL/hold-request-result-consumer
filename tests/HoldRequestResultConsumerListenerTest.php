@@ -4,6 +4,8 @@ namespace NYPL\HoldRequestResultConsumer\Test;
 
 use NYPL\HoldRequestResultConsumer\HoldRequestResultConsumerListener;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockBibClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockHoldRequestClient;
@@ -108,7 +110,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
              * @param HoldRequestResult $holdRequestResult
              * @return null|HoldRequest
              */
-            protected function patchHoldRequestService($holdRequestResult)
+            protected function patchHoldRequestService(HoldRequestResult $holdRequestResult)
             {
                 APILogger::addDebug(
                     'Patched Hold Request Service',
@@ -126,7 +128,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
                 );
             }
 
-            protected function getPatron($holdRequest)
+            protected function getPatron(HoldRequest $holdRequest)
             {
                 APILogger::addDebug(
                     'Retrieved Patron Info',
@@ -135,7 +137,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
                 return MockPatronClient::getPatronById($holdRequest->getPatron());
             }
 
-            protected function getItem($holdRequest)
+            protected function getItem(HoldRequest $holdRequest)
             {
                 APILogger::addDebug(
                     'Retrieved Item',
@@ -151,7 +153,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
                 );
             }
 
-            protected function getBib($item, $holdRequestResult)
+            protected function getBibs($item, HoldRequestResult $holdRequestResult)
             {
                 APILogger::addDebug(
                     'Retrieved Bib',
@@ -167,8 +169,13 @@ class HoldRequestResultConsumerListenerTest extends TestCase
                 );
             }
 
-            protected function sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult)
-            {
+            protected function sendEmail(
+                Patron $patron,
+                array $bibs,
+                Item $item,
+                HoldRequest $holdRequest,
+                HoldRequestResult $holdRequestResult
+            ) {
                 APILogger::addDebug('E-mail Sent Successfully.');
             }
         };
