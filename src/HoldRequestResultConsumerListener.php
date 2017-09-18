@@ -150,7 +150,7 @@ class HoldRequestResultConsumerListener extends Listener
      * @return array|null
      * @throws NonRetryableException
      */
-    protected function getBibs($item, HoldRequestResult $holdRequestResult)
+    protected function getBibs(Item $item, HoldRequestResult $holdRequestResult)
     {
         /**
          * @var array|null

@@ -153,7 +153,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
                 );
             }
 
-            protected function getBibs($item, HoldRequestResult $holdRequestResult)
+            protected function getBibs(Item $item, HoldRequestResult $holdRequestResult)
             {
                 APILogger::addDebug(
                     'Retrieved Bib',
