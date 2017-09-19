@@ -2,20 +2,28 @@
 
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
-use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
 
 class BibClient extends APIClient
 {
     /**
-     * @param string $bibId
-     * @param $nyplSource
-     * @return null|Bib
+     * @param array $bibIds
+     * @return array|null
      */
-    public static function getBibByIdAndSource($bibId = '', $nyplSource)
+    public static function getBibsByIds(array $bibIds)
     {
-        $url = Config::get('API_BIB_URL') . '/' . $nyplSource . '/' . $bibId;
+        $bibIdList = implode(",", $bibIds);
+
+        if ($bibIdList == '') {
+            APILogger::addError(
+                'Failed',
+                array('No bibIds provided to ' . __FUNCTION__)
+            );
+            return null;
+        }
+
+        $url = Config::get('API_BIB_URL') . '?id=' . $bibIdList;
 
         APILogger::addDebug('Retrieving bib by Id and Source', (array)$url);
 
@@ -26,17 +34,17 @@ class BibClient extends APIClient
         $response = json_decode((string)$response->getBody(), true);
 
         APILogger::addDebug(
-            'Retrieved bib by id and source',
+            'Retrieved bibs by ids',
             $response['data']
         );
 
         // Check statusCode range
         if ($statusCode === 200) {
-            return new Bib($response['data']);
+            return $response['data'];
         } else {
             APILogger::addError(
                 'Failed',
-                array('Failed to retrieve bib ', $bibId, $response['type'], $response['message'])
+                array('Failed to retrieve bib(s) ', $bibIds, $response['type'], $response['message'])
             );
             return null;
         }

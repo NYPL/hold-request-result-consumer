@@ -54,7 +54,7 @@
 
 <p>Dear {{ data.patronName }},</p>
 
-<p>We’ve received your request for an item from off-site storage. Please log into your library account to check for updates. The item will be listed as "Ready for Pickup" under your Holds tab when it is available. You will also receive an email confirmation after your item has arrived.
+<p>We’ve received your request for a title from off-site storage. You’ll find the title you requested listed below, along with any other titles included with the item. Please log into your library account to check for updates. The item will be listed as "Ready for Pickup" under your Holds tab when it is available. You will also receive an email confirmation after your item has arrived.
 </p>
 
 <p>IN PROCESS</p>
@@ -69,7 +69,13 @@
     <tbody>
         <td style="padding-right: 3rem;">{{ data.requestDate }}&nbsp;</td>
         <td style="padding-right: 3rem;">{{ data.barcode }}</td>
-        <td style="padding-right: 3rem;">{{ data.title }}</td>
+        <td style="padding-right: 3rem;">
+            <ul>
+            {% for title in data.titles %}
+                <li>{{ title }}</li>
+            {% endfor %}
+            </ul>
+        </td>
         <td>{{ data.pickupLocation }}</td>
     </tbody>
 </table>
