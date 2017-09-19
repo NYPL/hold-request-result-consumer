@@ -2,13 +2,11 @@
 
 namespace NYPL\HoldRequestResultConsumer;
 
-use NYPL\HoldRequestResultConsumer\Model\DataModel\Bib;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldRequestResult;
-use NYPL\HoldRequestResultConsumer\Model\Exception\ClientTimeoutException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\HoldRequestResultConsumer\Model\Exception\RetryableException;
 use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
@@ -69,7 +67,7 @@ class HoldRequestResultConsumerListener extends Listener
     /**
      * @param HoldRequestResult $holdRequestResult
      */
-    protected function patchHoldRequestService($holdRequestResult)
+    protected function patchHoldRequestService(HoldRequestResult $holdRequestResult)
     {
         // Updating Hold Request Service
         $holdRequestService = HoldRequestClient::patchHoldRequestById(
@@ -115,8 +113,11 @@ class HoldRequestResultConsumerListener extends Listener
      * @return null|Item
      * @throws APIException
      */
-    protected function getItem($holdRequest)
+    protected function getItem(HoldRequest $holdRequest)
     {
+        /**
+         * @var Item|null
+         */
         $item = ItemClient::getItemByIdAndSource(
             $holdRequest->getRecord(),
             $holdRequest->getNyplSource()
@@ -146,40 +147,46 @@ class HoldRequestResultConsumerListener extends Listener
     /**
      * @param Item $item
      * @param HoldRequestResult $holdRequestResult
-     * @return null|Bib
-     * @throws APIException
+     * @return array|null
+     * @throws NonRetryableException
      */
-    protected function getBib($item, $holdRequestResult)
+    protected function getBibs(Item $item, HoldRequestResult $holdRequestResult)
     {
-        $bib = BibClient::getBibByIdAndSource($item->getBibIds()[0], $item->getNyplSource());
-        APILogger::addDebug('Bib', (array)$bib);
+        /**
+         * @var array|null
+         */
+        $bibs = BibClient::getBibsByIds($item->getBibIds());
+        APILogger::addDebug('Bibs', $bibs);
 
-        if ($bib === null) {
+        if ($bibs === null) {
             throw new NonRetryableException(
-                'Hold request record missing Bib data for Request Id ' . $holdRequestResult->getHoldRequestId(),
+                'Hold request record missing Bibs data for Request Id ' . $holdRequestResult->getHoldRequestId(),
                 array($item, $holdRequestResult, $bib),
                 406,
                 null,
                 406,
                 new ErrorResponse(
                     406,
-                    'missing-bib-data',
-                    'Not Acceptable: Hold request record missing Bib data for Request Id '
+                    'missing-bibs-data',
+                    'Not Acceptable: Hold request record missing Bibs data for Request Id '
                     . $holdRequestResult->getHoldRequestId()
                 )
             );
         }
 
-        return $bib;
+        return $bibs;
     }
 
     /**
-     * @param $holdRequest
+     * @param HoldRequest $holdRequest
      * @return null|Patron
      * @throws NonRetryableException
      */
-    protected function getPatron($holdRequest)
+    protected function getPatron(HoldRequest $holdRequest)
     {
+        /**
+         * @var Patron|null
+         */
         $patron = PatronClient::getPatronById($holdRequest->getPatron());
 
         if ($patron === null) {
@@ -254,15 +261,20 @@ class HoldRequestResultConsumerListener extends Listener
 
     /**
      * @param Patron $patron
-     * @param Bib $bib
+     * @param array $bibs
      * @param Item $item
      * @param HoldRequest $holdRequest
      * @param HoldRequestResult $holdRequestResult
      */
-    protected function sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult)
-    {
+    protected function sendEmail(
+        Patron $patron,
+        array $bibs,
+        Item $item,
+        HoldRequest $holdRequest,
+        HoldRequestResult $holdRequestResult
+    ) {
         $holdEmailData = new HoldEmailData();
-        $holdEmailData->assembleData($patron, $bib, $item, $holdRequest, $holdRequestResult);
+        $holdEmailData->assembleData($patron, $bibs, $item, $holdRequest, $holdRequestResult);
 
         if ($holdEmailData->getPatronEmail() !== '') {
             $mailClient = new MailClient($this->getSchemaName(), $holdEmailData);
@@ -302,9 +314,9 @@ class HoldRequestResultConsumerListener extends Listener
                     if ($holdRequest->getRecordType() === 'i') {
                         $item = $this->getItem($holdRequest);
 
-                        $bib = $this->getBib($item, $holdRequestResult);
+                        $bibs = $this->getBibs($item, $holdRequestResult);
 
-                        $this->sendEmail($patron, $bib, $item, $holdRequest, $holdRequestResult);
+                        $this->sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult);
                     }
                 } else {
                     APILogger::addDebug('Hold Request Id ' .

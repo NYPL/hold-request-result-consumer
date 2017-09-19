@@ -27,14 +27,14 @@ class HoldEmailData extends StreamData
     public $patronEmail = '';
 
     /**
-     * @var string
+     * @var array
      */
-    public $title = '';
+    public $titles = array();
 
     /**
-     * @var string
+     * @var array
      */
-    public $author = '';
+    public $authors = array();
 
     /**
      * @var string
@@ -69,21 +69,21 @@ class HoldEmailData extends StreamData
 
     /**
      * @param Patron $patron
-     * @param Bib $bib
+     * @param array $bibs
      * @param Item $item
      * @param HoldRequest $holdRequest
      * @param HoldRequestResult $holdRequestResult
      */
     public function assembleData(
         Patron $patron,
-        Bib $bib,
+        array $bibs,
         Item $item,
         HoldRequest $holdRequest,
         HoldRequestResult $holdRequestResult
     ) {
-        $this->setAuthor($bib->getAuthor());
+        $this->setAuthors(array_column($bibs, 'author'));
         $this->setBarcode($item->getBarcode());
-        $this->setTitle($bib->getTitle());
+        $this->setTitles(array_column($bibs, 'title'));
         $this->setDeliveryLocation($this->fixDeliveryLocation($holdRequest->getDeliveryLocation()));
         $this->setPickupLocation($this->fixPickupLocation($holdRequest->getPickupLocation()));
         $this->setSuccess($holdRequestResult->isSuccess());
@@ -215,35 +215,35 @@ class HoldEmailData extends StreamData
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getTitle(): string
+    public function getTitles(): array
     {
-        return $this->title;
+        return $this->titles;
     }
 
     /**
-     * @param string $title
+     * @param array $titles
      */
-    public function setTitle(string $title)
+    public function setTitles(array $titles)
     {
-        $this->title = $title;
+        $this->titles = $titles;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getAuthor(): string
+    public function getAuthors(): array
     {
-        return $this->author;
+        return $this->authors;
     }
 
     /**
-     * @param string $author
+     * @param array $authors
      */
-    public function setAuthor(string $author)
+    public function setAuthors(array $authors)
     {
-        $this->author = $author;
+        $this->authors = $authors;
     }
 
     /**
