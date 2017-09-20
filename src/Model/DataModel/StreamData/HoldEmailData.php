@@ -114,7 +114,8 @@ class HoldEmailData extends StreamData
             $fullName = explode(",", $name);
             if (count($fullName) > 1) {
                 $fullName[1] = trim($fullName[1]);
-                $name = ucfirst(strtolower($fullName[1])) . " " . ucfirst(strtolower($fullName[0]));
+                $name = strtolower($fullName[1]) . " " . strtolower($fullName[0]);
+                $name = ucwords($name, "(- \t\r\n\f\v");
             }
             return $name;
         } else {
