@@ -57,8 +57,8 @@
 
 <p>We could not process your request for the following item:</p>
 
-<p><strong>Title</strong>: {{ data.title }}<br/>
-    <strong>Author</strong>: {{ data.author }}<br/>
+<p><strong>Title</strong>: {{ data.titles|first }}<br/>
+    <strong>Author</strong>: {{ data.authors|first }}<br/>
     <strong>Barcode</strong>: {{ data.barcode }}
 </p>
 <p>There could be a number of reasons why we weren’t able to process your request. Please first check your library account to make sure that it is up to date. If you still have questions, <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or or call 917-ASK-NYPL (917-275-6975).</p>
