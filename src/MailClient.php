@@ -91,7 +91,7 @@ class MailClient
             throw new APIException('Error sending mail: ' . $response->body());
         }
 
-        APILogger::addDebug('E-mail sent successfully');
+        APILogger::addInfo('E-mail sent successfully');
     }
 
     /**
