@@ -152,13 +152,14 @@ class HoldRequestResultConsumerListener extends Listener
      */
     protected function getBibs(Item $item, HoldRequestResult $holdRequestResult)
     {
-        /**
-         * @var array|null
-         */
-        $bibs = BibClient::getBibsByIds($item->getBibIds());
+        $bibs = array();
+        foreach ($item->getBibIds() as $bibId) {
+            $bib = BibClient::getBibBySource($item->getNyplSource(), $bibId);
+            array_push($bibs, $bib);
+        }
         APILogger::addDebug('Bibs', $bibs);
 
-        if ($bibs === null) {
+        if ($bibs === null || empty($bibs)) {
             throw new NonRetryableException(
                 'Hold request record missing Bibs data for Request Id ' . $holdRequestResult->getHoldRequestId(),
                 array($item, $holdRequestResult, $bib),

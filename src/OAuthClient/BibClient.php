@@ -25,7 +25,7 @@ class BibClient extends APIClient
 
         $url = Config::get('API_BIB_URL') . '?id=' . $bibIdList;
 
-        APILogger::addDebug('Retrieving bib by Id and Source', (array)$url);
+        APILogger::addDebug('Retrieving bibs by Ids', (array)$url);
 
         $response = ClientHelper::getResponse($url, __FUNCTION__);
 
@@ -45,6 +45,40 @@ class BibClient extends APIClient
             APILogger::addError(
                 'Failed',
                 array('Failed to retrieve bib(s) ', $bibIds, $response['type'], $response['message'])
+            );
+            return null;
+        }
+    }
+
+    /**
+     * @param $nyplSource
+     * @param $bibId
+     * @return array|null
+     */
+    public static function getBibBySource($nyplSource, $bibId)
+    {
+        $url = Config::get('API_BIB_URL') . '/' . $nyplSource . '/' . $bibId;
+
+        APILogger::addDebug('Retrieving bib by Id and Source', (array)$url);
+
+        $response = ClientHelper::getResponse($url, __FUNCTION__);
+
+        $statusCode = $response->getStatusCode();
+
+        $response = json_decode((string)$response->getBody(), true);
+
+        APILogger::addDebug(
+            'Retrieved bib by source',
+            $response['data']
+        );
+
+        // Check statusCode range
+        if ($statusCode === 200) {
+            return $response['data'];
+        } else {
+            APILogger::addError(
+                'Failed',
+                array('Failed to retrieve bib(s) ', $bibId, $response['type'], $response['message'])
             );
             return null;
         }
