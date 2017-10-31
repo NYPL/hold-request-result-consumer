@@ -47,8 +47,6 @@ class HoldRequestResultConsumerListenerTest extends TestCase
 
     public $fakeHoldRequestResultConsumerListener;
 
-    public $fakeClientHelper;
-
     public function setUp()
     {
         parent::setUp();
@@ -186,11 +184,13 @@ class HoldRequestResultConsumerListenerTest extends TestCase
         unset($this->fakeKinesisEvent);
         unset($this->fakeKinesisEvents);
         unset($this->fakeListenerData);
-        unset($this->fakeClientHelper);
         unset($this->fakeHoldRequestResultConsumerListener);
         parent::tearDown();
     }
 
+    /**
+     * @covers \NYPL\HoldRequestResultConsumer\HoldRequestResultConsumerListener
+     */
     public function testProcessListenerEvents()
     {
         $this->invokeMethod(

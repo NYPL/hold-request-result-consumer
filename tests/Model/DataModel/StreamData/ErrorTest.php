@@ -2,7 +2,6 @@
 
 namespace NYPL\HoldRequestResultConsumer\Test;
 
-
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\Error;
 use PHPUnit\Framework\TestCase;
 
@@ -27,9 +26,25 @@ class ErrorTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\Error
      */
+    public function testErrorHasType()
+    {
+        $this->assertClassHasAttribute('type', Error::class);
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\Error
+     */
     public function testType()
     {
-        $this->assertEquals( 'fake-error-type', $this->fakeError->getType());
+        $this->assertEquals("fake-error-type", $this->fakeError->getType());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\Error
+     */
+    public function testErrorHasMessage()
+    {
+        $this->assertClassHasAttribute('message', Error::class);
     }
 
     /**

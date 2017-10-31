@@ -29,9 +29,25 @@ class BibTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
      */
+    public function testBibHasId()
+    {
+        $this->assertClassHasAttribute('id', Bib::class);
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
+     */
     public function testId()
     {
         $this->assertEquals('', $this->fakeBib->getId());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
+     */
+    public function testBibHasNyplSource()
+    {
+        $this->assertClassHasAttribute('nyplSource', Bib::class);
     }
 
     /**
@@ -45,6 +61,14 @@ class BibTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
      */
+    public function testBibHasNyplType()
+    {
+        $this->assertClassHasAttribute('nyplType', Bib::class);
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
+     */
     public function testNyplType()
     {
         $this->assertEquals('', $this->fakeBib->getNyplType());
@@ -53,9 +77,25 @@ class BibTest extends TestCase
     /**
      * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
      */
+    public function testBibHasTitle()
+    {
+        $this->assertClassHasAttribute('title', Bib::class);
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
+     */
     public function testTitle()
     {
         $this->assertEquals('', $this->fakeBib->getTitle());
+    }
+
+    /**
+     * @covers NYPL\HoldRequestResultConsumer\Model\DataModel\Bib
+     */
+    public function testBibHasAuthor()
+    {
+        $this->assertClassHasAttribute('author', Bib::class);
     }
 
     /**

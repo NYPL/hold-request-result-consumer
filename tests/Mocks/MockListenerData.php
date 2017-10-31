@@ -13,7 +13,7 @@ class MockListenerData
 
     public static function setListenerData()
     {
-        APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
+//        APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
         self::$mockListenerData = new ListenerData(
             base64_decode("Akg5MDFiZGQxZC1iZDhmLTQzMTAtYmEzMS03ZjEzYTU1ODc3ZmQBAIIB")
         );
@@ -32,7 +32,7 @@ class MockListenerData
 
     public static function getListenerData()
     {
-        APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
+//        APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
         self::setListenerData();
         return self::$mockListenerData;
     }
