@@ -2,7 +2,6 @@
 
 namespace NYPL\HoldRequestResultConsumer\Test;
 
-use Mockery\Mock;
 use NYPL\HoldRequestResultConsumer\HoldRequestResultConsumerListener;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Item;
@@ -13,13 +12,10 @@ use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockHoldRequestClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockItemClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\Clients\MockPatronClient;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\MockConfig;
-use NYPL\HoldRequestResultConsumer\Test\Mocks\MockListenerEvents;
 use NYPL\HoldRequestResultConsumer\Test\Mocks\MockListenerData;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Listener\ListenerEvent\KinesisEvent;
-use NYPL\Starter\Listener\ListenerEvents;
 use NYPL\Starter\Listener\ListenerEvents\KinesisEvents;
-use NYPL\Starter\Listener\ListenerResult;
 use PHPUnit\Framework\TestCase;
 
 class HoldRequestResultConsumerListenerTest extends TestCase
@@ -35,7 +31,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
      */
     public function invokeMethod(&$object, $methodName, array $parameters = array())
     {
-//        APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
+        APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -50,10 +46,6 @@ class HoldRequestResultConsumerListenerTest extends TestCase
     public $fakeKinesisEvents;
 
     public $fakeHoldRequestResultConsumerListener;
-
-    public $fakeClientHelper;
-
-    public $fakeHoldRequestResult;
 
     public function setUp()
     {
@@ -71,7 +63,7 @@ class HoldRequestResultConsumerListenerTest extends TestCase
         $this->fakeKinesisEvents = new class extends KinesisEvents {
             public function getEvents()
             {
-//                APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
+                APILogger::addDebug(__CLASS__ . '::' . __FUNCTION__);
                 $this->addEvent(array(), '');
                 return $this->events;
             }
@@ -85,27 +77,12 @@ class HoldRequestResultConsumerListenerTest extends TestCase
                 );
                 $record = $allRecords['Records'][0];
                 $schemaName = 'HoldRequestResult';
-
-                $this->events[] = $this->translateEvent($record, $schemaName);
             }
         };
 
         $this->fakeKinesisEvents->setEventSourceARN(
             "arn:aws:kinesis:us-east-1:946183545209:stream/HoldRequestResult"
         );
-
-        $this->fakeHoldRequestResult = new class extends HoldRequestResult
-        {
-            public function __construct($data = [
-                'jobId' => 'Test jobId',
-                'success' => false,
-                'holdRequestId' => 2,
-                'error' => []
-            ])
-            {
-                parent::__construct($data);
-            }
-        };
 
         $this->fakeHoldRequestResultConsumerListener = new class extends HoldRequestResultConsumerListener
         {
@@ -120,10 +97,10 @@ class HoldRequestResultConsumerListenerTest extends TestCase
              */
             protected function getHoldRequest(HoldRequestResult $holdRequestResult)
             {
-//                APILogger::addDebug(
-//                    'Retrieved Hold Request By Id ',
-//                    MockHoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId())
-//                );
+                APILogger::addDebug(
+                    'Retrieved Hold Request By Id ',
+                    MockHoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId())
+                );
                 return MockHoldRequestClient::getHoldRequestById($holdRequestResult->getHoldRequestId());
             }
 
@@ -133,14 +110,14 @@ class HoldRequestResultConsumerListenerTest extends TestCase
              */
             protected function patchHoldRequestService(HoldRequestResult $holdRequestResult)
             {
-//                APILogger::addDebug(
-//                    'Patched Hold Request Service',
-//                    MockHoldRequestClient::patchHoldRequestById(
-//                        $holdRequestResult->getHoldRequestId(),
-//                        true,
-//                        $holdRequestResult->isSuccess()
-//                    )
-//                );
+                APILogger::addDebug(
+                    'Patched Hold Request Service',
+                    MockHoldRequestClient::patchHoldRequestById(
+                        $holdRequestResult->getHoldRequestId(),
+                        true,
+                        $holdRequestResult->isSuccess()
+                    )
+                );
 
                 return MockHoldRequestClient::patchHoldRequestById(
                     $holdRequestResult->getHoldRequestId(),
@@ -199,15 +176,6 @@ class HoldRequestResultConsumerListenerTest extends TestCase
             ) {
                 APILogger::addDebug('E-mail Sent Successfully.');
             }
-
-            // Comment out processListenerEvents() for local machine testing.
-            protected function processListenerEvents()
-            {
-                return new ListenerResult(
-                    true,
-                    'Successfully processed event'
-                );
-            }
         };
     }
 
@@ -216,24 +184,15 @@ class HoldRequestResultConsumerListenerTest extends TestCase
         unset($this->fakeKinesisEvent);
         unset($this->fakeKinesisEvents);
         unset($this->fakeListenerData);
-        unset($this->fakeClientHelper);
         unset($this->fakeHoldRequestResultConsumerListener);
         parent::tearDown();
     }
 
+    /**
+     * @covers \NYPL\HoldRequestResultConsumer\HoldRequestResultConsumerListener
+     */
     public function testProcessListenerEvents()
     {
-
-        $this->invokeMethod(
-            $this->fakeHoldRequestResultConsumerListener,
-            'skipMissingItem',
-            array($this->fakeHoldRequestResult)
-        );
-        $this->invokeMethod(
-            $this->fakeHoldRequestResultConsumerListener,
-            'skipMissingPatron',
-            array($this->fakeHoldRequestResult)
-        );
         $this->invokeMethod(
             $this->fakeHoldRequestResultConsumerListener,
             'setListenerEvents',
