@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: holingpoon
- * Date: 6/21/17
- * Time: 3:55 PM
- */
 
 namespace NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 
