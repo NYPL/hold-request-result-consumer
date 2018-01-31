@@ -73,7 +73,8 @@ class HoldRequestResultConsumerListener extends Listener
         $holdRequestService = HoldRequestClient::patchHoldRequestById(
             $holdRequestResult->getHoldRequestId(),
             true,
-            $holdRequestResult->isSuccess()
+            $holdRequestResult->isSuccess(),
+            $holdRequestResult->getError()
         );
 
         APILogger::addDebug('Hold Request Service Patched', (array)$holdRequestService);
