@@ -2,6 +2,7 @@
 namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 
 use NYPL\HoldRequestResultConsumer\Model\DataModel\HoldRequest;
+use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\Error;
 use NYPL\HoldRequestResultConsumer\Model\Exception\NonRetryableException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
@@ -108,9 +109,10 @@ class HoldRequestClient extends APIClient
      * @param int $holdRequestId
      * @param bool $processed
      * @param bool $success
+     * @param Error $error
      * @return null|HoldRequest
      */
-    public static function patchHoldRequestById(int $holdRequestId, bool $processed, bool $success)
+    public static function patchHoldRequestById(int $holdRequestId, bool $processed, bool $success, Error $error)
     {
         self::validateRequestId($holdRequestId);
         self::validateProcessed($processed);
@@ -119,6 +121,10 @@ class HoldRequestClient extends APIClient
         $url = Config::get('API_HOLD_REQUEST_URL') . '/' . $holdRequestId;
 
         $body = ["processed" => $processed, "success" => $success];
+
+        if (!$success) {
+            array_push($body, ["error" => $error->getMessage()]);
+        }
 
         APILogger::addDebug('Patching hold request by id', array($url, $body));
 
