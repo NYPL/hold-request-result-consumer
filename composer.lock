@@ -816,16 +816,16 @@
         },
         {
             "name": "nypl/microservice-starter",
-            "version": "1.1.36",
+            "version": "1.1.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NYPL/php-microservice-starter.git",
-                "reference": "24f6ed631fde720bce8d33efdbb693f603abe14b"
+                "reference": "64de898f5df38e1f06ac83b3f25f67800c2fe21a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NYPL/php-microservice-starter/zipball/24f6ed631fde720bce8d33efdbb693f603abe14b",
-                "reference": "24f6ed631fde720bce8d33efdbb693f603abe14b",
+                "url": "https://api.github.com/repos/NYPL/php-microservice-starter/zipball/64de898f5df38e1f06ac83b3f25f67800c2fe21a",
+                "reference": "64de898f5df38e1f06ac83b3f25f67800c2fe21a",
                 "shasum": ""
             },
             "require": {
@@ -854,7 +854,7 @@
                 }
             ],
             "description": "NYPL Microservice Starter",
-            "time": "2018-01-30 22:16:42"
+            "time": "2018-02-01 18:28:22"
         },
         {
             "name": "pimple/pimple",
