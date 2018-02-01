@@ -1,6 +1,7 @@
 <?php
 namespace NYPL\HoldRequestResultConsumer;
 
+use Aws\Ses\SesClient;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
@@ -11,10 +12,6 @@ use NYPL\HoldRequestResultConsumer\Model\Email\PatronEmail;
 use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Config;
-use SendGrid\Content;
-use SendGrid\Email;
-use SendGrid\Mail;
-use SendGrid\Response;
 
 class MailClient
 {
@@ -34,6 +31,11 @@ class MailClient
     protected $streamData;
 
     /**
+     * @var SesClient
+     */
+    protected $client;
+
+    /**
      * @param string $streamName
      * @param StreamData $streamData
      */
@@ -49,10 +51,6 @@ class MailClient
     public function sendEmail()
     {
         $streamData = $this->getStreamData();
-        
-        if ($streamData instanceof Patron) {
-            $email = new PatronEmail($streamData);
-        }
 
         if ($streamData instanceof HoldEmailData) {
             if ($streamData->isSuccess() === true) {
@@ -71,24 +69,29 @@ class MailClient
             throw new \Exception('Email was not specified');
         }
 
-        $mail = new Mail(
-            new Email(null, $email->getFromAddress()),
-            $email->getSubject(),
-            new Email(null, $email->getToAddress()),
-            new Content('text/html', $email->getBody())
-        );
-
-        $sendGrid = new \SendGrid(
-            Config::get('SENDGRID_API_KEY', null, true)
-        );
-
-        /**
-         * @var Response $response
-         */
-        $response = $sendGrid->client->mail()->send()->post($mail);
-
-        if ($response->statusCode() >= 400) {
-            throw new APIException('Error sending mail: ' . $response->body());
+        try {
+            $this->getClient()->sendEmail([
+                'Destination' => [
+                    'ToAddresses' => [
+                        $email->getToAddress()
+                    ],
+                ],
+                'Message' => [
+                    'Body' => [
+                        'Html' => [
+                            'Charset' => 'utf-8',
+                            'Data' => $email->getBody(),
+                        ]
+                    ],
+                    'Subject' => [
+                        'Charset' => 'utf-8',
+                        'Data' => $email->getSubject(),
+                    ],
+                ],
+                'Source' => $email->getFromAddress()
+            ]);
+        } catch (\Exception $exception) {
+            throw new APIException('Error sending mail: ' . $exception->getMessage());
         }
 
         APILogger::addInfo('E-mail sent successfully');
@@ -124,5 +127,36 @@ class MailClient
     public function setStreamData($streamData)
     {
         $this->streamData = $streamData;
+    }
+
+    /**
+     * @throws APIException|\InvalidArgumentException
+     * @return SesClient
+     */
+    public function getClient()
+    {
+        if (!$this->client) {
+            $this->setClient(
+                new SesClient([
+                    'version' => 'latest',
+                    'region'  => Config::get('AWS_DEFAULT_REGION'),
+                    'credentials' => [
+                        'key' => Config::get('AWS_ACCESS_KEY_ID'),
+                        'secret' => Config::get('AWS_SECRET_ACCESS_KEY'),
+                        'token' => Config::get('AWS_SESSION_TOKEN')
+                    ]
+                ])
+            );
+        }
+
+        return $this->client;
+    }
+
+    /**
+     * @param SesClient $client
+     */
+    public function setClient($client)
+    {
+        $this->client = $client;
     }
 }
