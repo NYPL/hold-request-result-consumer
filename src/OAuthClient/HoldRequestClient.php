@@ -109,10 +109,10 @@ class HoldRequestClient extends APIClient
      * @param int $holdRequestId
      * @param bool $processed
      * @param bool $success
-     * @param Error $error
+     * @param null|Error $error
      * @return null|HoldRequest
      */
-    public static function patchHoldRequestById(int $holdRequestId, bool $processed, bool $success, Error $error)
+    public static function patchHoldRequestById(int $holdRequestId, bool $processed, bool $success, Error $error = null)
     {
         self::validateRequestId($holdRequestId);
         self::validateProcessed($processed);
@@ -122,8 +122,8 @@ class HoldRequestClient extends APIClient
 
         $body = ["processed" => $processed, "success" => $success];
 
-        if (!$success) {
-            array_push($body, ["error" => $error->getMessage()]);
+        if (!$success && $error) {
+            $body['error'] = $error->getMessage();
         }
 
         APILogger::addDebug('Patching hold request by id', array($url, $body));
