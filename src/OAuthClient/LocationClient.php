@@ -13,11 +13,11 @@ class LocationClient extends APIClient
      */
     public static function getRecapLocationById($locationCode = '')
     {
-        $url = Config::get('API_RECAP_LOCATION_URL');
+        $url = Config::get('API_RECAP_LOCATION_URL', null, true);
 
         APILogger::addDebug('Retrieving Recap location', (array) $url);
 
-        $data = file_get_contents(Config::get('API_RECAP_LOCATION_URL'));
+        $data = file_get_contents($url);
 
         $json = json_decode($data, true);
 
@@ -36,11 +36,11 @@ class LocationClient extends APIClient
      */
     public static function getSierraLocationById($locationCode = '')
     {
-        $url = Config::get('API_SIERRA_LOCATION_URL');
+        $url = Config::get('API_SIERRA_LOCATION_URL', null, true);
 
         APILogger::addDebug('Retrieving Sierra location', (array) $url);
 
-        $data = file_get_contents(Config::get('API_SIERRA_LOCATION_URL'));
+        $data = file_get_contents($url);
 
         $json = json_decode($data, true);
 
