@@ -9,7 +9,7 @@ use NYPL\Starter\Config;
 
 class MockConfig extends Config
 {
-    const LOCAL_ENVIRONMENT_FILE = '.env.sample';
+    const LOCAL_ENVIRONMENT_FILE = '.env';
     const GLOBAL_ENVIRONMENT_FILE = 'var_app';
     const DEFAULT_TIME_ZONE = 'America/New_York';
 
