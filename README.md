@@ -29,7 +29,6 @@ Homebrew is highly recommended for PHP:
 2. Install required dependencies.
    * Run `npm install` to install Node.js packages.
    * Run `composer install` to install PHP packages.
-   * If you have not already installed `node-lambda` as a global package, run `npm install -g node-lambda`.
 
 ## Configuration
 
@@ -49,10 +48,9 @@ Configures `npm run` commands for each environment for deployment and testing. D
 
 ~~~~
 "scripts": {
-  "deploy-dev": "./node_modules/.bin/node-lambda deploy -e development -f config/var_dev.env -S config/event_sources_dev.json -b subnet-f4fe56af -g sg-1d544067 --profile nypl-sandbox --role arn:aws:iam::224280085904:role/lambda_basic_execution",
-  "deploy-qa": "./node_modules/.bin/node-lambda deploy -e qa -f config/var_qa.env -S config/event_sources_qa.json -b subnet-f4fe56af -g sg-1d544067 --profile nypl-digital-dev --role arn:aws:iam::946183545209:role/lambda-full-access",
-  "deploy-production": "./node_modules/.bin/node-lambda deploy -e production -f config/var_production.env -S config/event_sources_production.json -g sg-116eeb60 --profile nypl-digital-dev --role arn:aws:iam::946183545209:role/lambda-full-access",
-    "test-event": "./node_modules/.bin/node-lambda run -f config/var_app -j events/kinesis_hold_edd_success.json -x events/context.json"
+  "deploy-development": "./node_modules/.bin/node-lambda deploy -e development -f config/var_dev.env -S config/event_sources_dev.json -b subnet-f4fe56af -g sg-1d544067 --profile nypl-sandbox --role arn:aws:iam::224280085904:role/lambda_basic_execution",
+  "deploy-qa": "./node_modules/.bin/node-lambda deploy -e qa -f config/var_qa.env -S config/event_sources_qa.json -b subnet-f35de0a9,subnet-21a3b244 -g sg-aa74f1db --profile nypl-digital-dev --role arn:aws:iam::946183545209:role/lambda-full-access",
+  "deploy-production": "./node_modules/.bin/node-lambda deploy -e production -f config/var_production.env -S config/event_sources_production.json -g --profile nypl-digital-dev --role arn:aws:iam::946183545209:role/lambda-full-access"
   },
 ~~~~
 
@@ -80,10 +78,11 @@ npm run test-event
 
 ## Deployment
 
-To deploy to the QA or Production environment, run the corresponding command:
+Travis is configured to deploy to development, qa, or production.
+To deploy to the [development|qa|production] environment by hand, run the corresponding command:
 
 ~~~~
-npm run deploy-[developmet|qa|production]
+npm run deploy-[development|qa|production]
 ~~~~
 
 ## For more information
