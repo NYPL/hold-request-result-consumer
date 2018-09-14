@@ -76,6 +76,12 @@ To use `node-lambda` to process the sample event(s), run:
 npm run test-event
 ~~~~
 
+HoldRequestResultConsumer handles two kinds of events:
+- Hold requests from Discovery UI that have errors
+- Edd requests from Discovery UI
+
+There is a sample Edd request in the `events` folder.
+ 
 
 ## Deployment
 
