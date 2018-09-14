@@ -82,7 +82,7 @@ HoldRequestResultConsumer handles two kinds of events:
 
 There is a sample edd request in the `events` folder. This edd request has already
 been processed, so it won't result in an email send. To get a successful email send,
-you must send a new event through the HoldRequestService (otherwise the HoldRequestResultConsumer won't be able to find the hold) 
+you must send a new event through the HoldRequestService (otherwise the HoldRequestResultConsumer won't be able to find the hold). See the GitHub repo for the HoldRequestService (https://github.com/NYPL/hold-request-service) for more information on how the different components of the hold request architecture relate. 
 
 ## Deployment
 
