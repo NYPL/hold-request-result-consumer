@@ -1,0 +1,31 @@
+{
+  "Records": [
+    {
+      "kinesis":
+      {
+      "kinesisSchemaVersion":"1.0",
+      "sequenceNumber": "49585442414995612122717784559734572866880017144198725634",
+      "approximateArrivalTimestamp": "2018-09-13T19:16:03.075Z",
+      "data": {
+        "jobId": "114605b9ab76bc4c69",
+        "success": true,
+        "error": null,
+        "holdRequestId": 3233
+      },
+      "partitionKey": "sensor-62155"
+      },
+      "eventSource":"aws:kinesis",
+      "eventVersion":"1.0",
+      "eventName":"aws:kinesis:record",
+      "awsRegion":"us-east-1",
+      "invokeIdentityArn":"arn:aws:iam::224280085904:role/lambda_basic_execution",
+      "eventSourceARN":"arn:aws:kinesis:us-east-1:224280085904:stream/HoldRequestResult"
+    }
+  ],
+  "eventSource":"aws:kinesis",
+  "eventVersion":"1.0",
+  "eventName":"aws:kinesis:record",
+  "awsRegion":"us-east-1",
+  "invokeIdentityArn":"arn:aws:iam::224280085904:role/lambda_basic_execution",
+  "eventSourceARN":"arn:aws:kinesis:us-east-1:224280085904:stream/HoldRequestResult"
+}
