@@ -16,7 +16,7 @@ cache:
   - vendor
 after_success:
 - ENVIRONMENT_NAME=$TRAVIS_BRANCH
-- if [ |$TRAVIS_BRANCH" == "master" ]; then ENVIRONMENT_NAME=production; fi
+- if [ "$TRAVIS_BRANCH" == "master" ]; then ENVIRONMENT_NAME=production; fi
 - vendor/bin/coveralls -v
 - vendor/bin/phpcs -n --standard=PSR1,PSR2 src/
 - vendor/bin/phpcbf src/
