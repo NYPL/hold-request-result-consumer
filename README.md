@@ -82,7 +82,9 @@ HoldRequestResultConsumer handles two kinds of events:
 
 There is a sample edd request in the `events` folder. This edd request has already
 been processed, so it won't result in an email send. To get a successful email send,
-you must send a new event through the HoldRequestService (otherwise the HoldRequestResultConsumer won't be able to find the hold). See the GitHub repo for the HoldRequestService (https://github.com/NYPL/hold-request-service) for more information on how the different components of the hold request architecture relate. 
+you must send a new event through the HoldRequestService (otherwise the HoldRequestResultConsumer won't be able to find the hold). See the GitHub repo for the HoldRequestService (https://github.com/NYPL/hold-request-service) for more information on how the different components of the hold request architecture relate.
+
+The HoldRequestResult stream can also receive events from the RecapHoldRequestConsumer. In this case HoldRequestResultConsumer will send an email as well as a PATCH request to the HoldRequestService. For more information on recap events, see the GitHub repo for the RecapHoldRequestService https://github.com/NYPL/recap-hold-request-service.
 
 ## Deployment
 
