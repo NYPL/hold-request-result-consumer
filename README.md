@@ -83,6 +83,10 @@ npm run test-event
 
 ## Deployment
 
+Deployments (AWS account `nypl-digital-dev`):
+ * Production: Lambda > Functions > HoldRequestResultConsumer-production
+ * QA: Lambda > Functions > HoldRequestResultConsumer-qa
+
 To deploy to the QA or Production environment, run the corresponding command:
 
 ~~~~
