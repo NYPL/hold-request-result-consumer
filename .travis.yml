@@ -4,6 +4,7 @@ language:
 php:
 - 7.1
 install:
+- nvm use
 - npm install
 - composer install
 script:
