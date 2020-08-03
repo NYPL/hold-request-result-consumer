@@ -18,9 +18,16 @@ This package adheres to [PSR-1](http://www.php-fig.org/psr/psr-1/),
 * PHP >=7.0
   * [pdo_pdgsql](http://php.net/manual/en/ref.pdo-pgsql.php)
 
-Homebrew is highly recommended for PHP:
-  * `brew install php71`
-  * `brew install php71-pdo-pgsql`
+This app depends on php 7.1. Check your php version:
+```
+php --version
+```
+
+If you need to install php 7.1 on OSX, this may work for you:
+```
+brew tap exolnet/homebrew-deprecated
+brew install php@7.1
+```
 
 
 ## Installation
