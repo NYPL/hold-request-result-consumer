@@ -5,3 +5,4 @@ vendor
 .idea/
 build/
 .lambda
+config/var_app
