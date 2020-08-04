@@ -23,7 +23,7 @@ after_success:
 - vendor/bin/phpcs -n --standard=PSR1,PSR2 src/
 - vendor/bin/phpcbf src/
 before_deploy:
-- nvm use
+- nvm install
 - echo "All unit tests passed; Preparing to deploy $TRAVIS_BRANCH"
 deploy:
 - provider: script
