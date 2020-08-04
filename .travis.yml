@@ -7,7 +7,7 @@ install:
 - npm install
 - composer install
 script:
-- composer update
+- composer install
 - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 cache:
   directories:
