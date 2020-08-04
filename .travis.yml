@@ -3,10 +3,7 @@ language:
 - node_js
 php:
 - 7.1
-node_js:
-- 10
 install:
-- echo "Node version is $TRAVIS_NODE_VERSION"
 - npm install
 - composer install
 script:
