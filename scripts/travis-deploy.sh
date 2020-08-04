@@ -22,7 +22,8 @@ DEPLOY_CMD=$(cat package.json | jq ".scripts | .\"deploy-$ENVIRONMENT_NAME\"" --
 # known to be set in travis:
 DEPLOY_CMD=$(echo "$DEPLOY_CMD" | sed "s/ --profile [a-z-]*/ -a \$AWS_ACCESS_KEY_ID_$ENVIRONMENT_CAPS -s \$AWS_SECRET_ACCESS_KEY_$ENVIRONMENT_CAPS/g")
 
-nvm ls
+echo "NVM ls:"
+echo $(nvm ls)
 
 echo Running deploy command for "$ENVIRONMENT_NAME" environment:
 echo "  $DEPLOY_CMD"
