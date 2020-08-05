@@ -5,7 +5,7 @@ namespace NYPL\HoldRequestResultConsumer\Model\Email;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\Email;
 
-class DeliveryEmail extends Email
+class EddEmail extends Email
 {
     /**
      * @return string
@@ -25,7 +25,7 @@ class DeliveryEmail extends Email
 
     public function getTemplate()
     {
-        return 'delivery.twig';
+        return 'edd.twig';
     }
 
     public function getToAddress()
