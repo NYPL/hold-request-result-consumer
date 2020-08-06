@@ -5,7 +5,7 @@ use Aws\Ses\SesClient;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData\HoldEmailData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\StreamData;
 use NYPL\HoldRequestResultConsumer\Model\DataModel\Patron;
-use NYPL\HoldRequestResultConsumer\Model\Email\DeliveryEmail;
+use NYPL\HoldRequestResultConsumer\Model\Email\EddEmail;
 use NYPL\HoldRequestResultConsumer\Model\Email\HoldFailureEmail;
 use NYPL\HoldRequestResultConsumer\Model\Email\HoldSuccessEmail;
 use NYPL\HoldRequestResultConsumer\Model\Email\PatronEmail;
@@ -56,7 +56,7 @@ class MailClient
             if ($streamData->isSuccess() === true) {
                 if ($streamData->getDocDeliveryData() !== null &&
                     $streamData->getDocDeliveryData()->getEmailAddress() !== null) {
-                    $email = new DeliveryEmail($streamData);
+                    $email = new EddEmail($streamData);
                 } else {
                     $email = new HoldSuccessEmail($streamData);
                 }
