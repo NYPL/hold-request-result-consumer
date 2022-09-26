@@ -13,6 +13,6 @@
   "keywords": [],
   "dependencies": {},
   "devDependencies": {
-    "node-lambda": "~0.17.0"
+    "node-lambda": "~1.0.0"
   }
 }
