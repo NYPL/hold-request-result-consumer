@@ -145,6 +145,25 @@ class HoldRequestResultConsumerListener extends Listener
         return $item;
     }
 
+    protected function getSierraHold(HoldRequest $holdRequest)
+    {
+        $item = ItemClient::getItemByIdAndSource(
+            $holdRequest->getRecord(),
+            $holdRequest->getNyplSource()
+        );
+
+        $patronHolds = SierraClient::getPatronHolds($holdRequest->getPatron());
+
+        /**
+         *
+         * If item.nyplSource == 'sierra-nypl'):
+         *   Find the hold for which hold.record = item.id OR
+         * Else (partner record):
+         *   Find hold for which hold.note contains "For each hold (starting with most recent), fetch item 
+         *
+         */
+    }
+
     /**
      * @param Item $item
      * @param HoldRequestResult $holdRequestResult
@@ -317,6 +336,8 @@ class HoldRequestResultConsumerListener extends Listener
                         $item = $this->getItem($holdRequest);
 
                         $bibs = $this->getBibs($item, $holdRequestResult);
+
+                        $sierraHold = $this.getSierraHold($holdRequest);
 
                         $this->sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult);
                     }
