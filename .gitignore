@@ -1,8 +1,7 @@
 node_modules
-dist
 *.swp
 vendor
 .idea/
-build/
-.lambda
 config/var_app
+dist.zip
+.terraform*
