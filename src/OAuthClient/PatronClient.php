@@ -41,10 +41,10 @@ class PatronClient extends APIClient
         }
     }
 
-    public static function notifyPatron(Patron $patron, int $sierraHoldId)
+    public static function notifyPatron(Patron $patron, int $holdId)
     {
         $url = Config::get('API_PATRON_URL') . '/' . $patron->getId() . '/notify';
-        $payload = array('holdId' => $sierraHoldId, 'type' => 'hold-success');
+        $payload = array('holdRequestServiceId' => $holdId, 'type' => 'hold-success');
         APILogger::addInfo("Calling PatronServices/notify: $url " . json_encode($payload));
 
         $response = ClientHelper::postResponse($url, $payload, __FUNCTION__);

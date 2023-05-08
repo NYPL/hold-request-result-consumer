@@ -13,7 +13,6 @@ use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\ItemClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
-use NYPL\HoldRequestResultConsumer\SierraAPIClient;
 use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Listener\Listener;
@@ -310,7 +309,12 @@ class HoldRequestResultConsumerListener extends Listener
                 );
 
                 // TODO: Remove this logic when this loop is fixed
-                if (true || !$holdRequest->isProcessed()) {
+                //
+                // PB: 2023-05-08: I'm not sure what is meant by "this logic"
+                // but the following check, which asserts that this consumer
+                // does not re-process something that has already been marked
+                // as processed, feels sound enough to me.
+                if (!$holdRequest->isProcessed()) {
                     $this->patchHoldRequestService($holdRequestResult);
 
                     $this->skipMissingItem($holdRequestResult);
@@ -319,17 +323,10 @@ class HoldRequestResultConsumerListener extends Listener
                     $patron = $this->getPatron($holdRequest);
 
                     if ($holdRequest->getRecordType() === 'i') {
-                        $sierraHoldId = (new SierraAPIClient())->sierraHoldIdForHoldRequest($holdRequest);
-
-                        APILogger::addInfo("Notify patron {$patron->getId()} for sierra hold $sierraHoldId");
-                        if ($sierraHoldId) {
-                            PatronClient::notifyPatron($patron, $sierraHoldId);
-                        } else {
-                            APILogger::addInfo("Could not find sierra hold id for {$holdRequest->getId()}");
-                        }
-
-                        // echo "\$this->sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult);";
-                        // $this->sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult);
+                          $result = PatronClient::notifyPatron($patron, $holdRequest->getId());
+                          if ($result) {
+                              APILogger::addInfo("Notified patron {$patron->getId()} for hold " . $holdRequest->getId());
+                          }
                     }
                 } else {
                     APILogger::addDebug('Hold Request Id ' .
