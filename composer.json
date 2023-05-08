@@ -1,5 +1,5 @@
 {
-  "name": "nypl-hold-request-result-consumer",
+  "name": "nypl/hold-request-result-consumer",
   "description": "Hold Request Result Consumer",
   "require": {
     "guzzlehttp/guzzle": "6.2.3",
