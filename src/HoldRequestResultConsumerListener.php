@@ -323,10 +323,10 @@ class HoldRequestResultConsumerListener extends Listener
                     $patron = $this->getPatron($holdRequest);
 
                     if ($holdRequest->getRecordType() === 'i') {
-                          $result = PatronClient::notifyPatron($patron, $holdRequest->getId());
-                          if ($result) {
-                              APILogger::addInfo("Notified patron {$patron->getId()} for hold " . $holdRequest->getId());
-                          }
+                        $result = PatronClient::notifyPatron($patron, $holdRequest->getId());
+                        if ($result) {
+                            APILogger::addInfo("Notified patron {$patron->getId()} for hold " . $holdRequest->getId());
+                        }
                     }
                 } else {
                     APILogger::addDebug('Hold Request Id ' .
