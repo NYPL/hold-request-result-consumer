@@ -3,13 +3,6 @@ language:
 - node_js
 php:
 - 7.1
-before_install:
-- wget https://releases.hashicorp.com/terraform/"$TF_VERSION"/terraform_"$TF_VERSION"_linux_amd64.zip
-- unzip terraform_"$TF_VERSION"_linux_amd64.zip
-- sudo mv terraform /usr/local/bin/
-- rm terraform_"$TF_VERSION"_linux_amd64.zip
-- git config --global url."https://".insteadOf ssh://
-- npm i -g npm@7
 install:
 - npm install
 - composer install
@@ -21,30 +14,27 @@ cache:
   - node_modules
   - vendor
 after_success:
+- ENVIRONMENT_NAME=$TRAVIS_BRANCH
+- if [ "$TRAVIS_BRANCH" == "master" ]; then ENVIRONMENT_NAME=production; fi
 - vendor/bin/coveralls -v
 - vendor/bin/phpcs -n --standard=PSR1,PSR2 src/
 - vendor/bin/phpcbf src/
-jobs:
-  include:
-  - stage: deploy qa
-    if: type IN (push) and branch = qa
-    env:
-    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_QA
-    - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_QA
-    script:
-    - terraform -chdir=provisioning/qa init -input=false
-    - echo "Deploying to qa"
-    - terraform -chdir=provisioning/qa apply -auto-approve -input=false
-  - stage: deploy production
-    if: type IN (push) and branch = main
-    env:
-    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_PRODUCTION
-    - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_PRODUCTION
-    script:
-    - terraform -chdir=provisioning/production init -input=false
-    - echo "Deploying to production"
-    - terraform -chdir=provisioning/production apply -auto-approve -input=false
+before_deploy:
+- nvm install
+- echo "All unit tests passed; Preparing to deploy $TRAVIS_BRANCH"
+deploy:
+- provider: script
+  skip_cleanup: true
+  script: "./scripts/travis-deploy.sh $ENVIRONMENT_NAME"
+  on:
+    all_branches: true
+    condition: "$ENVIRONMENT_NAME =~ ^(development|qa|production)$"
+after_deploy: echo "Successfully executed deploy trigger for $TRAVIS_BRANCH"
+notifications:
+  slack:
+    secure: a8RK8eq9Dz14Q7v9XbaeWIBVS0Aow0ry033P9LAQ8a0HSNBtFVk5q5y54xV6OfCj/Y9IV27P+rMNFqkF5gz9/c2aq2ILEGF3yhBwTewmPGLW31NBVvllHyS/LZJcBRfNyFfYjJ3ABv1EU7LTlD2jOK3Q1d3FPmKJMe68LOnHfZGco95VTknutIWkzQm80DiTy+FuOzrO64bt0XKyRG6gsd0+7gkN/cOFN96AmPU7vA5TF5AkCmj258UtXD/E36B+bTHRopN4UPPtvlNI0CTv3Kx19hUgW3hbsUvbjT2u0y67Ts4Ewxq9zzMUYr7YyvdS+HYWuWx96LS66E6D37Hzd4YotvoE2H/FVHuvM1w8UK1jo5f9cm9uCJoVKTGIi22m1Mc7M66tp7A2dRRRenf8YMU3IcEv0aUpNw8l9NjYZbqYlH1Ks+ozHLuNiz8sLYBJajEmNvznYkWE5Ijg72yFpnSUpYtsCAAnNBQVLmptECRggteVLZuGhXZC73Rw5toD4J5iSS8M7eYmjrQV+d9LjgwOkjAcKJtx20aQsbOHZFSPnbP7mw3xXBKbmjSGdY1FFd8ZT+kwsrqL1h3CNccISeQqePs0sWOZa98zr5D5hPX7nbtLQ2/Ntuu/QwLzNCog02b9o2mBqwYehc1dumDkr4xfrtVMhOkYK7MeUPoYCPc=
 env:
   global:
-  - TF_VERSION=1.0.11
-  - secure: kLbc1lzlS3fkKk+JxfsZKhMyrmW7Tn4ElOPVxI/nLte9/Vc9Sa3Ef2c+miC8pJVYSxNoOX7LMkPTKAFOvCCBNhHtc5OKL3B7j97UAQBLbJEOMnlnZ/bnkH068mXdABI1B9pxkqE3MEKfpJzcRh8PN2LNpyNzuwBd0PWa0QyQHIft77hO+xSIKILYFUw885Cbfo+SEXLrxkRY0j27fQ+jlNt6wW3zqskqp5ocUIgLycx4i2ikip7Moiy3uZ7DdnvM8DL7wKdlzvA1osItMB5t+jHh3IaK0ZSDXw+9JMBnxT2473YeWoabu+jxXBFCAuqTfCdmJDXEkkwLQpMa7WljzKdIPAGnDPEKnFjWHQbbYCmy/FotiiuNbFCxq8gKxAO6NX4wNIQTtiwiiT1fRdEmYU5DMcSF/Q9QxltUSYovS/Diwk0OIdZG6jg4QgTLPAmY2pmxOcMt92PvYjbWzLEYZp+Lx0vsZhNMLYoCoGqPF3Ygwz7hRQynOBgjhQfBwu2WCnZAf7k0NvLvWDhaaK75uQLaHgIFO1ZoCd5zhcqJdFDCWGuZjqph4M7b+AYfQ1pfR0Kl5e+2LHFDZeHsVvNA/oOmihzIBqrGs41LZzFqwIbA+iu3v8LON9VLAoWxoNPhc6ISdWexZ8I6n7GtcrowEaF/m4ah/I+nZ66i+eWsPaU=
+  - secure: KukXJLig2bJlOHXxP+Wa1QEaUjKOwQ5t3JnvvLW9GZ6rzL94dl1tJcfMAfXnFGik42VarSj80maGa+1VjQOIBVISWwZNgevfq9TeJ7DptpvXVh1vpi1YknqLNsBZriVCBcyW+TWm/dRnXUAZEU2cC4hg1FCnRkCrr4dRIoBsT+IUDUZJ9BMJDFAW65gPSJwweaLazWWK5WXVZdqdcaTeqP7pd7c1kka+HvH0ezMTFKuNuxaiJ9vlLrNwv9iO7zV1mmGXv8N4tNhsVmijcebfS3FEEVP1VhZuZpBbz9L3hBWD2nxNVejgLWCl1McIP0qz79TtaNEmnEbBz3m+btIAM3RLxWiaojGIvsUp7I+S1slh4tUtCQEZlLuDQhlWeMS57LojQWGSGrZMflVuvgH+MOpwfoNEQ5u3fLmAL/MKcDFMqhLN1IF4ME3vood7U2wcSxjTkUDA67BFjde2r8vyY9gRvC96m376CtQI3N5RK4WO7FWGUdFEtuj/IrcqdNQ2hrC/9Ee5rRK2Ytul4w2DrpC0KEwD3s5G3WmD0Rg4xmQNyyVw8A3PwTc9oYheTpDMyqziiy37BHB93NVbnDsRVjlzj1Smcn2hDz1B1dtxjjp/8I3dKPF6k72sPA2uxeBl7MLsAFene/81fzTTmJa55N+GJKexQsdQWrkGVceh+Ho=
+  - secure: gXckRKXnId9/LlVVgjZeTe/WtqLfXmlG/mbROAW2pCUJelo915uOeHaTtj/iCdjVKvk0UuXPpShnDUkcB0bTmpbPm030UZPY23GqC4TEG1SNFFhnvEhM9/PxarpDC87xwe91tJOceE4T1SFv1cK8pZwfe0Ig4odcci/3Z9yLFPFc6cBohVcDyp2K2hthbxpYoLD7vSD0PoMfB5KMjMvRnXKM4408nMJlbl06JtfXJm6eQQEPXJLfZR0JTNhvhHszyeIr5RKzMwS38olSy/h9mZWBDny7ex4gifIaa9fRUaG03kotXRdvg+pBr0TSnLKJKMGoOSZtJw5y13VlIkWdYvYTUwsAbGcO0GXsHlbJDaVL4Z+8uvMPB2OLmZMQgFSAdADlL1/uFLyG3UjnK4en2Pa32J+huhon8SSgxPa0iZlZydW7EzV7WvAxTsdgSOY9JcGwKK6Cer478ZTen6u3GVNRNGV0cxMDs1cLFza683H8jhoWvEc/ExzCjcw5xT/NPZv+oS1zZSZbKMAD9w5wd7Xpu0nPdz/sNIIuBdxb+svG8JOHK6jGKNW04r+K70JS5au2hRFl86TdofCANq41GdRZm9UQ4hyDz7JLOfIrpkYWQ3Sr4PCZNxyRZfLHR48W7jGEwoGWdZWOpS7Xb5lDUrkPPL8bW7tHIhrAx01RIP4=
+  - secure: HkXG9/qv/jjX/SgIW4bWzyjkkRDriPWcTvIl4nmqx4LKtih/pDHwDDiGhIY4LiweK7jabLQTZQTKes6gh5GHI/anEPca0T46SSIDDBa8cPiX5rHbivZFULo/2P8WyJkINzLJmGYFlyPPJUFtqpkKYTDYgNSkJB6Y3jQEj3A/J402hqFTT1e4VrHkhocWZNWnmcsXjtTe9F4GqNmaSB56v9HVaJvGl0oeCeDtmLt0edwXCsujmgRa2JsDzlY2JKvjLBTfBZhrBpVYMiYaiUwaEr51OVFAs74t+ehhTRaT8tdLduwllQ6csLtwCbZ4gDzmei2jPfjocVGJOolHYjJemq0JauGKbNXspiBnrpqcG8QwNkfvoffwSU6K3Ah+hAsno9i3mDDnay0CuoH7G9r0O+yCTcekwp7cjMZViKScCIf3CCeIhErGYiWAU10nidOi/ICKGjwKcegbN93udxMI/+uTzkIMXc0qpwQyiLsWT7X70rmUThhVx4buiWdAbq87hQsLijODfKTcCeby9IEUTrgoIfzEQZvr7NsL/dmRJasOQ364Wf5iUK8mDNkPkptjapNgFk1o0uPvavVw3ONEzLvKLltkIHu+B7sJjgEBj0JhGQSDFY0uQqmR57461NCjye1cnwP+Z4uvi+4c0hWzj2NsKqh/XhCLDR7yNYcP2qI=

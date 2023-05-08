@@ -3,9 +3,7 @@
 
 # NYPL Hold Request Result Consumer
 
-This app listens on the HoldRequestResult streams and sends email notifications for hold success, failure, and EDD.
-
-For more information, see this repo's [wiki](https://github.com/NYPL/hold-request-result-consumer/wiki)
+This package is intended to be used as a Lambda-based Node.js/PHP Listener to listen to a Kinesis Stream.
 
 It uses the
 [NYPL PHP Microservice Starter](https://github.com/NYPL/php-microservice-starter).
@@ -16,7 +14,7 @@ This package adheres to [PSR-1](http://www.php-fig.org/psr/psr-1/),
 
 ## Requirements
 
-* Node 12
+* Node.js 6.10.2
 * PHP >=7.0
   * [pdo_pdgsql](http://php.net/manual/en/ref.pdo-pgsql.php)
 
@@ -41,7 +39,39 @@ brew install php@7.1
 
 ## Configuration
 
-./config/var_*environment* configures environment variables specific to each environment.
+Various files are used to configure and deploy the Lambda.
+
+### .env
+
+`.env` is used *locally* for the following purpose(s):
+
+1. By `node-lambda` for deploying to and configuring Lambda in *all* environments.
+   * You should use this file to configure the common settings for the Lambda
+   (e.g. timeout, role, etc.) and include AWS credentials to deploy the Lambda.
+
+### package.json
+
+Configures `npm run` commands for each environment for deployment and testing. Deployment commands may also set the proper AWS Lambda VPC and security group.
+
+~~~~
+"scripts": {
+  "deploy-development": "./node_modules/.bin/node-lambda deploy -e development -f config/var_dev.env -S config/event_sources_dev.json -b subnet-f4fe56af -g sg-1d544067 --profile nypl-sandbox --role arn:aws:iam::224280085904:role/lambda_basic_execution",
+  "deploy-qa": "./node_modules/.bin/node-lambda deploy -e qa -f config/var_qa.env -S config/event_sources_qa.json -b subnet-f35de0a9,subnet-21a3b244 -g sg-aa74f1db --profile nypl-digital-dev --role arn:aws:iam::946183545209:role/lambda-full-access",
+  "deploy-production": "./node_modules/.bin/node-lambda deploy -e production -f config/var_production.env -S config/event_sources_production.json -g --profile nypl-digital-dev --role arn:aws:iam::946183545209:role/lambda-full-access"
+  },
+~~~~
+
+### var_app
+
+Configures environment variables common to *all* environments.
+
+### var_*environment*
+
+Configures environment variables specific to each environment.
+
+### event_sources_*environment*
+
+Configures Lambda event sources (triggers) specific to each environment.
 
 ## Usage
 
@@ -73,8 +103,12 @@ The HoldRequestResult stream can also receive events from the RecapHoldRequestCo
 
 ## Deployment
 
-Travis is configured to deploy to qa and production from namesake branches.
+Travis is configured to deploy to development, qa, or production.
+To deploy to the [development|qa|production] environment by hand, run the corresponding command:
 
-## Contributing
+~~~~
+npm run deploy-[development|qa|production]
+~~~~
 
-This repo uses the [Main-QA-Production Git Workflow](https://github.com/NYPL/engineering-general/blob/master/standards/git-workflow.md#main-qa-production)
+## For more information
+Please see this repo's [Wiki](https://github.com/NYPL/hold-request-result-consumer/wiki)
