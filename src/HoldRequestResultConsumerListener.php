@@ -13,6 +13,7 @@ use NYPL\HoldRequestResultConsumer\OAuthClient\BibClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\HoldRequestClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\ItemClient;
 use NYPL\HoldRequestResultConsumer\OAuthClient\PatronClient;
+use NYPL\HoldRequestResultConsumer\SierraAPIClient;
 use NYPL\Starter\APIException;
 use NYPL\Starter\APILogger;
 use NYPL\Starter\Listener\Listener;
@@ -143,25 +144,6 @@ class HoldRequestResultConsumerListener extends Listener
         }
 
         return $item;
-    }
-
-    protected function getSierraHold(HoldRequest $holdRequest)
-    {
-        $item = ItemClient::getItemByIdAndSource(
-            $holdRequest->getRecord(),
-            $holdRequest->getNyplSource()
-        );
-
-        $patronHolds = SierraClient::getPatronHolds($holdRequest->getPatron());
-
-        /**
-         *
-         * If item.nyplSource == 'sierra-nypl'):
-         *   Find the hold for which hold.record = item.id OR
-         * Else (partner record):
-         *   Find hold for which hold.note contains "For each hold (starting with most recent), fetch item 
-         *
-         */
     }
 
     /**
@@ -322,9 +304,13 @@ class HoldRequestResultConsumerListener extends Listener
                 $holdRequestResult = $this->getHoldRequestResult($listenerEvent);
 
                 $holdRequest = $this->getHoldRequest($holdRequestResult);
+                APILogger::addInfo(
+                  "Handling hold-request {$holdRequest->getId()}, which is "
+                  . (!$holdRequest->isProcessed() ? 'not ' : '') . "processed"
+                );
 
                 // TODO: Remove this logic when this loop is fixed
-                if (!$holdRequest->isProcessed()) {
+                if (true || !$holdRequest->isProcessed()) {
                     $this->patchHoldRequestService($holdRequestResult);
 
                     $this->skipMissingItem($holdRequestResult);
@@ -333,13 +319,17 @@ class HoldRequestResultConsumerListener extends Listener
                     $patron = $this->getPatron($holdRequest);
 
                     if ($holdRequest->getRecordType() === 'i') {
-                        $item = $this->getItem($holdRequest);
+                        $sierraHoldId = (new SierraAPIClient())->sierraHoldIdForHoldRequest($holdRequest);
 
-                        $bibs = $this->getBibs($item, $holdRequestResult);
+                        APILogger::addInfo("Notify patron {$patron->getId()} for sierra hold $sierraHoldId");
+                        if ($sierraHoldId) {
+                            PatronClient::notifyPatron($patron, $sierraHoldId);
+                        } else {
+                            APILogger::addInfo("Could not find sierra hold id for {$holdRequest->getId()}");
+                        }
 
-                        $sierraHold = $this.getSierraHold($holdRequest);
-
-                        $this->sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult);
+                        // echo "\$this->sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult);";
+                        // $this->sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult);
                     }
                 } else {
                     APILogger::addDebug('Hold Request Id ' .

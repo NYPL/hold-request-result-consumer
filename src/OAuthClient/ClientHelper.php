@@ -106,6 +106,53 @@ class ClientHelper extends APIClient
     }
 
     /**
+     * @param string $url
+     * @param array $body
+     * @param string $sourceFunction
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws ClientTimeoutException
+     * @throws NonRetryableException
+     * @throws \Exception
+     */
+    public static function postResponse($url = '', $body = array(), $sourceFunction = '')
+    {
+        try {
+            APILogger::addDebug('patchResponse ', array($url, json_encode($body)));
+            $response = self::post($url, ["body" => json_encode($body)]);
+            APILogger::addDebug('Response from patchResponse ', array($response));
+            return $response;
+        } catch (ServerException $exception) {
+            throw new NonRetryableException(
+                'Server Error from ' . $sourceFunction . ' ' . $exception->getMessage(),
+                'Server Error from ' . $sourceFunction . ' ' . $exception->getMessage(),
+                $exception->getResponse()->getStatusCode(),
+                null,
+                $exception->getResponse()->getStatusCode(),
+                new ErrorResponse(
+                    $exception->getResponse()->getStatusCode(),
+                    'internal-server-error',
+                    'Server Error from ' . $sourceFunction . ' ' . $exception->getMessage()
+                )
+            );
+        } catch (ClientException $exception) {
+            throw new NonRetryableException(
+                'Client Error from '. $sourceFunction . ' ' . $exception->getMessage(),
+                'Client Error from '. $sourceFunction . ' ' . $exception->getMessage(),
+                $exception->getResponse()->getStatusCode(),
+                null,
+                $exception->getResponse()->getStatusCode(),
+                new ErrorResponse(
+                    $exception->getResponse()->getStatusCode(),
+                    'client-error',
+                    'Client Error from '. $sourceFunction . ' ' . $exception->getMessage()
+                )
+            );
+        } catch (\Exception $exception) {
+            self::checkForTimeOutException($exception, $sourceFunction);
+        }
+    }
+
+    /**
      * @param \Exception $exception
      * @param string $sourceFunction
      * @throws ClientTimeoutException

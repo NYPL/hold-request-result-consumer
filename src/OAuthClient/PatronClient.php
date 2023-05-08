@@ -40,4 +40,29 @@ class PatronClient extends APIClient
             return null;
         }
     }
+
+    public static function notifyPatron(Patron $patron, int $sierraHoldId)
+    {
+        $url = Config::get('API_PATRON_URL') . '/' . $patron->getId() . '/notify';
+        $payload = array('holdId' => $sierraHoldId, 'type' => 'hold-success');
+        APILogger::addInfo("Calling PatronServices/notify: $url " . json_encode($payload));
+
+        $response = ClientHelper::postResponse($url, $payload, __FUNCTION__);
+        $statusCode = $response->getStatusCode();
+
+        $response = json_decode((string)$response->getBody(), true);
+
+        APILogger::addInfo('Got response from patronservices notify endpoint ' . json_encode($response));
+
+        // Check statusCode range
+        if ($statusCode === 200) {
+          return true;
+        } else {
+            APILogger::addError(
+                'Failed',
+                array('Failed to call patronservices notify endpoint')
+            );
+            return null;
+        }
+    }
 }

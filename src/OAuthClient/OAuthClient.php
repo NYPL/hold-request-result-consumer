@@ -4,48 +4,54 @@ namespace NYPL\HoldRequestResultConsumer\OAuthClient;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
 use NYPL\Starter\Config;
+use NYPL\Starter\APILogger;
 
 class OAuthClient
 {
     /**
      * @var string
      */
-    public static $accessToken = '';
+    public static $accessToken = array(); // '';
 
     /**
      * @return string
      */
-    public static function getAccessToken()
+    public static function getAccessToken($configPrefix = '')
     {
-        if (!self::$accessToken) {
-            $accessToken = self::initializeAccessToken();
+        // APILogger::addInfo("OauthClient::getAccessToken('$configPrefix')");
+        if (!array_key_exists($configPrefix, self::$accessToken)) {
+            // APILogger::addInfo("OauthClient::getAccessToken('$configPrefix') not yet built");
+            $accessToken = self::initializeAccessToken($configPrefix);
+            // APILogger::addInfo("Got access token: '{$accessToken->getToken()}'");
 
-            self::setAccessToken($accessToken->getToken());
+            self::setAccessToken($accessToken->getToken(), $configPrefix);
         }
 
-        return self::$accessToken;
+        return self::$accessToken[$configPrefix];
     }
 
     /**
      * @param string $accessToken
      */
-    public static function setAccessToken($accessToken)
+    public static function setAccessToken($accessToken, $configPrefix)
     {
-        self::$accessToken = $accessToken;
+        self::$accessToken[$configPrefix] = $accessToken;
     }
 
-    protected static function initializeAccessToken(): AccessToken
+    protected static function initializeAccessToken($configPrefix = ''): AccessToken
     {
 
+        // APILogger::addInfo("Building provider for $configPrefix");
         $provider = new GenericProvider([
-            'clientId' => Config::get('OAUTH_CLIENT_ID', null, true),
-            'clientSecret' => Config::get('OAUTH_CLIENT_SECRET', null, true),
+            'clientId' => Config::get($configPrefix . 'OAUTH_CLIENT_ID', null, true),
+            'clientSecret' => Config::get($configPrefix . 'OAUTH_CLIENT_SECRET', null, true),
             'redirectUri' => '',
-            'urlAuthorize' => Config::get('OAUTH_AUTH_URI'),
-            'urlAccessToken' => Config::get('OAUTH_TOKEN_URI'),
+            'urlAuthorize' => Config::get($configPrefix . 'OAUTH_AUTH_URI'),
+            'urlAccessToken' => Config::get($configPrefix . 'OAUTH_TOKEN_URI'),
             'urlResourceOwnerDetails' => '',
             'scopes' => 'read:patron read:item read:bib readwrite:hold_request'
         ]);
+        // APILogger::addInfo("Built provider for $configPrefix");
 
         return $provider->getAccessToken('client_credentials');
     }

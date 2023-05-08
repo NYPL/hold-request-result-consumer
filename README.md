@@ -31,7 +31,6 @@ brew tap exolnet/homebrew-deprecated
 brew install php@7.1
 ```
 
-
 ## Installation
 
 1. Clone the repo.
