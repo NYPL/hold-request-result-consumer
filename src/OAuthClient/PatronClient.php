@@ -52,7 +52,8 @@ class PatronClient extends APIClient
 
         $response = json_decode((string)$response->getBody(), true);
 
-        APILogger::addInfo('Got response from patronservices notify endpoint ' . json_encode($response));
+        $responseMessage = array_key_exists('Message', $response) ? $response['Message'] : json_encode($response);
+        APILogger::addInfo("Got $statusCode response from patronservices notify endpoint ($responseMessage)");
 
         // Check statusCode range
         if ($statusCode === 200) {
@@ -60,7 +61,7 @@ class PatronClient extends APIClient
         } else {
             APILogger::addError(
                 'Failed',
-                array('Failed to call patronservices notify endpoint')
+                array("PatronServices Notify endpoint responded with $statusCode ($responseMessage)")
             );
             return null;
         }
