@@ -206,8 +206,8 @@ class HoldRequestResultConsumerListener extends Listener
     ) {
         $notificationType = null;
         if ($holdRequestResult->isSuccess() === true) {
-            if ($streamData->getDocDeliveryData() !== null &&
-                $streamData->getDocDeliveryData()->getEmailAddress() !== null) {
+            if ($holdRequest->getDocDeliveryData() !== null &&
+                $holdRequest->getDocDeliveryData()->getEmailAddress() !== null) {
                 $notificationType = 'edd-success';
             } else {
                 $notificationType = 'hold-success';
@@ -215,6 +215,9 @@ class HoldRequestResultConsumerListener extends Listener
         } else {
             $notificationType = 'hold-fail';
         }
+
+        // Call on PatronServies Notification endpoint:
+        PatronClient::notifyPatron($patron, $holdRequest->getId(), $notificationType);
     }
 
     /**
