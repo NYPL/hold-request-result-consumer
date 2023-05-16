@@ -4,9 +4,11 @@
   "description": "PHP Lambda processing Hold Request Results and send e-mail notificaitons.",
   "main": "listener.js",
   "scripts": {
-    "test-event": "./node_modules/.bin/node-lambda run -f config/var_app -j events/kinesis_hold_request_success.json -x events/context.json"
+    "test-event": "./node_modules/.bin/node-lambda run -f config/var_qa.env -j events/kinesis_hold_request_success.json -x events/context.json"
   },
   "repository": {},
   "keywords": [],
-  "dependencies": {}
+  "devDependencies": {
+    "node-lambda": "^0.22.0"
+  }
 }

@@ -40,4 +40,30 @@ class PatronClient extends APIClient
             return null;
         }
     }
+
+    public static function notifyPatron(Patron $patron, int $holdId, $notificationType)
+    {
+        $url = Config::get('API_PATRON_URL') . '/' . $patron->getId() . '/notify';
+        $payload = array('holdRequestServiceId' => $holdId, 'type' => $notificationType);
+        APILogger::addInfo("Calling PatronServices/notify: $url " . json_encode($payload));
+
+        $response = ClientHelper::postResponse($url, $payload, __FUNCTION__);
+        $statusCode = $response->getStatusCode();
+
+        $response = json_decode((string)$response->getBody(), true);
+
+        $responseMessage = array_key_exists('Message', $response) ? $response['Message'] : json_encode($response);
+        APILogger::addInfo("Got $statusCode response from patronservices notify endpoint ($responseMessage)");
+
+        // Check statusCode range
+        if ($statusCode === 200) {
+          return true;
+        } else {
+            APILogger::addError(
+                'Failed',
+                array("PatronServices Notify endpoint responded with $statusCode ($responseMessage)")
+            );
+            return null;
+        }
+    }
 }

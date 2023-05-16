@@ -111,76 +111,6 @@ class HoldRequestResultConsumerListener extends Listener
 
     /**
      * @param HoldRequest $holdRequest
-     * @return null|Item
-     * @throws APIException
-     */
-    protected function getItem(HoldRequest $holdRequest)
-    {
-        /**
-         * @var Item|null
-         */
-        $item = ItemClient::getItemByIdAndSource(
-            $holdRequest->getRecord(),
-            $holdRequest->getNyplSource()
-        );
-
-        APILogger::addDebug('Item', (array)$item);
-        APILogger::addDebug('BibIds', (array)$item->getBibIds());
-
-        if ($item === null) {
-            throw new NonRetryableException(
-                'Hold request record missing Item data for Request Id ' . $holdRequest->getId(),
-                array($holdRequest, $item),
-                406,
-                null,
-                406,
-                new ErrorResponse(
-                    406,
-                    'missing-item-data',
-                    'Not Acceptable:Hold request record missing Item data for Request Id ' . $holdRequest->getId()
-                )
-            );
-        }
-
-        return $item;
-    }
-
-    /**
-     * @param Item $item
-     * @param HoldRequestResult $holdRequestResult
-     * @return array|null
-     * @throws NonRetryableException
-     */
-    protected function getBibs(Item $item, HoldRequestResult $holdRequestResult)
-    {
-        $bibs = array();
-        foreach ($item->getBibIds() as $bibId) {
-            $bib = BibClient::getBibBySource($item->getNyplSource(), $bibId);
-            array_push($bibs, $bib);
-        }
-        APILogger::addDebug('Bibs', $bibs);
-
-        if ($bibs === null || empty($bibs)) {
-            throw new NonRetryableException(
-                'Hold request record missing Bibs data for Request Id ' . $holdRequestResult->getHoldRequestId(),
-                array($item, $holdRequestResult, $bib),
-                406,
-                null,
-                406,
-                new ErrorResponse(
-                    406,
-                    'missing-bibs-data',
-                    'Not Acceptable: Hold request record missing Bibs data for Request Id '
-                    . $holdRequestResult->getHoldRequestId()
-                )
-            );
-        }
-
-        return $bibs;
-    }
-
-    /**
-     * @param HoldRequest $holdRequest
      * @return null|Patron
      * @throws NonRetryableException
      */
@@ -263,30 +193,31 @@ class HoldRequestResultConsumerListener extends Listener
 
     /**
      * @param Patron $patron
-     * @param array $bibs
-     * @param Item $item
      * @param HoldRequest $holdRequest
      * @param HoldRequestResult $holdRequestResult
      */
     protected function sendEmail(
         Patron $patron,
-        array $bibs,
-        Item $item,
+        // The hold-request record retrieved from the HoldRequestService:
         HoldRequest $holdRequest,
+        // The PATCH object containing success: true/false, which this app
+        // posted to the HoldRequestService earlier:
         HoldRequestResult $holdRequestResult
     ) {
-        $holdEmailData = new HoldEmailData();
-        $holdEmailData->assembleData($patron, $bibs, $item, $holdRequest, $holdRequestResult);
-
-        if ($holdEmailData->getPatronEmail() !== '') {
-            $mailClient = new MailClient($this->getSchemaName(), $holdEmailData);
-            $mailClient->sendEmail();
+        $notificationType = null;
+        if ($holdRequestResult->isSuccess() === true) {
+            if ($holdRequest->getDocDeliveryData() !== null &&
+                $holdRequest->getDocDeliveryData()->getEmailAddress() !== null) {
+                $notificationType = 'edd-success';
+            } else {
+                $notificationType = 'hold-success';
+            }
         } else {
-            APILogger::addInfo('E-mail not sent', [
-                'HoldRequestId' => $holdRequestResult->getHoldRequestId(),
-                'message' => 'E-mail was not sent because patron did not provide e-mail address.'
-            ]);
+            $notificationType = 'hold-fail';
         }
+
+        // Call on PatronServies Notification endpoint:
+        PatronClient::notifyPatron($patron, $holdRequest->getId(), $notificationType);
     }
 
     /**
@@ -303,9 +234,19 @@ class HoldRequestResultConsumerListener extends Listener
                 $holdRequestResult = $this->getHoldRequestResult($listenerEvent);
 
                 $holdRequest = $this->getHoldRequest($holdRequestResult);
+                APILogger::addInfo(
+                  "Handling hold-request {$holdRequest->getId()}, which is "
+                  . (!$holdRequest->isProcessed() ? 'not ' : '') . "processed"
+                );
 
                 // TODO: Remove this logic when this loop is fixed
+                //
+                // PB: 2023-05-08: I'm not sure what is meant by "this logic"
+                // but the following check, which asserts that this consumer
+                // does not re-process something that has already been marked
+                // as processed, feels sound enough to me.
                 if (!$holdRequest->isProcessed()) {
+                    // Patch hold-request with success: true/false
                     $this->patchHoldRequestService($holdRequestResult);
 
                     $this->skipMissingItem($holdRequestResult);
@@ -314,11 +255,7 @@ class HoldRequestResultConsumerListener extends Listener
                     $patron = $this->getPatron($holdRequest);
 
                     if ($holdRequest->getRecordType() === 'i') {
-                        $item = $this->getItem($holdRequest);
-
-                        $bibs = $this->getBibs($item, $holdRequestResult);
-
-                        $this->sendEmail($patron, $bibs, $item, $holdRequest, $holdRequestResult);
+                        $this->sendEmail($patron, $holdRequest, $holdRequestResult);
                     }
                 } else {
                     APILogger::addDebug('Hold Request Id ' .
